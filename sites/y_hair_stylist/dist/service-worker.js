@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.44720cd6f7df24465c6593581a3d63c2.js"
+  "/precache-manifest.5135addf2bf7519b268afcb78680823b.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "desk.sites.y_hair_stylist"});
