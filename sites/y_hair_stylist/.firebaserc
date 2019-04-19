@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "desk-uy"
+  },
+  "targets": {
+    "desk-uy": {
+      "hosting": {
+        "YHS": [
+          "yhairstylist"
+        ]
+      }
+    }
+  }
+}
