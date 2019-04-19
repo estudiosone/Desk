@@ -2,7 +2,7 @@
   "hosting": [
     {
       "target": "YHS",
-      "public": "dist",
+      "public": "./sites/y_hair_stylist/dist",
       "ignore": [
         "firebase.json",
         "**/.*",
