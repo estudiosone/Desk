@@ -17,33 +17,12 @@
       </el-carousel>
     </el-row>
     <el-row id="salones">
-      <el-row
-        id="salon-brunel"
-      >
-        <h1>Yhair Stylist | Brunel</h1>
-        <el-col :span="8">
-          <iframe
-            src="https://snazzymaps.com/embed/149768"
-            style="border:none;"
-          />
-        </el-col>
-        <el-col :span="8" style="margin: 0 16px;">
-          <el-row type="flex" align="middle" style="margin-bottom: 32px;">
-            <img src="https://img.icons8.com/material-outlined/48/000000/marker.png">
-            <div style="margin: 11px 16px; font-size: 24px;">Cno. Carrasco 6955 local 101</div>
-          </el-row>
-          <el-row type="flex" align="middle" style="margin-bottom: 32px;">
-            <img src="https://img.icons8.com/material-outlined/48/000000/phone.png">
-            <div style="margin: 11px 16px; font-size: 24px;">+598 2605 9344</div>
-          </el-row>
-          <el-row type="flex" align="middle" style="margin-bottom: 32px;">
-            <img src="https://img.icons8.com/material-outlined/48/000000/clock.png">
-            <div style="margin: 11px 16px; font-size: 24px;">
-            <div>L: 14:00 a 19:00</div>
-            <div>M a S: 10:00 a 19:00</div></div>
-          </el-row>
-        </el-col>
-      </el-row>
+      <salones
+        v-for="salon in salones"
+        :key="salones.indexOf(salon)"
+        :data="salon"
+        :id="salones.indexOf(salon)"
+      />
     </el-row>
   </div>
 </template>
@@ -70,13 +49,51 @@
   }
   iframe {
     width: 100%;
-    height: 50vh;
+    height: 400px;
   }
 }
 </style>
 
 <script>
+import Salones from '../components/Salones.vue';
+
 export default {
   name: 'Home',
+  components: {
+    Salones,
+  },
+  data() {
+    return {
+      salones: [
+        {
+          name: 'Portones Shopping',
+          address: 'Av. Italia 5775 local S44',
+          phone: '+598 2601 7321',
+          schedules: [
+            'L a V: 8:00 a 22:00',
+            'S y D: 10:00 a 22:00',
+          ],
+        },
+        {
+          name: 'Portal Brunel',
+          address: 'Cno. Carrasco 6955 local 101',
+          phone: '+598 2605 9344',
+          schedules: [
+            'L: 14:00 a 19:00',
+            'M a S: 10:00 a 19:00',
+          ],
+        },
+        {
+          name: 'Portal Americas',
+          address: 'Av. de las Américas 6000',
+          phone: '+598 2602 3492',
+          schedules: [
+            'L: 14:00 a 19:00',
+            'M a S: 10:00 a 19:00',
+          ],
+        },
+      ],
+    };
+  },
 };
 </script>
