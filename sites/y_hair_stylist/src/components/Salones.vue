@@ -3,7 +3,10 @@
     :id="`salon-${data.name}`"
   >
     <h1>{{ data.name }}</h1>
-    <el-col :span="12" class="map">
+    <el-col
+      :span="12"
+      class="map"
+    >
       <iframe
         src="https://snazzymaps.com/embed/149768"
         style="border:none;"
@@ -13,7 +16,6 @@
       :span="12"
       class="info-photos"
     >
-      
       <el-row class="photos">
         <img
           src="../assets/img/BRUNEL-1.jpeg"
@@ -59,11 +61,9 @@ export default {
   },
   methods: {
     isEven(value) {
-	if (value%2 == 0)
-		return true;
-	else
-		return false;
-}
-  }
+      if (value % 2 == 0) return true;
+      return false;
+    },
+  },
 };
 </script>
