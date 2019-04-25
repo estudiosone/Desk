@@ -27,6 +27,9 @@
           src="../assets/img/BRUNEL-1.jpeg"
         >
       </el-row>
+      <el-row>
+        <salon-info/>
+      </el-row>
     </el-col>
   </el-row>
 </template>
@@ -54,7 +57,12 @@
 
 
 <script>
+import SalonInfo from './SalonInfo.vue';
+
 export default {
+  components: {
+    SalonInfo,
+  },
   props: {
     data: Object,
     id: Number,
