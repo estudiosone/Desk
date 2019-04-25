@@ -9,23 +9,32 @@
       </router-link>
       <el-menu
         mode="horizontal"
+        menu-trigger="click"
         :router="true"
       >
-        <el-menu-item index="/#salones">
-          Salones
+        <el-menu-item
+          v-for="item in menu"
+          :key="item.to"
+          class="hidden-xs-only"
+          :index="item.to"
+        >
+          {{ item.name }}
         </el-menu-item>
-        <el-menu-item index="/#agendate">
-          Agendate
-        </el-menu-item>
-        <el-menu-item index="/#promociones">
-          Promociones
-        </el-menu-item>
-        <el-menu-item index="/#noticias">
-          Noticias
-        </el-menu-item>
-        <el-menu-item index="/store">
-          Store
-        </el-menu-item>
+        <el-submenu
+          class="hidden-sm-and-up"
+          index="/"
+        >
+          <template slot="title">
+            <img src="https://img.icons8.com/material-rounded/24/000000/menu.png">
+          </template>
+          <el-menu-item
+            v-for="item in menu"
+            :key="item.to"
+            :index="item.to"
+          >
+            {{ item.name }}
+          </el-menu-item>
+        </el-submenu>
       </el-menu>
     </el-header>
     <router-view />
@@ -34,6 +43,38 @@
 
 <script>
 export default {
+  name: 'App',
+  data() {
+    return {
+      menu: [
+        {
+          name: 'Salones',
+          to: '/#salones',
+        },
+        {
+          name: 'Agendate',
+          to: '/#agendate',
+        },
+        {
+          name: 'Promociones',
+          to: '/#promociones',
+        },
+        {
+          name: 'Noticias',
+          to: '/#noticias',
+        },
+        {
+          name: 'Tienda',
+          to: '/store',
+        },
+      ],
+    };
+  },
+  methods: {
+    handleCommand(e) {
+      console.log(e);
+    },
+  },
 };
 </script>
 
@@ -46,7 +87,14 @@ body {
   height: 100%;
   font-family: 'Dosis', sans-serif;
 }
-
+.el-header {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  .el-submenu__icon-arrow.el-icon-arrow-down {
+    display: none;
+  }
+}
 .el-menu--horizontal.el-menu {
   font-weight: 600;
   text-transform: uppercase;
