@@ -56,6 +56,7 @@
 </template>
 
 <script>
+import SaloneInfo from ''
 export default {
   props: {
     address: String,
