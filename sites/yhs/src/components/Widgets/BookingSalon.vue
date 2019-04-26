@@ -17,7 +17,7 @@
     </el-form>
     <el-dialog title="Agendate en nuestros salones" :visible.sync="dialogBookingVisible">
       <el-collapse v-model="collapseValue" accordion>
-        <el-form 
+        <el-form
           label-width="60px"
           label-position="left">
           <el-collapse-item title="Tu reserva" name="1">
@@ -61,7 +61,11 @@
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button :disabled="bookingClientDataActive" @click="collapseValue = '2'">Siguiente</el-button>
+              <el-button
+                :disabled="bookingClientDataActive"
+                @click="collapseValue = '2'">
+                Siguiente
+              </el-button>
             </el-form-item>
 
           </el-collapse-item>
@@ -79,7 +83,11 @@
               <el-input v-model="customerEmail"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button :disabled="bookingResumeDataActive" @click="collapseValue = '3'">Siguiente</el-button>
+              <el-button
+                :disabled="bookingResumeDataActive"
+                @click="collapseValue = '3'">
+                Siguiente
+              </el-button>
             </el-form-item>
           </el-collapse-item>
           <el-collapse-item :disabled="bookingResumeDataActive" title="Confirmá tus datos" name="3">
@@ -92,7 +100,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 export default Vue.extend({
   data() {
@@ -138,63 +146,61 @@ export default Vue.extend({
       salonList: [
         {
           value: 'portones',
-          label: 'Portones Shopping'
+          label: 'Portones Shopping',
         },
         {
           value: 'brunel',
-          label: 'Portal Brunel'
+          label: 'Portal Brunel',
         },
         {
           value: 'americas',
-          label: 'Portal Americas'
-        }
+          label: 'Portal Americas',
+        },
       ],
       serviceList: [
         {
-          value: 'Lavado L’Oréal'
+          value: 'Lavado L’Oréal',
         },
         {
-          value: 'Lavado Kerastase'
+          value: 'Lavado Kerastase',
         },
         {
-          value: 'Lavado Redken'
+          value: 'Lavado Redken',
         },
         {
-          value: 'Brushing'
+          value: 'Brushing',
         },
       ],
       datePickerOptions: {
-        disabledDate (date: any) {
+        disabledDate(date: any) {
           const d = new Date();
-          d.setDate(d.getDate() - 1)
-          return date <= d
-        }
-      }
-    }
+          d.setDate(d.getDate() - 1);
+          return date <= d;
+        },
+      },
+    };
   },
   computed: {
     bookingClientDataActive() {
       if (this.bookingDate && this.bookingHour && this.bookingSalon && this.bookingService) {
         return false;
-      } else {
-        return true;
       }
+      return true;
     },
     bookingResumeDataActive() {
       if (this.customerName && this.customerSurname && this.customerPhone && this.customerEmail) {
         return false;
-      } else {
-        return true;
       }
-    }
+      return true;
+    },
   },
   props: {
     title: {
       type: String,
-      default: 'Agendate'
-    }
-  }
-})
+      default: 'Agendate',
+    },
+  },
+});
 </script>
 
 <style lang="scss">

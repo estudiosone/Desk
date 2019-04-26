@@ -30,14 +30,14 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
-import WidgetBookingSalon from '../components/Widgets/BookingSalon.vue'
+import Vue from 'vue';
+import WidgetBookingSalon from '../components/Widgets/BookingSalon.vue';
 
 export default Vue.extend({
   components: {
-    WidgetBookingSalon
-  }
-})
+    WidgetBookingSalon,
+  },
+});
 </script>
 
 

@@ -95,7 +95,7 @@ body {
   background-color: white;
 
   .content {
-  display: flex; 
+  display: flex;
   justify-content: space-between;
   width: 100%;
   max-width: 1200px;
