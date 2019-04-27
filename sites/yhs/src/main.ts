@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Element from 'element-ui';
+import firebase from 'firebase';
 import locale from 'element-ui/lib/locale/lang/es';
 import Desk from '../../../desk-suite';
 import App from './App.vue';
@@ -21,7 +22,28 @@ const config = {
   messagingSenderId: '456998131508',
 };
 
-Vue.use(Desk);
+// Vue.use(Desk);
+
+const app = firebase.initializeApp(config);
+
+const auth = app.auth();
+
+let userCreated = false;
+
+firebase.auth().onAuthStateChanged(function(user) {
+  if (user) {
+    alert(user.uid);
+    console.log('user', user);
+    // User is signed in.
+  } else {
+    if(!userCreated) {
+      userCreated = true;
+      console.log('create new user');
+      auth.signInAnonymously();
+      // No user is signed in.
+    }
+  }
+});
 
 new Vue({
   router,
