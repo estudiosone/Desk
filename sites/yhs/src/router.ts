@@ -13,6 +13,16 @@ const router = new Router({
       name: 'home',
       component: Home,
     },
+    {
+      path: '/store',
+      name: 'store',
+      component: () => import(/* webpackChunkName: "store" */ './views/Store.vue'),
+    },
+    {
+      path: '/store/item/:id',
+      name: 'store',
+      component: () => import(/* webpackChunkName: "store-item" */ './views/StoreItem.vue'),
+    },
   ],
   scrollBehavior(to, from, savedPosition) {
     if (to.hash) {
