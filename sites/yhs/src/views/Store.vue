@@ -14,7 +14,12 @@
         <div class="cover-media">
           <img :src="item.Photos[0]" alt="" class="media">
           <div class="action">
-            <router-link class="goTo" :to="`/store/item/${ item.Id }`" tag="button">Detalles</router-link>
+            <router-link
+              class="goTo"
+              :to="`/store/item/${ item.Id }`"
+              tag="button">
+              Detalles
+            </router-link>
           </div>
         </div>
         <div class="info">
@@ -49,8 +54,23 @@ import Vue from 'vue';
 import firebase from 'firebase';
 import Numeral from 'numeral';
 
+import ICatalogueItem from '../interfaces/ICatalogueItem';
+
 export default Vue.extend({
-  data() {
+
+  data(): {
+    catalogue: ICatalogueItem[];
+    data: {
+      label: string;
+      children: {
+          label: string;
+      }[];
+    }[];
+    defaultProps: {
+      children: string;
+      label: string;
+    }
+    } {
     return {
       catalogue: [
 
@@ -102,7 +122,7 @@ export default Vue.extend({
     };
   },
   filters: {
-    priceInUYU(value) {
+    priceInUYU(value: any) {
       let val;
       if (value) {
         val = value;
@@ -122,7 +142,12 @@ export default Vue.extend({
     const query = col.where('Business', '==', app.collection('Business').doc('hN4Z7KaHwWxniNgVHjTX')).orderBy('Name');
     const result = await query.get();
     result.forEach(async (item) => {
-      const catalogueItem = {
+      const catalogueItem: {
+        Id: string;
+        Name: string;
+        Description: string;
+        Photos: string[];
+      } = {
         Id: item.id,
         Name: item.data().Name,
         Description: item.data().Description,
