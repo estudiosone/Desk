@@ -1,0 +1,93 @@
+@import './bp.scss';
+
+.item {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: calc(100vw - 40px);
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1240px;
+  padding: 0 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  @include md {
+    grid-template-columns: repeat(2, calc((100vw - 40px) / 2));
+  }
+
+  @include lg {
+    grid-template-columns: repeat(2, 600px);
+  }
+
+  .media {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 100px calc(100vw - 140px);
+
+    .media-list {
+      display: flex;
+      flex-direction: column;
+      width: 100px;
+
+      img {
+        width: 100px;
+        height: 100px;
+        padding: 16px;
+        box-sizing: border-box;
+      }
+    }
+
+    .media-presentation {
+      img {
+        width: calc(100vw - 140px);
+        max-width: 420px;
+        height: calc(100vw - 140px);
+        max-height: 420px;
+        padding: 16px;
+        box-sizing: border-box;
+        object-fit: cover;
+      }
+    }
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+
+    @include md {
+      margin-left: auto;
+      max-width: 300px;
+    } 
+    .name {
+      font-size: 2em;
+    }
+
+    .brand-category {
+      display: flex;
+
+      .brand {
+        border-left: 4px solid #A52518;
+        padding: 0 8px;
+      }
+
+      .category {
+        border-left: 4px solid #A52518;
+        padding: 0 8px;
+      }
+    }
+
+    .price-buy {
+      display: flex;
+      justify-content: space-between;
+      .buy {
+        width: 160px;
+        height: 45px;
+        font-family: 'Dosis', sans-serif;
+        font-weight: 600;
+        text-transform: uppercase;
+        border: solid 1px #A52518;
+        background-color: #FFFFFF;
+      }
+    }
+  }
+}
