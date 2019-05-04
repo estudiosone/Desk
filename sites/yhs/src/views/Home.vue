@@ -20,10 +20,7 @@
       <img src="../assets/img/agendate-bkg.jpg" alt="">
       <widget-booking-salon/>
     </div>
-    <div id="promociones">
-
-    </div>
-    <div id="noticias">
+    <div id="blog">
 
     </div>
     <div id="firebaseui-auth-container">
@@ -66,7 +63,8 @@ export default Vue.extend({
     //       // user.
     //       // ...
     //       // Finish sign-in after data is copied.
-    //       firebase.auth().currentUser.delete().then(() => firebase.auth().signInWithCredential(cred));
+    //       firebase.auth()
+    //        .currentUser.delete().then(() => firebase.auth().signInWithCredential(cred));
     //     },
     //   },
     //   // Other config options...
