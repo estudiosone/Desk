@@ -133,29 +133,29 @@ export default Vue.extend({
     return {
       Item: {},
       SelectedPhotoUrl: '',
-    }
+    };
   },
-    filters: {
+  filters: {
     priceInUYU(value) {
       let val;
-      if(value) {
-        val = value 
+      if (value) {
+        val = value;
       } else {
-        val = 0
+        val = 0;
       }
-      return Numeral(val).format('$ 0.0[,]00')
-    }
+      return Numeral(val).format('$ 0.0[,]00');
+    },
   },
   async mounted() {
     const loading = this.$loading({
-          lock: true,
-          text: 'Buscando productos',
+      lock: true,
+      text: 'Buscando productos',
     });
     const app = firebase.firestore();
     const col = app.collection('Inventory-Items');
     const doc = col.doc(this.$route.params.id);
     const result = await doc.get();
-    if(result.exists) {
+    if (result.exists) {
       this.Item = result.data();
       this.Item.Id = result.id;
       this.Item.Photos = [];
@@ -169,6 +169,6 @@ export default Vue.extend({
       this.SelectedPhotoUrl = this.Item.Photos[0].Url;
     }
     loading.close();
-  }
-})
+  },
+});
 </script>

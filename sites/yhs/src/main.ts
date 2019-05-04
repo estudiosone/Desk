@@ -30,18 +30,13 @@ const auth = app.auth();
 
 let userCreated = false;
 
-firebase.auth().onAuthStateChanged(function(user) {
+firebase.auth().onAuthStateChanged((user) => {
   if (user) {
-    alert(user.uid);
-    console.log('user', user);
     // User is signed in.
-  } else {
-    if(!userCreated) {
-      userCreated = true;
-      console.log('create new user');
-      auth.signInAnonymously();
-      // No user is signed in.
-    }
+  } else if (!userCreated) {
+    userCreated = true;
+    auth.signInAnonymously();
+    // No user is signed in.
   }
 });
 

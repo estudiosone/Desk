@@ -202,13 +202,3 @@ export default Vue.extend({
   },
 });
 </script>
-
-<style lang="scss">
-#step-0 {
-  display: grid;
-  grid-template-columns: 300px 150px;
-  grid-template-rows: 1fr;
-  width: 450px;
-  margin: 0 auto;
-}
-</style>
