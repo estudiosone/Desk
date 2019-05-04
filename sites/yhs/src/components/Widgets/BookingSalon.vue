@@ -15,7 +15,10 @@
         <el-button @click="dialogBookingVisible = true">Reservar</el-button>
       </el-form-item>
     </el-form>
-    <el-dialog title="Agendate en nuestros salones" :visible.sync="dialogBookingVisible">
+    <el-dialog
+      title="Agendate en nuestros salones"
+      :fullscreen="window.width < 997"
+      :visible.sync="dialogBookingVisible">
       <el-collapse v-model="collapseValue" accordion>
         <el-form
           label-width="60px"
@@ -178,6 +181,10 @@ export default Vue.extend({
           return date <= d;
         },
       },
+      window: {
+        width: 0,
+        height: 0,
+      },
     };
   },
   computed: {
@@ -199,6 +206,19 @@ export default Vue.extend({
       type: String,
       default: 'Agendate',
     },
+  },
+  methods: {
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+    },
+  },
+  created() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
   },
 });
 </script>
