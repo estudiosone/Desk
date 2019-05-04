@@ -13,18 +13,18 @@
         {{ Item.Name }}
       </h1>
       <div class="brand-category">
-        <h2 class="brand">
+        <div class="brand">
           {{ Item.Brand }}
-        </h2>
-        <h2 class="category">
+        </div>
+        <div class="category">
           {{ Item.Category }}
-        </h2>
+        </div>
       </div>
       <p class="description">
         {{ Item.Description }}
       </p>
       <h3 class="presentation">
-        {{ `${ Item.Presentation ? Item.Presentation : '' } ${ Item.PresentationUnit ? Item.PresentationUnit : '' }` }}
+        {{ presentation }}
       </h3>
       <div class="price-buy">
         <h3 class="price">
@@ -38,88 +38,7 @@
   </div>
 </template>
 <style lang="scss" scoped>
-.item {
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-
-  .media {
-    display: flex;
-    width: 50%;
-    max-width: 600px;
-
-    .media-list {
-      display: flex;
-      flex-direction: column;
-      width: 15vw;
-      max-width: 180px;
-
-      img {
-        width: 15vw;
-        max-width: 180px;
-        height: 15vw;
-        max-height: 180px;
-        padding: 16px;
-        box-sizing: border-box;
-      }
-    }
-
-    .media-presentation {
-      width: 35vw;
-      max-width: 420px;
-
-      img {
-        width: 35vw;
-        max-width: 420px;
-        height: 35vw;
-        max-height: 420px;
-        padding: 16px;
-        box-sizing: border-box;
-      }
-    }
-  }
-
-  .info {
-    display: flex;
-    flex-direction: column;
-    width: 25%;
-    max-width: 300px;
-
-    .name {
-      font-size: 2.5em;
-    }
-
-    .brand-category {
-      display: flex;
-
-      .brand {
-        border-left: 4px solid #A52518;
-        padding: 0 8px;
-      }
-
-      .category {
-        border-left: 4px solid #A52518;
-        padding: 0 8px;
-      }
-    }
-
-    .price-buy {
-      display: flex;
-      justify-content: space-between;
-      .buy {
-        width: 160px;
-        height: 45px;
-        font-family: 'Dosis', sans-serif;
-        font-weight: 600;
-        text-transform: uppercase;
-        border: solid 1px #A52518;
-        background-color: #FFFFFF;
-      }
-    }
-  }
-}
+@import '../styles/storeItem.scss';
 </style>
 
 
@@ -135,15 +54,22 @@ export default Vue.extend({
       SelectedPhotoUrl: '',
     };
   },
+  computed: {
+    presentation() {
+      const p = this.Item.Presentation ? this.Item.Presentation : '';
+      const pUnit = this.Item.PresentationUnit ? this.Item.PresentationUnit : '';
+      return `${p} ${pUnit}`;
+    },
+  },
   filters: {
-    priceInUYU(value) {
+    priceInUYU(value: any) {
       let val;
       if (value) {
         val = value;
       } else {
         val = 0;
       }
-      return Numeral(val).format('$ 0.0[,]00');
+      return Numeral(val).format('$ 0.00');
     },
   },
   async mounted() {
