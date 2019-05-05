@@ -48,14 +48,17 @@ import firebase from 'firebase';
 import Numeral from 'numeral';
 
 export default Vue.extend({
-  data() {
+  data() : {
+    Item: any;
+    SelectedPhotoUrl: string;
+  } {
     return {
       Item: {},
       SelectedPhotoUrl: '',
     };
   },
   computed: {
-    presentation() {
+    presentation(): string {
       const p = this.Item.Presentation ? this.Item.Presentation : '';
       const pUnit = this.Item.PresentationUnit ? this.Item.PresentationUnit : '';
       return `${p} ${pUnit}`;
