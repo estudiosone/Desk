@@ -34,6 +34,11 @@
           </div>
         </div>
       </div>
+      <div>
+        <button @click="loadMore">
+          VER MÁS
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -132,37 +137,55 @@ export default Vue.extend({
       return Numeral(val).format('$ 0.00');
     },
   },
-  async mounted() {
-    const loading = this.$loading({
-      lock: true,
-      text: 'Buscando productos',
-    });
-    const app = firebase.firestore();
-    const col = app.collection('Inventory-Items');
-    const query = col.where('Business', '==', app.collection('Business').doc('hN4Z7KaHwWxniNgVHjTX')).orderBy('Name');
-    const result = await query.get();
-    result.forEach(async (item) => {
-      const catalogueItem: {
-        Id: string;
-        Name: string;
-        Description: string;
-        Photos: string[];
-      } = {
-        Id: item.id,
-        Name: item.data().Name,
-        Description: item.data().Description,
-        Photos: [],
-      };
-
-      const photos = await item.ref.collection('Photos').orderBy('Index').get();
-
-      photos.forEach((photo) => {
-        catalogueItem.Photos.push(photo.data().Url);
+  methods: {
+    loadMore() {
+      this.loadItems();
+    },
+    async loadItems(firstLoad: boolean = false) {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Buscando productos',
       });
+      const app = firebase.firestore();
+      const col = app.collection('Inventory-Items');
+      let query: firebase.firestore.Query;
+      if (firstLoad) {
+        query = col.where('Business', '==', app.collection('Business').doc('hN4Z7KaHwWxniNgVHjTX'))
+          .orderBy('Name')
+          .limit(12);
+      } else {
+        query = col.where('Business', '==', app.collection('Business').doc('hN4Z7KaHwWxniNgVHjTX'))
+          .orderBy('Name')
+          .startAfter(this.catalogue[this.catalogue.length - 1].Name)
+          .limit(12);
+      }
+      const result = await query.get();
+      result.forEach(async (item) => {
+        const catalogueItem: {
+          Id: string;
+          Name: string;
+          Description: string;
+          Photos: string[];
+        } = {
+          Id: item.id,
+          Name: item.data().Name,
+          Description: item.data().Description,
+          Photos: [],
+        };
 
-      this.catalogue.push(catalogueItem);
-    });
-    loading.close();
+        const photos = await item.ref.collection('Photos').orderBy('Index').get();
+
+        photos.forEach((photo) => {
+          catalogueItem.Photos.push(photo.data().Url);
+        });
+
+        this.catalogue.push(catalogueItem);
+      });
+      loading.close();
+    }
+  },
+  async mounted() {
+    this.loadItems(true);
   },
 });
 </script>
