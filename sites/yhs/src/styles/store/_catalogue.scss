@@ -1,0 +1,24 @@
+@import '../bp';
+@import './item';
+
+.desk-store {
+  .catalogue {
+    display: grid;
+    grid-template-rows: repeat( auto-fit, calc(((100vw - 60px) / 2) + 120px ));
+    grid-template-columns: repeat(2, calc((100vw - 60px) / 2));
+    grid-gap: 20px;
+    // overflow-y: auto;
+    @include sm {
+      grid-template-rows: repeat( auto-fit, calc(((100vw - 80px) / 3) + 100px ));
+      grid-template-columns: repeat(3, calc((100vw - 80px) / 3));
+    }
+    @include md {
+      grid-template-rows: repeat( auto-fit, calc(((100vw - 340px) / 3) + 100px ));
+      grid-template-columns: repeat(3, calc((100vw - 320px) / 3));
+    }
+    @include lg {
+      grid-template-rows: repeat( auto-fit, 320px );
+      grid-template-columns: repeat(4, 220px);
+    }
+  }
+}
