@@ -1,0 +1,28 @@
+@import '../bp.scss';
+
+.desk-store {
+  .filters {
+    display: none;
+    width: 240px;
+    padding-left: 20px;
+    border-right: #A52518 1px solid;
+    box-sizing: border-box;
+
+    @include md {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .el-tree {
+      // font-family: 'Lora', serif;
+      .el-checkbox__inner{
+        margin-bottom: 3px;
+      }
+      .el-tree-node__label::before {
+        border-left: #A52518 4px solid;
+        margin-right: 16px;
+        content: ''
+      }
+    }
+  }
+}
