@@ -1,0 +1,22 @@
+.button {
+  @extend %button;
+}
+.button-icon {
+  @extend %button;
+  display: flex;
+
+  .icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+  }
+
+  .label {
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+}
+
+.button-icon:hover {
+  @extend %button:hover;
+}
