@@ -71,7 +71,8 @@
         </el-menu>
       </div>
     </el-header>
-    <router-view style="margin-top: 64px;" />
+    <router-view style="margin-top: 64px; height: fit-content;" class="viewer"/>
+    <desk-footer></desk-footer>
   </el-container>
 </template>
 
@@ -79,8 +80,13 @@
 import Vue from 'vue';
 import firebase from 'firebase';
 
+import DeskFooter from './components/Footer.vue';
+
 export default Vue.extend({
   name: 'App',
+  components: {
+    DeskFooter,
+  },
   data() {
     return {
       menu: [
@@ -149,6 +155,17 @@ body {
   // font-family: 'Dosis', sans-serif;
   font-family: 'Montserrat', sans-serif;
 
+}
+#app {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 64px 1fr 200px;
+  .viewer{
+    grid-row: 2 / span 1;
+  }
+  #footer {
+    grid-row: 3 / span 1;
+  }
 }
 .el-header {
   position: fixed;
