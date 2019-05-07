@@ -3,8 +3,10 @@
 /* CONST */
 @import './_lib/const';
 
-/* PAGE IMPORTS */
+/* BASE */
+@import './_lib/base';
 
+/* PAGE IMPORTS */
 @import './user/user';
 
 %button {
@@ -25,25 +27,24 @@
   color: $color-brand-secondary-alt;
 }
 
-.button {
-  @extend %button;
-}
-.button-icon {
-  @extend %button;
-  display: flex;
+#footer {
+  display: grid;
+  grid-template-columns: 1fr;;
+  grid-template-rows: 1fr;
 
-  .icon {
-    width: 18px;
-    height: 18px;
-    margin-right: 12px;
+  .salon {
+    padding: 12px;
+
+    .name {
+      font-weight: 600;
+      font-size: 18px;
+    }
+    .address {
+      display: flex;
+      .label {
+        margin-right: 12px; 
+      }
+    }
   }
-
-  .label {
-    font-size: 14px;
-    text-transform: uppercase;
-  }
 }
 
-.button-icon:hover {
-  @extend %button:hover;
-}
