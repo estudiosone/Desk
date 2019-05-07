@@ -23,23 +23,9 @@ const config = {
   messagingSenderId: '456998131508',
 };
 
+const app = firebase.initializeApp(config);
 // Vue.use(Desk);
 
-const app = firebase.initializeApp(config);
-
-const auth = app.auth();
-
-let userCreated = false;
-
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    // User is signed in.
-  } else if (!userCreated) {
-    userCreated = true;
-    auth.signInAnonymously();
-    // No user is signed in.
-  }
-});
 
 new Vue({
   router,
