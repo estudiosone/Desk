@@ -71,7 +71,7 @@
         </el-menu>
       </div>
     </el-header>
-    <router-view style="margin-top: 64px; height: fit-content;" class="viewer"/>
+    <router-view style="height: fit-content;" class="viewer"/>
     <desk-footer></desk-footer>
   </el-container>
 </template>
@@ -159,7 +159,7 @@ body {
 #app {
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: 64px 1fr 200px;
+  grid-template-rows: 64px 1fr auto;
   .viewer{
     grid-row: 2 / span 1;
   }
