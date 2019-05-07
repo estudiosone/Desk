@@ -5,15 +5,19 @@
         {{ salon.name }}
       </div>
       <div class="address">
-        <span class="label">Dirección</span>
+        <span class="label">Dirección:</span>
         <span>{{ salon.address }}</span> 
       </div>
       <div class="phone">
-        {{ salon.phone }}
+        
+        <span class="label">Teléfono:</span>
+        <span>{{ salon.phone }}</span> 
+
       </div>
       <div class="schedule">
-        <div class="content" v-for="schedule in salon.schedule" :key="schedule">
-          {{ schedule }}
+        <span class="label">Horarios:</span>
+        <div class="content">
+          <span v-for="schedule in salon.schedule" :key="schedule">{{ schedule }}</span>
         </div>
       </div>
     </div>
