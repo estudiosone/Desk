@@ -20,8 +20,13 @@ const router = new Router({
     },
     {
       path: '/store/item/:id',
-      name: 'store',
+      name: 'store-item',
       component: () => import(/* webpackChunkName: "store-item" */ './views/StoreItem.vue'),
+    },
+    {
+      path: '/user',
+      name: 'user',
+      component: () => import(/* webpackChunkName: "user" */ './views/User.vue'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {
