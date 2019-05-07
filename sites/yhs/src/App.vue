@@ -22,12 +22,40 @@
           >
             {{ item.name }}
           </el-menu-item>
+          <el-submenu class="hidden-sm-and-down" index="/store/bag">
+            <template slot="title">
+              <el-badge :value="0" style="line-height: 24px;">
+                <img src="https://img.icons8.com/material-outlined/24/000000/shopping-bag.png">
+              </el-badge>
+            </template>
+            <span style="padding: 16px;">
+              Aún no agregas nada aquí
+            </span>
+          </el-submenu>
+          <el-submenu class="hidden-sm-and-down" index="/user">
+            <template slot="title">
+              <img src="https://img.icons8.com/material-outlined/24/000000/user.png">
+            </template>
+            <el-menu-item>
+              Iniciar sesión
+            </el-menu-item>
+            <el-menu-item index="/user">
+              Mi usuario
+            </el-menu-item>
+            <el-divider></el-divider>
+            <el-menu-item>
+              Cerrar sesión
+            </el-menu-item>
+          </el-submenu>
+
           <el-submenu
             class="hidden-md-and-up"
             index="/"
           >
             <template slot="title">
-              <img src="https://img.icons8.com/material-rounded/24/000000/menu.png">
+              <el-badge :value="0" style="line-height: 24px;">
+                <img src="https://img.icons8.com/material-rounded/24/000000/menu.png">
+              </el-badge>
             </template>
             <el-menu-item
               v-for="item in menu"
@@ -35,6 +63,9 @@
               :index="item.to"
             >
               {{ item.name }}
+            </el-menu-item>
+            <el-menu-item index="/user">
+              Usuario
             </el-menu-item>
           </el-submenu>
         </el-menu>
@@ -46,16 +77,13 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import firebase from 'firebase';
 
 export default Vue.extend({
   name: 'App',
   data() {
     return {
       menu: [
-        {
-          name: 'Salones',
-          to: '/#salones',
-        },
         {
           name: 'Agendate',
           to: '/#agendate',
@@ -73,11 +101,45 @@ export default Vue.extend({
   },
   methods: {
   },
+  mounted() {
+
+    const auth = firebase.auth();
+
+    let userCreated = false;
+
+    firebase.auth().onAuthStateChanged(async (userData) => {
+      if (userData) {
+        const collectionRef = firebase.firestore().collection('Auth-Users');
+        const userRef = collectionRef.doc(userData.uid);
+        const user = await userRef.get();
+
+        this.$store.commit('userId', userData.uid);
+
+        if (user.exists) {
+          const data = user.data();
+          console.log(userData.isAnonymous)
+          this.$store.commit('user', data);
+        } else {
+          this.$store.state.user = {
+            name: (userData.displayName ? userData.displayName.split(' ')[0] : '') || '',
+            surname: (userData.displayName ? userData.displayName.split(' ')[1] : '') || '',
+            email: userData.email ? userData.email : '',
+            photoUrl: userData.photoURL ? userData.photoURL : 'https://img.icons8.com/material-outlined/96/000000/user-male-circle.png',
+            isAnonymous: userData.isAnonymous,
+          }
+          await userRef.set(this.$store.state.user)
+        }
+      } else if (!userCreated) {
+        userCreated = true;
+        auth.signInAnonymously();
+      }
+    });
+  }
 });
 </script>
 
 <style lang="scss">
-@import './styles/bp.scss';
+@import './styles/index';
 @import url('https://fonts.googleapis.com/css?family=Montserrat');
 body {
   position: absolute;
