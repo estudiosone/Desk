@@ -28,14 +28,17 @@
             <div class="price">
               {{ item.Price | priceInUYU }}
             </div>
-            <button class="buy">
+            <button 
+              class="buy"
+              @click="alert(item.Id)"
+              v-if="item.Price != undefined">
               Comprar
             </button>
           </div>
         </div>
       </div>
-      <div>
-        <button @click="loadMore">
+      <div class="catalogue-footer">
+        <button class="button" @click="loadMore">
           VER MÁS
         </button>
       </div>
@@ -138,6 +141,9 @@ export default Vue.extend({
     },
   },
   methods: {
+    alert(id) {
+      alert(id);
+    },
     loadMore() {
       this.loadItems();
     },
@@ -165,11 +171,13 @@ export default Vue.extend({
           Id: string;
           Name: string;
           Description: string;
+          Price: number;
           Photos: string[];
         } = {
           Id: item.id,
           Name: item.data().Name,
           Description: item.data().Description,
+          Price: item.data().Price,
           Photos: [],
         };
 
