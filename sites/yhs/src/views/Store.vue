@@ -38,7 +38,7 @@
         </div>
       </div>
       <div class="catalogue-footer">
-        <button class="button" @click="loadMore">
+        <button class="button" @click="loadMore" v-if="catalogueExpand">
           VER MÁS
         </button>
       </div>
@@ -68,6 +68,7 @@ export default Vue.extend({
 
   data(): {
     catalogue: ICatalogueItem[];
+    catalogueExpand: boolean;
     data: {
       label: string;
       children: {
@@ -81,8 +82,8 @@ export default Vue.extend({
     } {
     return {
       catalogue: [
-
       ],
+      catalogueExpand: false,
       data: [
         {
           label: 'Kérastase',
@@ -166,7 +167,9 @@ export default Vue.extend({
           .limit(12);
       }
       const result = await query.get();
+      let i = 12;
       result.forEach(async (item) => {
+        i--;
         const catalogueItem: {
           Id: string;
           Name: string;
@@ -189,6 +192,11 @@ export default Vue.extend({
 
         this.catalogue.push(catalogueItem);
       });
+      if (i == 0) {
+        this.catalogueExpand = true;
+      } else {
+        this.catalogueExpand = false;
+      }
       loading.close();
     }
   },
