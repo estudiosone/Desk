@@ -40,7 +40,7 @@ export default Vue.extend({
     WidgetBookingSalon,
   },
   mounted() {
-    const ui = new firebaseui.auth.AuthUI(firebase.auth());
+    // const ui = new firebaseui.auth.AuthUI(firebase.auth());
     // ui.start('#firebaseui-auth-container', {
     //   autoUpgradeAnonymousUsers: true,
     //   signInFlow: 'popup',
