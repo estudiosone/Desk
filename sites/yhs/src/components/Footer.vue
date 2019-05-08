@@ -6,12 +6,12 @@
       </div>
       <div class="address">
         <span class="label">Dirección:</span>
-        <span>{{ salon.address }}</span> 
+        <span>{{ salon.address }}</span>
       </div>
       <div class="phone">
-        
+
         <span class="label">Teléfono:</span>
-        <span>{{ salon.phone }}</span> 
+        <span>{{ salon.phone }}</span>
 
       </div>
       <div class="schedule">
@@ -25,7 +25,8 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
+
 export default Vue.extend({
   name: 'desk-footer',
   data() {
@@ -37,8 +38,8 @@ export default Vue.extend({
           phone: '+598 2601 7321',
           schedule: [
             'L a V: 8:00 a 22:00',
-            'S y D: 10:00 a 22:00'
-          ] 
+            'S y D: 10:00 a 22:00',
+          ],
         },
         {
           name: 'Portal Brunel',
@@ -46,8 +47,8 @@ export default Vue.extend({
           phone: '+598 2605 9344',
           schedule: [
             'L: 14:00 a 19:00',
-            'M a S: 10:00 a 19:00'
-          ] 
+            'M a S: 10:00 a 19:00',
+          ],
         },
         {
           name: 'Portal Americas',
@@ -55,12 +56,11 @@ export default Vue.extend({
           phone: '+598 2602 3492',
           schedule: [
             'L: 14:00 a 19:00',
-            'M a S: 10:00 a 19:00'
-          ] 
+            'M a S: 10:00 a 19:00',
+          ],
         },
-      ]
-    }
-  }
-})
+      ],
+    };
+  },
+});
 </script>
-
