@@ -9,7 +9,7 @@
       <button
         class="add"
         v-if="unavailable == false"
-        @click="add">
+        @click="dialogVisible = true">
         Comprar
       </button>
       <div
@@ -18,6 +18,26 @@
         Temporalmente no disponible
       </div>
     </div>
+    <el-dialog
+      title="Agregar al carrito"
+      width="360px"
+      :visible.sync="dialogVisible">
+      <el-form
+        ref="form"
+        label-width="120px"
+        label-position="top">
+        <el-form-item label="Producto">
+          <el-input :readonly="true" v-model="itemName"></el-input>
+        </el-form-item>
+        <el-form-item label="Cantidad">
+          <el-input-number v-model="quantity" :min="1" :max="10"></el-input-number>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="dialogVisible = false">Agregar</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -27,35 +47,40 @@ import Numeral from 'numeral';
 
 export default Vue.extend({
   name: 'widget-store-add-bag',
-  props: [
-    'itemId',
-    'price',
-  ],
+  props: {
+    itemId: String,
+    itemName: String,
+    itemPrice: Number ,
+  },
+  data() {
+    return {
+      dialogVisible: false,
+      quantity: 1,
+    };
+  },
   computed: {
     priceFormated() {
-      switch (this.price) {
+      switch (this.itemPrice) {
         case 0: {
           return 0;
         }
-        case undefined: {
-          return 0;
-        }
         default: {
-          return Numeral(this.price).format('$ 0.00');
+          return Numeral(this.itemPrice).format('$ 0.00');
         }
       }
     },
     unavailable() {
-      switch (this.price) {
-        case 0: {
-          return true;
+      if (this.itemPrice) {
+        switch (this.itemPrice) {
+          case undefined: {
+            return true;
+          }
+          default: {
+            return false;
+          }
         }
-        case undefined: {
-          return true;
-        }
-        default: {
-          return false;
-        }
+      } else {
+        return true;
       }
     }
   },
