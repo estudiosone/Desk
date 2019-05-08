@@ -10,6 +10,7 @@ import store from './store';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'element-ui/lib/theme-chalk/display.css';
 
+import { Register } from './utilities/components';
 import WidgetStoreAddBag from './components/Widgets/StoreAddBag.vue';
 
 Vue.config.productionTip = false;
@@ -28,6 +29,7 @@ const config = {
 const app = firebase.initializeApp(config);
 // Vue.use(Desk);
 
+Register();
 Vue.component('widget-store-add-bag', WidgetStoreAddBag);
 
 new Vue({
