@@ -108,7 +108,6 @@ export default Vue.extend({
   methods: {
   },
   mounted() {
-
     const auth = firebase.auth();
 
     let userCreated = false;
@@ -123,7 +122,6 @@ export default Vue.extend({
 
         if (user.exists) {
           const data = user.data();
-          console.log(userData.isAnonymous)
           this.$store.commit('user', data);
         } else {
           this.$store.state.user = {
@@ -132,15 +130,15 @@ export default Vue.extend({
             email: userData.email ? userData.email : '',
             photoUrl: userData.photoURL ? userData.photoURL : 'https://img.icons8.com/material-outlined/96/000000/user-male-circle.png',
             isAnonymous: userData.isAnonymous,
-          }
-          await userRef.set(this.$store.state.user)
+          };
+          await userRef.set(this.$store.state.user);
         }
       } else if (!userCreated) {
         userCreated = true;
         auth.signInAnonymously();
       }
     });
-  }
+  },
 });
 </script>
 
@@ -161,7 +159,12 @@ body {
   grid-template-columns: 100%;
   grid-template-rows: 64px 1fr auto;
   .viewer{
+    min-height: calc(100vh - 64px - 426px);
     grid-row: 2 / span 1;
+
+    @include md {
+      min-height: calc(100vh - 64px - 142px);
+    }
   }
   #footer {
     grid-row: 3 / span 1;
