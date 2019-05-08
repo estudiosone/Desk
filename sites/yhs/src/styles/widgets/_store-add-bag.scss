@@ -1,0 +1,36 @@
+.widget-store-add-bag {
+  .section-button {
+    height: 32px;
+    display: flex;
+    flex-direction: column;
+    padding: 16px 0;
+    border-top: #A52518 1px solid;
+    justify-content: space-between;
+    align-items: center;
+
+    @include sm {
+      flex-direction: row;
+    }
+    .price {
+      text-align: left;
+    }
+    .add {
+      width: 100px;
+      height: 42px;
+      font-family: 'Dosis', sans-serif;
+      font-weight: 600;
+      text-transform: uppercase;
+      border: solid 1px #A52518;
+      background-color: #FFFFFF;
+      transition-duration: 200ms;
+    }
+    .add:hover{
+      background-color: #A52518;
+      color: #FFFFFF;
+    }
+    .unavailable {
+      color: $--color-warning;
+      text-align: center;
+    }
+  }
+}
