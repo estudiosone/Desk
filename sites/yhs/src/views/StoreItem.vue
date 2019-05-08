@@ -26,10 +26,10 @@
       <h3 class="presentation">
         {{ presentation }}
       </h3>
-      <widget-store-add-bag
-        :itemId="Item.Id"
-        :price="Item.Price"/>
-
+        <widget-store-add-bag
+          :itemId="Item.Id"
+          :itemPrice="Item.Price"
+          :itemName="Item.Name"/>
     </div>
   </div>
 </template>
