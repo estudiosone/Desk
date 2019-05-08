@@ -10,6 +10,8 @@ import store from './store';
 import 'element-ui/lib/theme-chalk/index.css';
 import 'element-ui/lib/theme-chalk/display.css';
 
+import WidgetStoreAddBag from './components/Widgets/StoreAddBag.vue';
+
 Vue.config.productionTip = false;
 Vue.use(Element, { locale });
 // Vue.use(InfiniteLoading, { /* options */ });
@@ -26,6 +28,7 @@ const config = {
 const app = firebase.initializeApp(config);
 // Vue.use(Desk);
 
+Vue.component('widget-store-add-bag', WidgetStoreAddBag);
 
 new Vue({
   router,
