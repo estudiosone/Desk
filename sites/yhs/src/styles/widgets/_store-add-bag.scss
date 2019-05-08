@@ -1,6 +1,5 @@
 .widget-store-add-bag {
   .section-button {
-    height: 32px;
     display: flex;
     flex-direction: column;
     padding: 16px 0;
@@ -10,6 +9,7 @@
 
     @include sm {
       flex-direction: row;
+      height: 32px;
     }
     .price {
       text-align: left;
@@ -17,12 +17,17 @@
     .add {
       width: 100px;
       height: 42px;
+      border: solid 1px #A52518;
+      margin-top: 12px; 
+      background-color: #FFFFFF;
       font-family: 'Dosis', sans-serif;
       font-weight: 600;
       text-transform: uppercase;
-      border: solid 1px #A52518;
-      background-color: #FFFFFF;
       transition-duration: 200ms;
+
+      @include sm {
+        margin-top: 0px; 
+      }
     }
     .add:hover{
       background-color: #A52518;
