@@ -12,7 +12,7 @@
     <div class="catalogue">
       <div class="item" v-for="item in catalogue" :key="item.Id">
         <div class="cover-media">
-          <img :src="item.Photos[0]" alt="" class="media">
+          <img :src="item.Photo" alt="" class="media">
           <div class="action">
             <router-link
               class="goTo"
@@ -23,18 +23,9 @@
           </div>
         </div>
         <div class="info">
-          <div class="name">{{ item.Name }}</div>
-          <div class="price-buy">
-            <div class="price">
-              {{ item.Price | priceInUYU }}
-            </div>
-            <button
-              class="buy"
-              @click="alert(item.Id)"
-              v-if="item.Price != undefined">
-              Comprar
-            </button>
-          </div>
+          <widget-store-add-bag
+            :itemId="item.Id"
+            :price="item.Price"/>
         </div>
       </div>
       <div class="catalogue-footer">
@@ -47,8 +38,6 @@
 </template>
 
 <style lang="scss">
-@import '../styles/store.scss';
-
 .desk-store {
   .cover {
     grid-area: 1 / 1 / span 1 / span 2;
@@ -62,10 +51,14 @@ import Vue from 'vue';
 import firebase from 'firebase';
 import Numeral from 'numeral';
 
+import WidgetStoreAddBag from '../components/Widgets/StoreAddBag.vue';
+
 import ICatalogueItem from '../interfaces/ICatalogueItem';
 
 export default Vue.extend({
-
+  components: {
+    WidgetStoreAddBag,
+  },
   data(): {
     catalogue: ICatalogueItem[];
     catalogueExpand: boolean;
@@ -175,22 +168,28 @@ export default Vue.extend({
           Name: string;
           Description: string;
           Price: number;
-          Photos: string[];
+          Photo: string;
         } = {
           Id: item.id,
           Name: item.data().Name,
           Description: item.data().Description,
           Price: item.data().Price,
-          Photos: [],
+          Photo: '',
         };
 
-        const photos = await item.ref.collection('Photos').orderBy('Index').get();
+        const inventoryItemsPhotos = await app
+          .collection('Inventory-Items-Photos')
+          .where('Item', '==', item.ref)
+          .get();
 
-        photos.forEach((photo) => {
-          catalogueItem.Photos.push(photo.data().Url);
+        inventoryItemsPhotos.forEach((photo) => {
+          if (photo.data().IsCover) {
+            catalogueItem.Photo = photo.data().Url;
+          }
         });
 
         this.catalogue.push(catalogueItem);
+
       });
       if (i == 0) {
         this.catalogueExpand = true;
