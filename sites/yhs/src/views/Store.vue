@@ -25,7 +25,8 @@
         <div class="info">
           <widget-store-add-bag
             :itemId="item.Id"
-            :price="item.Price"/>
+            :itemPrice="item.Price"
+            :itemName="item.Name"/>
         </div>
       </div>
       <div class="catalogue-footer">
@@ -173,7 +174,7 @@ export default Vue.extend({
           Id: item.id,
           Name: item.data().Name,
           Description: item.data().Description,
-          Price: item.data().Price,
+          Price: parseFloat(item.data().Price),
           Photo: '',
         };
 
