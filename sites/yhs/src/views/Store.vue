@@ -28,7 +28,7 @@
             <div class="price">
               {{ item.Price | priceInUYU }}
             </div>
-            <button 
+            <button
               class="buy"
               @click="alert(item.Id)"
               v-if="item.Price != undefined">
@@ -198,7 +198,7 @@ export default Vue.extend({
         this.catalogueExpand = false;
       }
       loading.close();
-    }
+    },
   },
   async mounted() {
     this.loadItems(true);
