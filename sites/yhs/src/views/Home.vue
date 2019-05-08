@@ -1,7 +1,6 @@
 <template>
   <div class="home">
     <el-carousel
-      height="100%"
       :interval="5000">
       <el-carousel-item>
         <img src="../assets/img/PROMO-1-min.png">
@@ -80,11 +79,13 @@ export default Vue.extend({
 
 .home {
   width: 100%;
-  height: calc(100vh - 64px);
+  // height: calc(100vh - 64px);
   .el-carousel {
-    height: 100%;
+    height: calc(100vh - 64px);
     max-height: 100vw;
-
+    .el-carousel__container {
+      height: 100%;
+    }
     img {
       height: 100%;
       width: 100%;
