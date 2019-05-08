@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import firebase from 'firebase';
 
 export default Vue.extend({
@@ -36,16 +36,16 @@ export default Vue.extend({
         identification: {
           type: '',
           number: '',
-        }
-      }
-    }
+        },
+      },
+    };
   },
   computed: {
     photoUrl: {
       get() {
-        this.$store.state.user.photoUrl
-      }
-    }
+        this.$store.state.user.photoUrl;
+      },
+    },
   },
   methods: {
     connectGoogle() {
@@ -56,12 +56,12 @@ export default Vue.extend({
           const userData = this.$store.state.user;
           userData.isAnonymous = false;
           this.$store.commit('user', userData);
-          console.log('Conexión exitosa', result.user.uid)
+          console.log('Conexión exitosa', result.user.uid);
         })
         .then((error) => {
 
-        })
-    }
-  }
-})
+        });
+    },
+  },
+});
 </script>
