@@ -2,7 +2,7 @@
   <div class="item">
     <div class="media">
       <div class="media-list">
-        <img v-for="photo in Item.Photos" :key="photo.Index" :src="photo.Url" alt="">
+        <img v-for="photo in Item.Photos" :key="photo.Url" :src="photo.Url" alt="">
       </div>
       <div class="media-presentation">
         <img :src="SelectedPhotoUrl" alt="">
@@ -26,14 +26,10 @@
       <h3 class="presentation">
         {{ presentation }}
       </h3>
-      <div class="price-buy">
-        <h3 class="price">
-          {{ Item.Price | priceInUYU }}
-        </h3>
-        <button class="buy">
-          Comprar
-        </button>
-      </div>
+      <widget-store-add-bag
+        :itemId="Item.Id"
+        :price="Item.Price"/>
+
     </div>
   </div>
 </template>
@@ -82,20 +78,25 @@ export default Vue.extend({
     });
     const app = firebase.firestore();
     const col = app.collection('Inventory-Items');
-    const doc = col.doc(this.$route.params.id);
-    const result = await doc.get();
+    const itemReference = col.doc(this.$route.params.id);
+    const result = await itemReference.get();
     if (result.exists) {
       this.Item = result.data();
       this.Item.Id = result.id;
       this.Item.Photos = [];
 
-      const photos = await result.ref.collection('Photos').orderBy('Index').get();
+      const inventoryItemsPhotos = await app
+        .collection('Inventory-Items-Photos')
+        .where('Item', '==', itemReference)
+        .get();
 
-      photos.forEach((photo) => {
+      inventoryItemsPhotos.forEach((photo) => {
         this.Item.Photos.push(photo.data());
+        if (photo.data().IsCover) {
+          this.SelectedPhotoUrl = photo.data().Url;
+        }
       });
 
-      this.SelectedPhotoUrl = this.Item.Photos[0].Url;
     }
     loading.close();
   },
