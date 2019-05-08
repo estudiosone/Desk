@@ -51,7 +51,7 @@ export default Vue.extend({
   data() : {
     Item: any;
     SelectedPhotoUrl: string;
-  } {
+    } {
     return {
       Item: {},
       SelectedPhotoUrl: '',
