@@ -6,7 +6,11 @@
 /* BASE */
 @import './_lib/base';
 
+/* WIDGETS */
+@import './widgets/_store-add-bag';
+
 /* PAGE IMPORTS */
+@import './store.scss';
 @import './user/user';
 
 
