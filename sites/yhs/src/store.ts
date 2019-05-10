@@ -4,6 +4,7 @@ import firebase from 'firebase';
 
 import { IState } from '../types/store';
 type NavMenu = {
+  Index: number,
   Name: string,
   To: string,
 }
@@ -114,7 +115,7 @@ export default new Vuex.Store({
       const site = await siteRef.get();
       const siteData: Site = site.data() as Site;
       siteData.NavMenu = [];
-      const navMenu = await siteRef.collection('NavMenu').get();
+      const navMenu = await siteRef.collection('NavMenu').orderBy('Index').get();
       navMenu.forEach(item => siteData.NavMenu.push(item.data() as NavMenu))
       context.commit('set_site', siteData);
     }
