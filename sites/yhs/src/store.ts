@@ -3,6 +3,15 @@ import Vuex from 'vuex';
 import firebase from 'firebase';
 
 import { IState } from '../types/store';
+type NavMenu = {
+  Name: string,
+  To: string,
+}
+type Site = {
+  Name: string,
+  LogoURL: string,
+  NavMenu: NavMenu[],
+}
 type Phone = {
   area_code: any,
   number: any,
@@ -34,6 +43,8 @@ type Order = {
   detail: OrderDetail[],
 }
 type State = {
+  SiteId: string,
+  Site: Site,
   businessId: any,
   userId: any,
   user: User,
@@ -43,6 +54,12 @@ type State = {
 Vue.use(Vuex);
 
 const state: State = {
+  SiteId: '8DgciBZUYfrLfnKonpml',
+  Site: {
+    Name: '',
+    LogoURL: '',
+    NavMenu: [],
+  },
   businessId: 'hN4Z7KaHwWxniNgVHjTX',
   userId: '',
   user: {
@@ -74,6 +91,9 @@ const state: State = {
 export default new Vuex.Store({
   state,
   mutations: {
+    set_site(state, payload) {
+      state.Site = payload;
+    },
     userId(state, UID) {
       state.userId = UID;
     },
@@ -88,5 +108,15 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async initializeApp(context) {
+      const db = firebase.firestore();
+      const siteRef = db.collection('Sites').doc(context.state.SiteId);
+      const site = await siteRef.get();
+      const siteData: Site = site.data() as Site;
+      siteData.NavMenu = [];
+      const navMenu = await siteRef.collection('NavMenu').get();
+      navMenu.forEach(item => siteData.NavMenu.push(item.data() as NavMenu))
+      context.commit('set_site', siteData);
+    }
   },
 });
