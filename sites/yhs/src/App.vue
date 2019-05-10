@@ -1,76 +1,6 @@
 <template>
   <el-container id="app">
-    <el-header style="height: 64px;">
-      <div class="content">
-        <router-link class="logo" to="/">
-          <img
-            style="height: 44px; margin: 8px;"
-            :src="this.$store.state.Site.LogoURL"
-          >
-        </router-link>
-        <el-menu
-          class="menu"
-          mode="horizontal"
-          menu-trigger="click"
-          :router="true"
-        >
-          <el-menu-item
-            v-for="item in this.$store.state.Site.NavMenu"
-            :key="item.To"
-            class="hidden-sm-and-down"
-            :index="item.To"
-          >
-            {{ item.Name }}
-          </el-menu-item>
-          <el-submenu class="hidden-sm-and-down" index="/store/bag">
-            <template slot="title">
-              <el-badge :value="0" style="line-height: 24px;">
-                <img src="https://img.icons8.com/material-outlined/24/000000/shopping-bag.png">
-              </el-badge>
-            </template>
-            <span style="padding: 16px;">
-              Aún no agregas nada aquí
-            </span>
-          </el-submenu>
-          <el-submenu class="hidden-sm-and-down" index="/user">
-            <template slot="title">
-              <img src="https://img.icons8.com/material-outlined/24/000000/user.png">
-            </template>
-            <el-menu-item>
-              Iniciar sesión
-            </el-menu-item>
-            <el-menu-item index="/user">
-              Mi usuario
-            </el-menu-item>
-            <el-divider></el-divider>
-            <el-menu-item>
-              Cerrar sesión
-            </el-menu-item>
-          </el-submenu>
-
-          <el-submenu
-            class="hidden-md-and-up"
-            index="/"
-          >
-            <template slot="title">
-              <el-badge :value="0" style="line-height: 24px;">
-                <img src="https://img.icons8.com/material-rounded/24/000000/menu.png">
-              </el-badge>
-            </template>
-            <el-menu-item
-              v-for="item in menu"
-              :key="item.to"
-              :index="item.to"
-            >
-              {{ item.name }}
-            </el-menu-item>
-            <el-menu-item index="/user">
-              Usuario
-            </el-menu-item>
-          </el-submenu>
-        </el-menu>
-      </div>
-    </el-header>
+    <desknavi></desknavi>
     <router-view style="height: fit-content;" class="viewer"/>
     <desk-footer></desk-footer>
   </el-container>
@@ -145,7 +75,7 @@ export default Vue.extend({
 
 <style lang="scss">
 @import './styles/index';
-@import url('https://fonts.googleapis.com/css?family=Montserrat');
+@import url('https://fonts.googleapis.com/css?family=Mukta+Mahee|Montserrat');
 body {
   position: absolute;
   margin: 0;
@@ -158,7 +88,7 @@ body {
 #app {
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: 64px 1fr auto;
+  grid-template-rows: auto 1fr auto;
   .viewer{
     min-height: calc(100vh - 64px - 426px);
     grid-row: 2 / span 1;
