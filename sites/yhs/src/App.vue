@@ -5,7 +5,7 @@
         <router-link class="logo" to="/">
           <img
             style="height: 44px; margin: 8px;"
-            src="./assets/logo.png"
+            :src="this.$store.state.Site.LogoURL"
           >
         </router-link>
         <el-menu
@@ -15,12 +15,12 @@
           :router="true"
         >
           <el-menu-item
-            v-for="item in menu"
-            :key="item.to"
+            v-for="item in this.$store.state.Site.NavMenu"
+            :key="item.To"
             class="hidden-sm-and-down"
-            :index="item.to"
+            :index="item.To"
           >
-            {{ item.name }}
+            {{ item.Name }}
           </el-menu-item>
           <el-submenu class="hidden-sm-and-down" index="/store/bag">
             <template slot="title">
@@ -107,7 +107,8 @@ export default Vue.extend({
   },
   methods: {
   },
-  mounted() {
+  async mounted() {
+    this.$store.dispatch('initializeApp');
     const auth = firebase.auth();
 
     let userCreated = false;
@@ -134,8 +135,8 @@ export default Vue.extend({
           await userRef.set(this.$store.state.user);
         }
       } else if (!userCreated) {
-        userCreated = true;
-        auth.signInAnonymously();
+        // userCreated = true;
+        // auth.signInAnonymously();
       }
     });
   },
