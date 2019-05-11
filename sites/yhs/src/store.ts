@@ -62,7 +62,7 @@ const state: State = {
     NavMenu: [],
   },
   businessId: 'hN4Z7KaHwWxniNgVHjTX',
-  userId: '',
+  userId: undefined,
   user: {
     name: '',
     surname: '',
