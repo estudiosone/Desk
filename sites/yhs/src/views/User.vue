@@ -1,67 +1,65 @@
 <template>
-  <div class="page-user">
-
-    <div class="my-data" v-if="this.$store.state.userId !== ''">
-      <section id="photo">
-        <div>
-          <img :src="this.$store.state.user.photoUrl" alt="">
-        </div>
-      </section>
-      <section id="user-name" v-if="this.$store.state.user.isAnonymous == false">
-        {{ `${this.$store.state.user.name} ${this.$store.state.user.surname}` }}
-      </section>
-      <section id="connect" v-if="this.$store.state.user.isAnonymous">
-        <button id="with-google" class="button-icon" @click="connectGoogle">
-          <div class="icon">
-            <img src="https://img.icons8.com/color/18/000000/google-logo.png">
-          </div>
-          <div class="label">
-            Conectar con google
-          </div>
-        </button>
-      </section>
+  <div class="p-mi-cuenta">
+    <div class="titulo">
+      mi cuenta
     </div>
+    <el-menu
+      class="s-menu"
+      :default-active="'/mi-cuenta/' + accion"
+      mode="horizontal">
+      <el-menu-item index="/mi-cuenta/datos">Mis Datos</el-menu-item>
+      <el-menu-item index="/mi-cuenta/direcciones">Mis Direcciones</el-menu-item>
+      <el-menu-item index="/mi-cuenta/historial">Mi Historial</el-menu-item>
+    </el-menu>
+    <el-form
+      class="s-datos"
+      :model="datos"
+      label-width="120px"
+      label-position="top">
+      <el-form-item label="Nombre">
+        <el-input v-model="datos.name"></el-input>
+      </el-form-item>
+      <el-form-item label="Apellido">
+        <el-input v-model="datos.surname"></el-input>
+      </el-form-item>
+    </el-form>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import firebase from 'firebase';
-
+import Vue from 'vue'
 export default Vue.extend({
+  props: {
+    accion: {
+      type: String,
+      default: 'datos'
+    }
+  },
   data() {
     return {
-      data: {
+      datos: {
+        name: '',
+        surname: '',
+        email: '',
         photoUrl: '',
+        phone: {
+          area_code: '',
+          number: '',
+        },
         identification: {
           type: '',
           number: '',
         },
-      },
-    };
-  },
-  computed: {
-    photoUrl: {
-      get() {
-        this.$store.state.user.photoUrl;
-      },
-    },
+      }
+    }
   },
   methods: {
-    connectGoogle() {
-      const provider = new firebase.auth.GoogleAuthProvider();
+    guardarDatos() {
 
-      firebase.auth().currentUser.linkWithPopup(provider)
-        .then((result) => {
-          const userData = this.$store.state.user;
-          userData.isAnonymous = false;
-          this.$store.commit('user', userData);
-          console.log('Conexión exitosa', result.user.uid);
-        })
-        .then((error) => {
-
-        });
     },
   },
-});
+  mounted() {
+    this.datos = this.$store.state.user;
+  }
+})
 </script>
