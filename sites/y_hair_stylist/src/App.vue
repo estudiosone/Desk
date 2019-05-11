@@ -95,13 +95,13 @@ body {
     display: none;
   }
 }
-.el-menu--horizontal.el-menu {
-  font-weight: 600;
-  text-transform: uppercase;
-  border-bottom: none !important;
-}
-.el-menu--horizontal>.el-menu-item {
-  color: #000 !important;
-  border-bottom: none !important;
-}
+// .el-menu--horizontal.el-menu {
+//   font-weight: 600;
+//   text-transform: uppercase;
+//   border-bottom: none !important;
+// }
+// .el-menu--horizontal>.el-menu-item {
+//   color: #000 !important;
+//   border-bottom: none !important;
+// }
 </style>
