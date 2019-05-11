@@ -2,6 +2,7 @@ import Vue from 'vue';
 import Element from 'element-ui';
 // import InfiniteLoading from 'vue-infinite-loading';
 import firebase from 'firebase';
+import firebaseui from 'firebaseui';
 import locale from 'element-ui/lib/locale/lang/es';
 import App from './App.vue';
 import router from './router';
@@ -27,6 +28,7 @@ const config = {
 };
 
 const app = firebase.initializeApp(config);
+new firebaseui.auth.AuthUI(firebase.auth());
 // Vue.use(Desk);
 
 Register();
