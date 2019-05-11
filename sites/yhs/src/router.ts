@@ -24,7 +24,7 @@ const router = new Router({
       component: () => import(/* webpackChunkName: "store-item" */ './views/StoreItem.vue'),
     },
     {
-      path: '/user',
+      path: '/mi-cuenta/:accion',
       name: 'user',
       component: () => import(/* webpackChunkName: "user" */ './views/User.vue'),
     },
