@@ -41,8 +41,6 @@ export default Vue.extend({
     this.$store.dispatch('initializeApp');
     const auth = firebase.auth();
 
-    let userCreated = false;
-
     firebase.auth().onAuthStateChanged(async (userData) => {
       if (userData) {
         const collectionRef = firebase.firestore().collection('Auth-Users');
@@ -55,18 +53,18 @@ export default Vue.extend({
           const data = user.data();
           this.$store.commit('user', data);
         } else {
-          this.$store.state.user = {
+          const data = {
             name: (userData.displayName ? userData.displayName.split(' ')[0] : '') || '',
             surname: (userData.displayName ? userData.displayName.split(' ')[1] : '') || '',
             email: userData.email ? userData.email : '',
             photoUrl: userData.photoURL ? userData.photoURL : 'https://img.icons8.com/material-outlined/96/000000/user-male-circle.png',
             isAnonymous: userData.isAnonymous,
           };
-          await userRef.set(this.$store.state.user);
+          this.$store.commit('user', data);
+          await userRef.set(data);
         }
-      } else if (!userCreated) {
-        // userCreated = true;
-        // auth.signInAnonymously();
+      } else {
+        this.$store.commit('userId', undefined)
       }
     });
   },
@@ -82,7 +80,7 @@ body {
   width: 100%;
   height: 100%;
   // font-family: 'Dosis', sans-serif;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Mukta Mahee', sans-serif;
 
 }
 #app {
@@ -140,15 +138,15 @@ body {
     }
   }
 }
-.el-menu--horizontal.el-menu {
-  font-weight: 600;
-  text-transform: uppercase;
-  border-bottom: none !important;
-}
-.el-menu--horizontal>.el-menu-item {
-  color: #000 !important;
-  border-bottom: none !important;
-}
+// .el-menu--horizontal.el-menu {
+//   font-weight: 600;
+//   text-transform: uppercase;
+//   border-bottom: none !important;
+// }
+// .el-menu--horizontal>.el-menu-item {
+//   color: #000 !important;
+//   border-bottom: none !important;
+// }
 .widget-booking-salon {
   width: 100%;
   max-width: 1200px;
