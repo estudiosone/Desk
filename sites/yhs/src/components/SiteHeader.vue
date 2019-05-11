@@ -16,13 +16,6 @@
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
-
-
-
-      <!-- <el-button size="mini" style="border: none;">
-        <img src="https://img.icons8.com/ios/16/000000/menu.png">
-      </el-button> -->
       <div class="info">
         <div class="telefono">
           <img src="https://img.icons8.com/ios/16/000000/phone-filled.png">
@@ -39,12 +32,57 @@
         </el-button>
       </div>
       <div class="w-mi-cuenta">
-        <el-button type="text" size="mini" style="border: none;">
+        <el-button
+          type="text"
+          size="mini"
+          style="border: none;"
+          v-if="this.$store.state.userId ? false : true"
+          @click="dialogos.ingresar = true">
           <img src="https://img.icons8.com/ios/16/000000/gender-neutral-user-filled.png">
           <span>Mi Cuenta</span>
         </el-button>
+        <el-dropdown
+          v-else
+          trigger="click">
+          <span class="el-dropdown-link">
+            <img src="https://img.icons8.com/ios/16/000000/gender-neutral-user-filled.png">
+            <span>{{ `Hola, ${this.$store.state.user.name}` }}</span>
+          </span>            
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item class="w-mi-cuenta"
+                @click.native="$router.push('/mi-cuenta/datos')">
+                mis datos
+            </el-dropdown-item>
+            <el-dropdown-item class="w-mi-cuenta"
+                @click.native="$router.push('/mi-cuenta/direcciones')">
+                mis direcciones
+            </el-dropdown-item>
+            <el-dropdown-item class="w-mi-cuenta"
+                @click.native="$router.push('/mi-cuenta/historial')">
+                mi historial
+            </el-dropdown-item>
+            <el-dropdown-item class="w-mi-cuenta"
+                @click.native="$router.push('/mi-cuenta/salir')"
+                :divided = "true">
+                salir
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-dialog
+          title="Ingresar a mi cuenta"
+          width="560px"
+          :visible.sync="dialogos.ingresar"
+          :fullscreen="false"
+          @opened="setFirebaseAuthUI">
+          <div class="firebaseui-auth-container">
+            <div class="logo">
+              <img class="logo" :src="this.$store.state.Site.LogoURL" alt="">
+            </div>
+            <div id="firebaseui-auth-container"></div>
+          </div>
+        </el-dialog>
       </div>
-      <div class="w-bolsa-de-compra">
+      <div class="w-mi-compra">
         <el-button type="text" size="mini" style="border: none;">
           <img src="https://img.icons8.com/ios/16/000000/shopping-bag-filled.png">
           <span>$ 0.00</span>
@@ -69,9 +107,53 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
+import firebase from 'firebase';
+import firebaseui from 'firebaseui';
+
 export default Vue.extend({
   name: 'desknavi',
+  data() {
+    return {
+      dialogos: {
+        ingresar: false,
+      }
+    }
+  },
+  methods: {
+    setFirebaseAuthUI() {
+      const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
+      ui.start('#firebaseui-auth-container', {
+        autoUpgradeAnonymousUsers: true,
+        signInFlow: 'popup',
+        signInOptions: [
+          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+          firebase.auth.EmailAuthProvider.PROVIDER_ID,
+        ],
+        signInSuccessUrl: '/',
+        callbacks: {
+          // signInFailure callback must be provided to handle merge conflicts which
+          // occur when an existing credential is linked to an anonymous user.
+          signInFailure(error) {
+            // For merge conflicts, the error.code will be
+            // 'firebaseui/anonymous-upgrade-merge-conflict'.
+            if (error.code != 'firebaseui/anonymous-upgrade-merge-conflict') {
+              return Promise.resolve();
+            }
+            // The credential the user tried to sign in with.
+            const cred = error.credential;
+            // Copy data from anonymous user to permanent user and delete anonymous
+            // user.
+            // ...
+            // Finish sign-in after data is copied.
+            firebase.auth()
+            .currentUser.delete().then(() => firebase.auth().signInWithCredential(cred));
+          },
+        },
+        // Other config options...
+      });
+    }
+  },
 })
 </script>
 
@@ -79,23 +161,38 @@ export default Vue.extend({
 @import '../styles/bp';
 
 %boton {
-  .el-button {
-    padding: 7px 15px;
-    color: black;
-    font-family: 'Mukta Mahee', sans-serif;
-    text-transform: uppercase;
-  }
+  padding: 7px 15px;
+  color: black;
+  font-family: 'Mukta Mahee', sans-serif;
+  text-transform: uppercase;
+  cursor: pointer;
 }
 %boton-con-icono {
   @extend %boton;
-  .el-button {
-    span {
-      align-items: center;
-      display: flex;
-      img {
-        margin-right: 8px;
-      }
+  span {
+    align-items: center;
+    display: flex;
+    img {
+      margin-right: 8px;
     }
+  }
+}
+
+.el-dropdown-menu__item {
+  @extend %boton-con-icono;
+  padding: 0 20px;
+  text-transform: capitalize;
+}
+
+.firebaseui-auth-container {
+  min-height: 420px;
+  .logo {
+    img {
+      height: 62px;
+      object-fit: contain;
+    }
+    width: fit-content;
+    margin: 20px auto;
   }
 }
 
@@ -150,13 +247,14 @@ export default Vue.extend({
   .w-mi-cuenta {
     order: 3;
   }
-  .w-bolsa-de-compra {
+  .w-mi-compra {
     order: 4;
   }
-  .w-buscar,.w-mi-cuenta,.w-bolsa-de-compra {
-    @extend %boton-con-icono;
-    .el-button {
+  .w-buscar,.w-mi-cuenta,.w-mi-compra {
+    .el-button, .el-dropdown {
+      @extend %boton-con-icono;
       span {
+        font-size: 12px !important;
         span {
           display: none;
 
@@ -185,10 +283,10 @@ export default Vue.extend({
       }
     }
     .menu {
-      @extend %boton;
       display: flex;
       justify-content: flex-end;
       .el-button {
+        @extend %boton;
         font-size: 18px;
       }
     }
