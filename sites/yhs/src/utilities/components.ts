@@ -9,8 +9,8 @@ export const Register = () => {
   Vue.component('desknavi', SiteHeader);
   Vue.component(WidgetBlogEntry.name, WidgetBlogEntry);
   Vue.component(WidgetBlog.name, WidgetBlog);
-}
+};
 
 export default {
   Register,
-}
+};
