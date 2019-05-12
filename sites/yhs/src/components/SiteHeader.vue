@@ -157,21 +157,21 @@ export default Vue.extend({
           signInSuccessWithAuthResult: function(authResult) {
             return false;
           },
-          signInFailure(error) {
-            // For merge conflicts, the error.code will be
-            // 'firebaseui/anonymous-upgrade-merge-conflict'.
-            if (error.code != 'firebaseui/anonymous-upgrade-merge-conflict') {
-              return Promise.resolve();
-            }
-            // The credential the user tried to sign in with.
-            const cred = error.credential;
-            // Copy data from anonymous user to permanent user and delete anonymous
-            // user.
-            // ...
-            // Finish sign-in after data is copied.
-            firebase.auth()
-            .currentUser.delete().then(() => firebase.auth().signInWithCredential(cred));
-          },
+          // signInFailure(error) {
+          //   // For merge conflicts, the error.code will be
+          //   // 'firebaseui/anonymous-upgrade-merge-conflict'.
+          //   if (error.code != 'firebaseui/anonymous-upgrade-merge-conflict') {
+          //     return Promise.resolve();
+          //   }
+          //   // The credential the user tried to sign in with.
+          //   const cred = error.credential;
+          //   // Copy data from anonymous user to permanent user and delete anonymous
+          //   // user.
+          //   // ...
+          //   // Finish sign-in after data is copied.
+          //   firebase.auth()
+          //   .currentUser.delete().then(() => firebase.auth().signInWithCredential(cred));
+          // },
         },
         // Other config options...
       });
