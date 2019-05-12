@@ -106,7 +106,7 @@ export default new Vuex.Store({
     },
     order_add_detail_line(state, payload: OrderDetail) {
       state.order.detail.push(payload);
-    }
+    },
   },
   actions: {
     async initializeApp(context) {
