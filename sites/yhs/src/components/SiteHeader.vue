@@ -1,24 +1,36 @@
 <template>
   <div class="header">
     <div class="content">
-      <el-dropdown
-        trigger="click"
-        class="hidden-sm-and-up">
-        <span class="el-dropdown-link">
-          <img src="https://img.icons8.com/ios/16/000000/menu.png">
-        </span>            
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item
+      <div class="w-mobile-menu">
+        <el-dropdown
+          trigger="click"
+          class="hidden-sm-and-up">
+          <span class="el-dropdown-link">
+            <img src="../styles/utilities/desksuite-icons/svg/icons8-menu-20.svg">
+          </span>            
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item class="w-mi-cuenta"
+              v-if="this.$store.state.userId ? false : true"
+              @click="dialogos.ingresar = true">
+              Mi Cuenta
+            </el-dropdown-item>
+            <el-dropdown-item class="w-mi-cuenta"
+              v-else
+              @click.native="$router.push('/mi-cuenta/datos')">
+              {{ `Hola, ${this.$store.state.user.name}` }}
+            </el-dropdown-item>
+            <el-dropdown-item
               v-for="NavMenu in this.$store.state.Site.NavMenu"
               :key="NavMenu.To"
               @click.native="$router.push(NavMenu.To)">
               {{ NavMenu.Name }}
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
       <div class="info">
         <div class="telefono">
-          <img src="https://img.icons8.com/ios/16/000000/phone-filled.png">
+          <img src="../styles/utilities/desksuite-icons/svg/icons8-phone-20.svg">
           <span>+598 2601 7321</span>
         </div>
         <div class="logo" >
@@ -27,7 +39,7 @@
       </div>
       <div class="w-buscar">
         <el-button type="text" size="mini" style="border: none;">
-          <img src="https://img.icons8.com/ios/16/000000/search.png">
+          <img src="../styles/utilities/desksuite-icons/svg/icons8-search-20.svg">
           <span>Buscar</span>
         </el-button>
       </div>
@@ -38,14 +50,14 @@
           style="border: none;"
           v-if="this.$store.state.userId ? false : true"
           @click="dialogos.ingresar = true">
-          <img src="https://img.icons8.com/ios/16/000000/gender-neutral-user-filled.png">
+          <img src="../styles/utilities/desksuite-icons/svg/icons8-user-20.svg">
           <span>Mi Cuenta</span>
         </el-button>
         <el-dropdown
           v-else
           trigger="click">
           <span class="el-dropdown-link">
-            <img src="https://img.icons8.com/ios/16/000000/gender-neutral-user-filled.png">
+            <img src="../styles/utilities/desksuite-icons/svg/icons8-user-20.svg">
             <span>{{ `Hola, ${this.$store.state.user.name}` }}</span>
           </span>            
           <el-dropdown-menu slot="dropdown">
@@ -62,7 +74,7 @@
                 mi historial
             </el-dropdown-item>
             <el-dropdown-item class="w-mi-cuenta"
-                @click.native="$router.push('/mi-cuenta/salir')"
+                @click.native="salirDeLaCuenta"
                 :divided = "true">
                 salir
             </el-dropdown-item>
@@ -84,7 +96,7 @@
       </div>
       <div class="w-mi-compra">
         <el-button type="text" size="mini" style="border: none;">
-          <img src="https://img.icons8.com/ios/16/000000/shopping-bag-filled.png">
+          <img src="../styles/utilities/desksuite-icons/svg/icons8-shopping-bag-20.svg">
           <span>$ 0.00</span>
         </el-button>
       </div>
@@ -110,6 +122,7 @@
 import Vue from 'vue';
 import firebase from 'firebase';
 import firebaseui from 'firebaseui';
+import { get } from 'http';
 
 export default Vue.extend({
   name: 'desknavi',
@@ -134,6 +147,9 @@ export default Vue.extend({
         callbacks: {
           // signInFailure callback must be provided to handle merge conflicts which
           // occur when an existing credential is linked to an anonymous user.
+          signInSuccessWithAuthResult: function(authResult) {
+            return false;
+          },
           signInFailure(error) {
             // For merge conflicts, the error.code will be
             // 'firebaseui/anonymous-upgrade-merge-conflict'.
@@ -152,6 +168,9 @@ export default Vue.extend({
         },
         // Other config options...
       });
+    },
+    async salirDeLaCuenta() {
+      await firebase.auth().signOut();
     }
   },
 })
@@ -201,20 +220,29 @@ export default Vue.extend({
   .content {
     width: 100%;
     max-width: 1200px;
-    padding: 0 20px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-flow: row wrap;
     box-sizing: border-box;
+
+    @include sm {
+      padding: 0 20px;
+    }
   }
 
   .info {
-    height: 42px;
+    height: 48px;
     display: flex;
     order: 1;
     flex-grow: 100;
+    margin: 8px 0;
+
+    @include sm {
+      height: 42px;
+      margin: 0;
+    }
     .telefono {
       display: none;
       align-items: center;
@@ -233,7 +261,7 @@ export default Vue.extend({
     .logo {
       img {
         height: 32px;
-        margin: 4px 0 4px 8px;
+        margin: 4px 0 4px 0px;
         cursor: pointer;
       }
       @include sm {
@@ -241,16 +269,24 @@ export default Vue.extend({
       }
     }
   }
+  .w-mobile-menu {
+    order: 0;
+  }
   .w-buscar {
     order: 2;
   }
   .w-mi-cuenta {
     order: 3;
+    display: none;
+
+    @include sm {
+      display: block;
+    }
   }
   .w-mi-compra {
     order: 4;
   }
-  .w-buscar,.w-mi-cuenta,.w-mi-compra {
+  .w-mobile-menu,.w-buscar,.w-mi-cuenta,.w-mi-compra {
     .el-button, .el-dropdown {
       @extend %boton-con-icono;
       span {
