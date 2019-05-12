@@ -8,6 +8,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
+import desksuite from '../../../plugins/desksuite';
+
 import 'element-ui/lib/theme-chalk/index.css';
 import 'element-ui/lib/theme-chalk/display.css';
 
@@ -29,10 +31,12 @@ const config = {
 
 const app = firebase.initializeApp(config);
 new firebaseui.auth.AuthUI(firebase.auth());
-// Vue.use(Desk);
+Vue.use(desksuite, { store });
 
 Register();
 Vue.component('widget-store-add-bag', WidgetStoreAddBag);
+
+store.registerModule
 
 new Vue({
   router,
