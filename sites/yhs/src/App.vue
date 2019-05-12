@@ -95,7 +95,7 @@ body {
     grid-row: 2 / span 1;
 
     @include md {
-      min-height: calc(100vh - 64px - 142px);
+      min-height: calc(100vh - 141px - 142px);
     }
   }
   #footer {
