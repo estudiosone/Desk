@@ -184,7 +184,6 @@ export default Vue.extend({
         });
 
         this.catalogue.push(catalogueItem);
-
       });
       if (i == 0) {
         this.catalogueExpand = true;
