@@ -136,7 +136,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    alert(id) {
+    alert(id: any) {
       alert(id);
     },
     loadMore() {
@@ -164,13 +164,7 @@ export default Vue.extend({
       let i = 12;
       result.forEach(async (item) => {
         i--;
-        const catalogueItem: {
-          Id: string;
-          Name: string;
-          Description: string;
-          Price: number;
-          Photo: string;
-        } = {
+        const catalogueItem: ICatalogueItem = {
           Id: item.id,
           Name: item.data().Name,
           Description: item.data().Description,
