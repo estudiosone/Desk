@@ -42,7 +42,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 import Numeral from 'numeral';
 
 export default Vue.extend({
@@ -50,7 +50,7 @@ export default Vue.extend({
   props: {
     itemId: String,
     itemName: String,
-    itemPrice: Number ,
+    itemPrice: Number,
   },
   data() {
     return {
@@ -82,12 +82,12 @@ export default Vue.extend({
       } else {
         return true;
       }
-    }
+    },
   },
   methods: {
     add() {
       alert(this.itemId);
-    }
-  }
-})
+    },
+  },
+});
 </script>
