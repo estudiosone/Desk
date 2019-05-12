@@ -6,4 +6,13 @@
   .s-datos {
     padding: 0 20px;
   }
+  .s-acciones.s-acciones--centrado {
+    display: flex;
+    justify-content: center;
+  }
+  #btn-salir {
+    margin-top: -24px;
+    font-style: italic;
+    color: $color-brand-secondary;
+  }
 }
