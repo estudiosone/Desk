@@ -7,7 +7,7 @@
           class="hidden-sm-and-up">
           <span class="el-dropdown-link">
             <img src="../styles/utilities/desksuite-icons/svg/icons8-menu-20.svg">
-          </span>            
+          </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item class="w-mi-cuenta"
               v-if="this.$store.state.userId ? false : true"
@@ -59,7 +59,7 @@
           <span class="el-dropdown-link">
             <img src="../styles/utilities/desksuite-icons/svg/icons8-user-20.svg">
             <span>{{ `Hola, ${this.$store.state.user.name}` }}</span>
-          </span>            
+          </span>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item class="w-mi-cuenta"
                 @click.native="$router.push('/mi-cuenta/datos')">
@@ -84,7 +84,7 @@
           class="firebaseui-auth-dialog"
           title="Ingresar a mi cuenta"
           width="560px"
-          :visible.sync="this.$store.state.Utilidades.Modales.Autenticacion"
+          :visible.sync="ModalesAutenticacion"
           :fullscreen="window.width < 997"
           @opened="setFirebaseAuthUI">
           <div class="firebaseui-auth-container">
@@ -135,46 +135,39 @@ export default Vue.extend({
         width: 0,
         height: 0,
       },
-    }
+    };
+  },
+  computed: {
+    ModalesAutenticacion: {
+      get(): boolean {
+        return this.$store.state.Utilidades.Modales.Autenticacion;
+      },
+      set(value: boolean) {
+        this.$store.commit('Utilidades/Modal_Autenticacion', value);
+      },
+    },
   },
   methods: {
     abrirModalAutentificacion() {
-      this.$store.commit('Utilidades/Modal_Autenticacion')
+      this.$store.commit('Utilidades/Modal_Autenticacion');
     },
     setFirebaseAuthUI() {
-      const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
-      ui.start('#firebaseui-auth-container', {
-        autoUpgradeAnonymousUsers: true,
-        signInFlow: 'popup',
-        signInOptions: [
-          firebase.auth.GoogleAuthProvider.PROVIDER_ID,
-          firebase.auth.EmailAuthProvider.PROVIDER_ID,
-        ],
-        signInSuccessUrl: '/',
-        callbacks: {
-          // signInFailure callback must be provided to handle merge conflicts which
-          // occur when an existing credential is linked to an anonymous user.
-          signInSuccessWithAuthResult: function(authResult) {
-            return false;
+      const ui = firebaseui.auth.AuthUI.getInstance();
+      const signInSuccessWithAuthResult = (authResult: any) => false;
+      if (ui) {
+        ui.start('#firebaseui-auth-container', {
+          autoUpgradeAnonymousUsers: false,
+          signInFlow: 'popup',
+          signInOptions: [
+            firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+            firebase.auth.EmailAuthProvider.PROVIDER_ID,
+          ],
+          signInSuccessUrl: '/',
+          callbacks: {
+            signInSuccessWithAuthResult,
           },
-          // signInFailure(error) {
-          //   // For merge conflicts, the error.code will be
-          //   // 'firebaseui/anonymous-upgrade-merge-conflict'.
-          //   if (error.code != 'firebaseui/anonymous-upgrade-merge-conflict') {
-          //     return Promise.resolve();
-          //   }
-          //   // The credential the user tried to sign in with.
-          //   const cred = error.credential;
-          //   // Copy data from anonymous user to permanent user and delete anonymous
-          //   // user.
-          //   // ...
-          //   // Finish sign-in after data is copied.
-          //   firebase.auth()
-          //   .currentUser.delete().then(() => firebase.auth().signInWithCredential(cred));
-          // },
-        },
-        // Other config options...
-      });
+        });
+      }
     },
     async salirDeLaCuenta() {
       await firebase.auth().signOut();
@@ -191,7 +184,7 @@ export default Vue.extend({
   destroyed() {
     window.removeEventListener('resize', this.handleResize);
   },
-})
+});
 </script>
 
 <style lang="scss">
@@ -360,4 +353,3 @@ export default Vue.extend({
   }
 }
 </style>
-
