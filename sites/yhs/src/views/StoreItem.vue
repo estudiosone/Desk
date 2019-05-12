@@ -96,7 +96,6 @@ export default Vue.extend({
           this.SelectedPhotoUrl = photo.data().Url;
         }
       });
-
     }
     loading.close();
   },
