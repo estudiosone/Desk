@@ -20,7 +20,6 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import { type } from 'os';
 
 type WidgetBlogEntry = {
   Title: String;
