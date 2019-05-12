@@ -36,6 +36,9 @@ export default Vue.extend({
     };
   },
   methods: {
+    handleResize() {
+      this.$store.commit('Utilidades/UI_BP', window.innerWidth);
+    },
   },
   async mounted() {
     this.$store.dispatch('initializeApp');
@@ -67,9 +70,16 @@ export default Vue.extend({
           await userRef.set(data);
         }
       } else {
-        this.$store.commit('userId', undefined)
+        this.$store.commit('userId', undefined);
       }
     });
+  },
+  created() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
   },
 });
 </script>
