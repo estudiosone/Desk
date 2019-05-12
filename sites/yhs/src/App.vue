@@ -42,6 +42,9 @@ export default Vue.extend({
     const auth = firebase.auth();
 
     firebase.auth().onAuthStateChanged(async (userData) => {
+      if (this.$store.state.Utilidades.Modales.Autenticacion) {
+        this.$store.commit('Utilidades/Modal_Autenticacion');
+      }
       if (userData) {
         const collectionRef = firebase.firestore().collection('Auth-Users');
         const userRef = collectionRef.doc(userData.uid);
