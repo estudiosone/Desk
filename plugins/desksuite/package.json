@@ -9,11 +9,9 @@
   },
   "dependencies": {
     "@types/numeral": "0.0.25",
-    "core-js": "^2.6.5",
     "element-ui": "^2.8.2",
     "firebase": "^5.10.1",
     "firebaseui": "^3.6.0",
-    "global": "^4.3.2",
     "moment": "^2.24.0",
     "numeral": "^2.0.6",
     "tslint": "^5.16.0",
