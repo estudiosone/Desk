@@ -11,7 +11,7 @@
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item class="w-mi-cuenta"
               v-if="this.$store.state.userId ? false : true"
-              @click="dialogos.ingresar = true">
+              @click.native="abrirModalAutentificacion">
               Mi Cuenta
             </el-dropdown-item>
             <el-dropdown-item class="w-mi-cuenta"
@@ -49,7 +49,7 @@
           size="mini"
           style="border: none;"
           v-if="this.$store.state.userId ? false : true"
-          @click="dialogos.ingresar = true">
+          @click.native="abrirModalAutentificacion">
           <img src="../styles/utilities/desksuite-icons/svg/icons8-user-20.svg">
           <span>Mi Cuenta</span>
         </el-button>
@@ -81,10 +81,11 @@
           </el-dropdown-menu>
         </el-dropdown>
         <el-dialog
+          class="firebaseui-auth-dialog"
           title="Ingresar a mi cuenta"
           width="560px"
-          :visible.sync="dialogos.ingresar"
-          :fullscreen="false"
+          :visible.sync="this.$store.state.Utilidades.Modales.Autenticacion"
+          :fullscreen="window.width < 997"
           @opened="setFirebaseAuthUI">
           <div class="firebaseui-auth-container">
             <div class="logo">
@@ -122,7 +123,6 @@
 import Vue from 'vue';
 import firebase from 'firebase';
 import firebaseui from 'firebaseui';
-import { get } from 'http';
 
 export default Vue.extend({
   name: 'desknavi',
@@ -130,10 +130,17 @@ export default Vue.extend({
     return {
       dialogos: {
         ingresar: false,
-      }
+      },
+      window: {
+        width: 0,
+        height: 0,
+      },
     }
   },
   methods: {
+    abrirModalAutentificacion() {
+      this.$store.commit('Utilidades/Modal_Autenticacion')
+    },
     setFirebaseAuthUI() {
       const ui = firebaseui.auth.AuthUI.getInstance() || new firebaseui.auth.AuthUI(firebase.auth());
       ui.start('#firebaseui-auth-container', {
@@ -171,7 +178,18 @@ export default Vue.extend({
     },
     async salirDeLaCuenta() {
       await firebase.auth().signOut();
-    }
+    },
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+    },
+  },
+  created() {
+    window.addEventListener('resize', this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.handleResize);
   },
 })
 </script>
@@ -202,16 +220,25 @@ export default Vue.extend({
   padding: 0 20px;
   text-transform: capitalize;
 }
+.firebaseui-auth-dialog {
+  .el-dialog__body {
+    padding: 30px 0;
 
-.firebaseui-auth-container {
-  min-height: 420px;
-  .logo {
-    img {
-      height: 62px;
-      object-fit: contain;
+    @include sm {
+      padding: 30px 20px;
     }
-    width: fit-content;
-    margin: 20px auto;
+  }
+  .firebaseui-auth-container {
+    min-height: 420px;
+    .logo {
+      img {
+        height: 62px;
+        max-width: 240px;
+        object-fit: contain;
+      }
+      width: fit-content;
+      margin: 20px auto;
+    }
   }
 }
 
@@ -277,10 +304,14 @@ export default Vue.extend({
   }
   .w-mi-cuenta {
     order: 3;
-    display: none;
+    .el-button, .el-dropdown {
+      display: none;
+    }
 
     @include sm {
+    .el-button, .el-dropdown {
       display: block;
+    }
     }
   }
   .w-mi-compra {
