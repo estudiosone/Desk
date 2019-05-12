@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'vue';
 
 type WidgetBlogEntry = {
   Title: String;
@@ -31,11 +31,11 @@ type WidgetBlogEntry = {
 const props = {
   entry: {
     type: Object as () => WidgetBlogEntry,
-  }
-}
+  },
+};
 
 export default Vue.extend({
   name: 'widget-blog-entry',
   props,
-})
+});
 </script>
