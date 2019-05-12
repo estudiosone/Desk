@@ -1,7 +1,7 @@
 <template>
   <div class="p-mi-cuenta">
     <div class="s-encabezado">
-      <div class="titulo">
+      <div class="s-titulo">
         mi cuenta
       </div>
       <div class="s-acciones s-acciones--centrado">
@@ -17,7 +17,7 @@
       <el-menu
         class="s-menu"
         :default-active="'/mi-cuenta/' + accion"
-        :mode="smAndUp ? 'vertical' : 'horizontal'">
+        :mode="this.$store.state.Utilidades.UI.BP.smUp ? 'vertical' : 'horizontal'">
         <el-menu-item index="/mi-cuenta/datos">Mis Datos</el-menu-item>
         <el-menu-item index="/mi-cuenta/direcciones">Mis Direcciones</el-menu-item>
         <el-menu-item index="/mi-cuenta/historial">Mi Historial</el-menu-item>
@@ -74,7 +74,7 @@ export default Vue.extend({
   props: {
     accion: {
       type: String,
-      default: 'datos'
+      default: 'datos',
     },
   },
   data() {
@@ -93,19 +93,19 @@ export default Vue.extend({
           number: '',
         },
       },
-      //**BP */
+      //* *BP */
       window: {
         width: 0,
         height: 0,
       },
-    }
+    };
   },
   computed: {
     smAndUp() {
-      if (this.window.width >= 768 ) {
+      if (this.window.width >= 768) {
         return true;
       }
-    }
+    },
   },
   methods: {
     input_phone_change(value: any) {
@@ -116,10 +116,10 @@ export default Vue.extend({
       }
     },
     async guardarDatos() {
-      //**Datos de usuarios */
+      //* *Datos de usuarios */
       const loading = this.$loading({
-          lock: true,
-          text: 'Guardando... espera un instante!',
+        lock: true,
+        text: 'Guardando... espera un instante!',
       });
       await firebase.firestore().collection('Auth-Users').doc(this.$store.state.userId).set(this.datos);
       loading.close();
@@ -162,5 +162,5 @@ export default Vue.extend({
   destroyed() {
     window.removeEventListener('resize', this.handleResize);
   },
-})
+});
 </script>
