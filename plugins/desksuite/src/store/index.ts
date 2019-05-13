@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 export const Registrar = (store: any) => {
   store.registerModule('Utilidades', {
     namespaced: true,
