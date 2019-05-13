@@ -1,38 +1,45 @@
 <template>
-  <div class="desk-store">
-    <div class="cover">
-      <h1 class="title">Tienda</h1>
-    </div>
-    <div class="filters">
-      <el-tree
-        show-checkbox
-        :data="data"
-        :props="defaultProps"/>
-    </div>
-    <div class="catalogue">
-      <div class="item" v-for="item in catalogue" :key="item.Id">
-        <div class="cover-media">
-          <img :src="item.Photo" alt="" class="media">
-          <div class="action">
-            <router-link
-              class="goTo"
-              :to="`/store/item/${ item.Id }`"
-              tag="button">
-              Detalles
-            </router-link>
-          </div>
-        </div>
-        <div class="info">
-          <widget-store-add-bag
-            :itemId="item.Id"
-            :itemPrice="item.Price"
-            :itemName="item.Name"/>
-        </div>
+  <div class="p-tienda">
+    <div class="s-encabezado">
+      <div class="s-titulo">
+        tienda
       </div>
-      <div class="catalogue-footer">
-        <button class="button" @click="loadMore" v-if="catalogueExpand">
-          VER MÁS
-        </button>
+    </div>
+    <div class="s-contenido">
+      <div class="s-catalogo">
+        <el-card
+          class="s-item"
+          v-for="item in catalogue"
+          :key="item.Id"
+          shadow="hover"
+          @click.native="$router.push(`/store/item/${ item.Id }`)">
+          <img :src="item.Photo" alt="" class="s-foto">
+          <div class="s-info">
+            <div class="s-item-nombre">
+              {{ item.Name }}
+            </div>
+            <div class="s-item-precio" v-if="disponibilidad(item.Price)">
+              <div class="s-simbolo">
+                $
+              </div>
+              <div class="s-importe">
+                {{ item.Price | importe}}
+              </div>
+            </div>
+            <div class="s-item-no-disponible" v-else>
+              temporalmente no disponible
+            </div>
+            <!-- <widget-store-add-bag
+              :itemId="item.Id"
+              :itemPrice="item.Price"
+              :itemName="item.Name"/> -->
+          </div>
+        </el-card>
+      </div>
+      <div class="s-catalogo-pie s-acciones s-acciones--centrado">
+        <el-button @click="loadMore" v-if="catalogueExpand">
+          VER MAS
+        </el-button>
       </div>
     </div>
   </div>
@@ -52,13 +59,13 @@ import Vue from 'vue';
 import firebase from 'firebase';
 import Numeral from 'numeral';
 
-import WidgetStoreAddBag from '../components/Widgets/StoreAddBag.vue';
+// import WidgetStoreAddBag from '../components/Widgets/StoreAddBag.vue';
 
 import ICatalogueItem from '../interfaces/ICatalogueItem';
 
 export default Vue.extend({
   components: {
-    WidgetStoreAddBag,
+    // WidgetStoreAddBag,
   },
   data(): {
     catalogue: ICatalogueItem[];
@@ -125,20 +132,22 @@ export default Vue.extend({
     };
   },
   filters: {
-    priceInUYU(value: any) {
-      let val;
+    importe(value: any) {
       if (value) {
-        val = value;
+        switch (value) {
+          case undefined: {
+            return false;
+          }
+          default: {
+            return Numeral(value).format('0.00');
+          }
+        }
       } else {
-        val = 0;
+        return false;
       }
-      return Numeral(val).format('$ 0.00');
     },
   },
   methods: {
-    alert(id: any) {
-      alert(id);
-    },
     loadMore() {
       this.loadItems();
     },
@@ -163,7 +172,7 @@ export default Vue.extend({
       const result = await query.get();
       let i = 12;
       result.forEach(async (item) => {
-        i--;
+        i -= i;
         const catalogueItem: ICatalogueItem = {
           Id: item.id,
           Name: item.data().Name,
@@ -185,12 +194,26 @@ export default Vue.extend({
 
         this.catalogue.push(catalogueItem);
       });
-      if (i == 0) {
+      if (i === 0) {
         this.catalogueExpand = true;
       } else {
         this.catalogueExpand = false;
       }
       loading.close();
+    },
+    disponibilidad(value: any) {
+      if (value) {
+        switch (value) {
+          case undefined: {
+            return false;
+          }
+          default: {
+            return true;
+          }
+        }
+      } else {
+        return false;
+      }
     },
   },
   async mounted() {
