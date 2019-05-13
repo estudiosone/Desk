@@ -31,13 +31,11 @@ const config = {
 
 const app = firebase.initializeApp(config);
 const perf = firebase.performance();
-new firebaseui.auth.AuthUI(firebase.auth());
+const firebaseUI = new firebaseui.auth.AuthUI(firebase.auth());
 Vue.use(desksuite, { store });
 
 Register();
 Vue.component('widget-store-add-bag', WidgetStoreAddBag);
-
-store.registerModule;
 
 new Vue({
   router,
