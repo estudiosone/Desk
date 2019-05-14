@@ -9,7 +9,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import firebase from 'firebase';
-
+import EventBus from './eventBus';
 import DeskFooter from './components/Footer.vue';
 
 export default Vue.extend({
@@ -72,6 +72,7 @@ export default Vue.extend({
       } else {
         this.$store.commit('userId', undefined);
       }
+      EventBus.$emit('eventAuthActualizada');
     });
   },
   created() {
