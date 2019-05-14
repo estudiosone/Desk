@@ -22,11 +22,30 @@ const router = new Router({
       path: '/store/item/:id',
       name: 'store-item',
       component: () => import(/* webpackChunkName: "store-item" */ './views/StoreItem.vue'),
+      props: true,
     },
     {
-      path: '/mi-cuenta/:accion',
-      name: 'user',
-      component: () => import(/* webpackChunkName: "user" */ './views/User.vue'),
+      path: '/mi-cuenta/:seccion',
+      name: 'mi-cuenta',
+      component: () => import(/* webpackChunkName: "p-mi-cuenta" */ './views/MiCuenta.vue'),
+      props: true,
+    },
+    {
+      path: '/mi-cuenta/:seccion/:accion',
+      name: 'mi-cuenta-accion',
+      component: () => import(/* webpackChunkName: "p-mi-cuenta" */ './views/MiCuenta.vue'),
+      props: true,
+    },
+    {
+      path: '/mi-cuenta/:seccion/:accion/:index',
+      name: 'mi-cuenta-accion-index',
+      component: () => import(/* webpackChunkName: "p-mi-cuenta" */ './views/MiCuenta.vue'),
+      props: true,
+    },
+    {
+      path: '/mi-compra',
+      name: 'mi-compra',
+      component: () => import(/* webpackChunkName: "p-mi-compra" */ './views/MiCompra.vue'),
     },
   ],
   scrollBehavior(to, from, savedPosition) {
