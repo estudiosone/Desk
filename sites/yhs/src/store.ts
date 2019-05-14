@@ -14,27 +14,32 @@ type Site = {
   LogoURL: string,
   NavMenu: NavMenu[],
 }
-type Phone = {
+export type Phone = {
   area_code: any,
   number: any,
 }
-type Identification = {
+export type Identification = {
   type: any,
   number: any,
 }
-type Address = {
+export type Address = {
+  name: string,
   street_name: any,
   street_number: any,
+  apartament: any,
   zip_code: any,
+  state: any,
+  city: any,
+  mainAddress: boolean,
 }
-type User = {
+export type User = {
   name: any,
   surname: any,
   email: any,
   photoUrl: any,
   phone: Phone,
   identification: Identification,
-  address: Address,
+  address: Address[],
 }
 type OrderDetail = {
   item: any,
@@ -77,11 +82,7 @@ const state: State = {
       type: '',
       number: '',
     },
-    address: {
-      street_name: '',
-      street_number: '',
-      zip_code: '',
-    },
+    address: [],
   },
   order: {
     detail: [
@@ -101,6 +102,9 @@ export default new Vuex.Store({
     },
     user(state, userData) {
       state.user = userData;
+    },
+    userAddress(state, payload: Address[]) {
+      state.user.address = payload;
     },
     order(state, payload: Order) {
       state.order = payload;
