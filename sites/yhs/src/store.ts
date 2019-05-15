@@ -41,13 +41,16 @@ export type User = {
   identification: Identification,
   address: Address[],
 }
-type OrderDetail = {
-  item: any,
-  quantity: any,
-  price: any,
+export type OrderLine = {
+  itemId: string,
+  itemName: string,
+  itemPhotoURL: string,
+  itemPrice: number,
+  lineQuantity: number,
+  lineTotal: number,
 }
-type Order = {
-  detail: OrderDetail[],
+export type Order = {
+  detail: OrderLine[],
 }
 type State = {
   SiteId: string,
@@ -86,7 +89,14 @@ const state: State = {
   },
   order: {
     detail: [
-
+      {
+        itemId: 'jvfanpcb12vn1e6in9y',
+        itemName: 'Bain Chromatique',
+        itemPhotoURL: 'https://www.kerastase.uy/-/media/project/loreal/brand-sites/kerastase/americas/latam/products/reflection/packshots/bain-chromatique-reflection-250ml-01-kerastase.png?w=500&hash=F7B70C39B35D8893F5FEF32E1D4BF9280FB811D0',
+        itemPrice: 1295,
+        lineQuantity: 1,
+        lineTotal: 1295,
+      },
     ],
   },
 };
@@ -109,9 +119,13 @@ export default new Vuex.Store({
     order(state, payload: Order) {
       state.order = payload;
     },
-    order_add_detail_line(state, payload: OrderDetail) {
+    order_add_detail_line(state, payload: OrderLine) {
       state.order.detail.push(payload);
     },
+    order_remove_detail_line(state, payload: OrderLine) {
+      const i = state.order.detail.indexOf(payload);
+      state.order.detail.splice(i, 1);
+    }
   },
   actions: {
     async initializeApp(context) {
