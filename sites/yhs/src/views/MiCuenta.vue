@@ -184,9 +184,9 @@ export default Vue.extend({
       type: String,
       default: 'listar',
     },
-    id: {
-      type: Number,
-      default: 0,
+    index: {
+      type: String,
+      default: '0',
     }
   },
   data(): {
@@ -298,7 +298,7 @@ export default Vue.extend({
         lock: true,
         text: 'Guardando... espera un instante!',
       });
-      this.datos.address[this.id] = this.direccion;
+      this.datos.address[parseInt(this.index)] = this.direccion;
       this.$store.commit('userAddress', this.datos.address);
       await firebase.firestore().collection('Auth-Users').doc(this.$store.state.userId).update({
         address: this.datos.address,
