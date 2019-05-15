@@ -96,7 +96,11 @@
         </el-dialog>
       </div>
       <div class="w-mi-compra">
-        <el-button type="text" size="mini" style="border: none;">
+        <el-button
+          type="text"
+          size="mini"
+          style="border: none;"
+          @click.native="$router.push('/mi-compra')">
           <img src="../styles/utilities/desksuite-icons/svg/icons8-shopping-bag-20.svg">
           <span>$ 0.00</span>
         </el-button>
