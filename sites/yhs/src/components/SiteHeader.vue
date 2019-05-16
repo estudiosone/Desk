@@ -102,7 +102,7 @@
           style="border: none;"
           @click.native="$router.push('/mi-compra')">
           <img src="../styles/utilities/desksuite-icons/svg/icons8-shopping-bag-20.svg">
-          <span>$ 0.00</span>
+          <span>{{ `$ ${orderTotal}` }}</span>
         </el-button>
       </div>
       <div class="principal">
@@ -149,6 +149,14 @@ export default Vue.extend({
       set(value: boolean) {
         this.$store.commit('Utilidades/Modal_Autenticacion', value);
       },
+    },
+    orderTotal() {
+      const { order } = this.$store.state;
+      let total: number = 0;
+      order.detail.forEach((line: any) => {
+        total += line.lineTotal;
+      });
+      return total;
     },
   },
   methods: {
