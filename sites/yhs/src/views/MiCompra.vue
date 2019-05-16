@@ -44,19 +44,6 @@
             </div>
           </template>
         </el-table-column>
-        <!-- <el-table-column
-          label="Cantidad"
-          width="100px">
-          <template slot-scope="scope">
-          </template>
-        </el-table-column>
-        <el-table-column
-          width="100px"
-          label="Total"
-          prop="lineTotal">
-          <template slot-scope="scope">
-          </template>
-        </el-table-column> -->
         <template slot="append">
           <div class="s-total">
             <span class="s-etiqueta">total</span>
@@ -64,59 +51,34 @@
           </div>
         </template>
       </el-table>
-      <el-collapse v-model="activeName" accordion>
-        <el-collapse-item title="Datos personales" name="1">
-          <el-form
-            class="s-datos"
-            :model="datos"
-            label-width="140px"
-            :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'">
-            <el-form-item label="Nombre">
-              <el-input v-model="datos.name"></el-input>
-            </el-form-item>
-            <el-form-item label="Apellido">
-              <el-input v-model="datos.surname"></el-input>
-            </el-form-item>
-            <el-form-item label="Correo Electrónico">
-              <el-input v-model="datos.email"></el-input>
-            </el-form-item>
-            <el-form-item label="Identificación">
-              <el-input v-model="datos.identification.number" placeholder="Ejemplo: 12345678, sin puntos ni guiones">
-                <el-select v-model="datos.identification.type" slot="prepend" placeholder="Tipo" style="width: 120px;">
-                  <el-option
-                    v-for="identificacion in this.$store.state.DatosEstaticos.Identidad.TipoDeDocumento"
-                    :label="identificacion"
-                    :key="identificacion"
-                    :value="identificacion" />
-                </el-select>
-              </el-input>
-            </el-form-item>
-            <el-form-item label="Teléfono">
-              <el-input v-model="datos.phone.number" @input="input_phone_change" placeholder="Sin el primer 0">
-                <el-select v-model="datos.phone.area_code" slot="prepend" placeholder="Area" style="width: 120px;">
-                  <el-option
-                    v-for="area in this.$store.state.DatosEstaticos.Telefono.Areas"
-                    :label="area.Pais"
-                    :key="area.Codigo"
-                    :value="area.Codigo" />
-                </el-select>
-              </el-input>
-            </el-form-item>
-            <el-form-item class="s-acciones s-acciones--centrado">
-              <el-button type="primary" @click="guardarDatos">Guardar</el-button>
-            </el-form-item>
-          </el-form>
-        </el-collapse-item>
-        <el-collapse-item title="Envío" name="2">
-          <div>Operation feedback: enable the users to clearly perceive their operations by style updates and interactive effects;</div>
-          <div>Visual feedback: reflect current state by updating or rearranging elements of the page.</div>
-        </el-collapse-item>
-        <el-collapse-item title="Confirmar compra" name="3">
-          <div>Simplify the process: keep operating process simple and intuitive;</div>
-          <div>Definite and clear: enunciate your intentions clearly so that the users can quickly understand and make decisions;</div>
-          <div>Easy to identify: the interface should be straightforward, which helps the users to identify and frees them from memorizing and recalling.</div>
-        </el-collapse-item>
-      </el-collapse>
+      <div>
+      <el-steps :active="etapa" finish-status="success" simple style="margin-top: 20px">
+        <el-step title="Datos" ></el-step>
+        <el-step title="Envío" ></el-step>
+        <el-step title="Pago" ></el-step>
+      </el-steps>
+      <c-datos-personales v-if="etapa === 0" />
+      <div v-if="etapa === 1">
+        <el-form
+          class="s-datos"
+          :model="order"
+          label-width="140px"
+          :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'">
+          <el-form-item label="Dirección">
+            <el-select v-model="order.sendAddress" placeholder="Seleccione una dirección">
+              <el-option v-for="address in user.address" :key="address.street_name" :label="address.street_name" :value="address"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div v-if="etapa === 2">
+        <el-button @click="pay">PAGAR</el-button>
+      </div>
+      <div style="display: flex">
+        <el-button :disabled="etapa === 0" @click="etapa -= 1">Volver</el-button>
+        <el-button :disabled="etapa === 2" @click="etapa += 1">Continuar</el-button>
+      </div>
+      </div>
     </div>
   </div>
 </template>
@@ -124,17 +86,30 @@
 <script lang="ts">
 import Vue from 'vue';
 import firebase from 'firebase';
-import { Order, OrderLine } from '../store';
+import axios from 'axios';
+import { Order, OrderLine, User } from '../store';
+import CDatosPersonales from '../components/CDatosPersonales.vue';
+
+interface IItem {
+  title: string,
+  quantity: number,
+  currency_id: string,
+  unit_price: number,
+}
+
 
 export default Vue.extend({
   name: 'p-mi-compra',
-    data() {
-      return {
-        activeName: '1',
-      };
-    },
-    computed: {
-    order() {
+  components: {
+    CDatosPersonales,
+  },
+  data() {
+    return {
+      etapa: 0,
+    };
+  },
+  computed: {
+    order(): Order {
       const { order } = this.$store.state;
       return order;
     },
@@ -146,36 +121,39 @@ export default Vue.extend({
       });
       return total;
     },
-    datos() {
+    user(): User {
       return this.$store.state.user;
-    }
+    },
   },
   methods: {
     getSummaries(param: any) {
       return [];
     },
-    input_phone_change(value: any) {
-      if (this.datos().phone) {
-        if (this.datos().phone.number) {
-          this.datos().phone.number = value.replace(/^0+/, '');
-        }
-      }
-    },
-    async guardarDatos() {
-      //* *Datos de usuarios */
-      const loading = this.$loading({
-        lock: true,
-        text: 'Guardando... espera un instante!',
-      });
-      await firebase.firestore().collection('Auth-Users').doc(this.$store.state.userId).update({
-        name: this.datos.name,
-        surname: this.datos.surname,
-        email: this.datos.email,
-        identification: this.datos.identification,
-        phone: this.datos.phone,
-      });
-      loading.close();
-    },    buy() {
+    async pay() {
+      const mPreference: {
+        items: IItem[],
+        payer: any,
+      } = {
+        items: [],
+        payer: {
+          name: this.user.name,
+          surname: this.user.surname,
+          email: this.user.email,
+          phone: this.user.phone,
+          identification: this.user.identification,
+        },
+      };
+      this.order.detail.forEach((linea) => {
+        mPreference.items.push({
+          title: linea.itemName,
+          quantity: linea.lineQuantity,
+          currency_id: 'UYU',
+          unit_price: linea.itemPrice,
+        });
+      })
+      const result = await axios.post('https://api.mercadopago.com/checkout/preferences?access_token=TEST-2231678987876568-102116-78ac94e6f5932170a82610b10f317156-214493848', mPreference);
+      console.info(result);
+      window.open(result.data.sandbox_init_point);
     },
   },
 });
