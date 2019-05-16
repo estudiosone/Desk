@@ -101,7 +101,12 @@
           size="mini"
           style="border: none;"
           @click.native="$router.push('/mi-compra')">
-          <img src="../styles/utilities/desksuite-icons/svg/icons8-shopping-bag-20.svg">
+          <el-badge
+            :hidden="this.$store.state.Utilidades.UI.BP.smUp"
+            :value="orderCountLines"
+            style="right: 8px;">
+            <img src="../styles/utilities/desksuite-icons/svg/icons8-shopping-bag-20.svg">
+          </el-badge>
           <span>{{ `$ ${orderTotal}` }}</span>
         </el-button>
       </div>
@@ -149,6 +154,11 @@ export default Vue.extend({
       set(value: boolean) {
         this.$store.commit('Utilidades/Modal_Autenticacion', value);
       },
+    },
+    orderCountLines() {
+      const { order } = this.$store.state;
+      const result = order.detail.length;
+      return result;
     },
     orderTotal() {
       const { order } = this.$store.state;
