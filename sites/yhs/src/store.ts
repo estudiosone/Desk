@@ -125,7 +125,7 @@ export default new Vuex.Store({
     order_remove_detail_line(state, payload: OrderLine) {
       const i = state.order.detail.indexOf(payload);
       state.order.detail.splice(i, 1);
-    }
+    },
   },
   actions: {
     async initializeApp(context) {
