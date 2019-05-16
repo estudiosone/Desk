@@ -86,7 +86,7 @@ export default Vue.extend({
   },
   methods: {
     add() {
-      alert(this.itemId);
+
     },
   },
 });
