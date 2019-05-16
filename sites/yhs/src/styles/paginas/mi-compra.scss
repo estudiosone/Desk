@@ -1,0 +1,67 @@
+.p-mi-compra {
+  padding: 0 20px;
+  .s-contenido {
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
+
+    @include md {
+      grid-template-columns: repeat(2, calc(50vw - 20px - 10px));
+    }
+
+    .s-lista-de-compra {
+      width: calc(100vw - 40px);
+
+      @include md {
+        width: calc(50vw -20px -10px);
+      }
+      .s-producto {
+        display: flex;
+
+        .s-producto--imagen {
+          width: 64px;
+          height: 64px;
+          object-fit: contain;
+          object-position: center;
+        }
+        .s-producto--info {
+          display: flex;
+          flex-direction: column;
+          width: 100%;
+          padding: 8px;
+
+          .s-producto--info-nombre {
+            text-transform: uppercase;
+            font-weight: 600;
+            padding-bottom: 8px;
+          }
+          .s-producto--info-datos {
+            display: grid;
+            grid-template-columns: 1fr 80px 80px;
+            grid-gap: 20px;
+            .s-producto-moneda {
+              font-size: 16px;
+              text-align: center;
+            }
+            .el-input-number.el-input-number--mini.is-controls-right {
+              width: 80px;
+            }
+          }
+        }
+      }
+      .s-total {
+        display: flex;
+        justify-content: flex-end;
+        .s-etiqueta {
+          padding-right: 20px;
+          font-size: 24px;
+          text-transform: uppercase;
+        }
+        .s-valor {
+          font-size: 24px;
+        }
+      }
+    }
+  }
+}
