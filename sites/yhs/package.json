@@ -12,18 +12,9 @@
     "@types/numeral": "0.0.25",
     "core-js": "^2.6.5",
     "element-ui": "^2.8.2",
-<<<<<<< HEAD
-    "firebase": "^6.0.2",
-    "firebaseui": "^4.0.0",
-=======
     "firebase": "^5.11.1",
-<<<<<<< HEAD
-    "firebaseui": "^3.6.1",
->>>>>>> parent of ee7da95... Update package.json
-=======
     "firebaseui": "^3.6.0",
     "global": "^4.3.2",
->>>>>>> parent of e81f4d1... Update package.json
     "moment": "^2.24.0",
     "numeral": "^2.0.6",
     "tslint": "^5.16.0",
