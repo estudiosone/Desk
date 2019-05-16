@@ -50,6 +50,8 @@ export type OrderLine = {
   lineTotal: number,
 }
 export type Order = {
+  user: User;
+  sendAddress: Address;
   detail: OrderLine[],
 }
 type State = {
