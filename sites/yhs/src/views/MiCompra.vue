@@ -7,97 +7,176 @@
     </div>
     <div class="s-contenido">
       <el-table
+        class="s-lista-de-compra"
         :data="order.detail">
         <el-table-column
           label="Productos"
           prop="itemPhotoURL">
           <template slot-scope="scope">
-            <div style="display: flex;">
+            <div class="s-producto">
               <img
-                style="width: 64px; height: 64px; object-fit: contain; object-position: center;"
+                class="s-producto--imagen"
                 :src="scope.row.itemPhotoURL">
               <div
-                style="display: flex; flex-direction: column; height: 64px; padding: 8px;">
+                class="s-producto--info">
                 <span
-                  style="text-transform: uppercase; font-weight: 600;">
+                  class="s-producto--info-nombre">
                   {{ scope.row.itemName}}
                 </span>
-                <span>
-                  {{ `$ ${scope.row.itemPrice}` }}
-                </span>
+                <div
+                  class="s-producto--info-datos">
+                  <span class="s-producto-moneda">
+                    {{ `$ ${scope.row.itemPrice}` }}
+                  </span>
+                  <el-input-number
+                    @change="(() => {scope.row.lineTotal = scope.row.itemPrice * scope.row.lineQuantity})"
+                    v-model="scope.row.lineQuantity"
+                    size="mini"
+                    controls-position="right"
+                    :min="1"
+                    :max="10"
+                    style="width: 80px"></el-input-number>
+                  <span class="s-producto-moneda">
+                    {{ `$ ${scope.row.lineTotal}` }}
+                  </span>
+                </div>
               </div>
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          width="150px">
+        <!-- <el-table-column
+          label="Cantidad"
+          width="100px">
           <template slot-scope="scope">
-            <el-input-number
-              @change="(() => {scope.row.lineTotal = scope.row.itemPrice * scope.row.lineQuantity})"
-              v-model="scope.row.lineQuantity"
-              size="mini"
-              :min="1"
-              :max="10"></el-input-number>
           </template>
         </el-table-column>
+        <el-table-column
+          width="100px"
+          label="Total"
+          prop="lineTotal">
+          <template slot-scope="scope">
+          </template>
+        </el-table-column> -->
         <template slot="append">
-          <div>
-            <span>total</span>
-            <span>{{ orderTotal }}</span>
+          <div class="s-total">
+            <span class="s-etiqueta">total</span>
+            <span class="s-valor">{{ `$ ${orderTotal}` }}</span>
           </div>
-          <el-button @click.native="buy"></el-button>
         </template>
       </el-table>
+      <el-collapse v-model="activeName" accordion>
+        <el-collapse-item title="Datos personales" name="1">
+          <el-form
+            class="s-datos"
+            :model="datos"
+            label-width="140px"
+            :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'">
+            <el-form-item label="Nombre">
+              <el-input v-model="datos.name"></el-input>
+            </el-form-item>
+            <el-form-item label="Apellido">
+              <el-input v-model="datos.surname"></el-input>
+            </el-form-item>
+            <el-form-item label="Correo Electrónico">
+              <el-input v-model="datos.email"></el-input>
+            </el-form-item>
+            <el-form-item label="Identificación">
+              <el-input v-model="datos.identification.number" placeholder="Ejemplo: 12345678, sin puntos ni guiones">
+                <el-select v-model="datos.identification.type" slot="prepend" placeholder="Tipo" style="width: 120px;">
+                  <el-option
+                    v-for="identificacion in this.$store.state.DatosEstaticos.Identidad.TipoDeDocumento"
+                    :label="identificacion"
+                    :key="identificacion"
+                    :value="identificacion" />
+                </el-select>
+              </el-input>
+            </el-form-item>
+            <el-form-item label="Teléfono">
+              <el-input v-model="datos.phone.number" @input="input_phone_change" placeholder="Sin el primer 0">
+                <el-select v-model="datos.phone.area_code" slot="prepend" placeholder="Area" style="width: 120px;">
+                  <el-option
+                    v-for="area in this.$store.state.DatosEstaticos.Telefono.Areas"
+                    :label="area.Pais"
+                    :key="area.Codigo"
+                    :value="area.Codigo" />
+                </el-select>
+              </el-input>
+            </el-form-item>
+            <el-form-item class="s-acciones s-acciones--centrado">
+              <el-button type="primary" @click="guardarDatos">Guardar</el-button>
+            </el-form-item>
+          </el-form>
+        </el-collapse-item>
+        <el-collapse-item title="Envío" name="2">
+          <div>Operation feedback: enable the users to clearly perceive their operations by style updates and interactive effects;</div>
+          <div>Visual feedback: reflect current state by updating or rearranging elements of the page.</div>
+        </el-collapse-item>
+        <el-collapse-item title="Confirmar compra" name="3">
+          <div>Simplify the process: keep operating process simple and intuitive;</div>
+          <div>Definite and clear: enunciate your intentions clearly so that the users can quickly understand and make decisions;</div>
+          <div>Easy to identify: the interface should be straightforward, which helps the users to identify and frees them from memorizing and recalling.</div>
+        </el-collapse-item>
+      </el-collapse>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
+import firebase from 'firebase';
 import { Order, OrderLine } from '../store';
-import mercadopago from 'mercadopago';
 
 export default Vue.extend({
   name: 'p-mi-compra',
-  computed: {
+    data() {
+      return {
+        activeName: '1',
+      };
+    },
+    computed: {
     order() {
-      const order: Order = this.$store.state.order;
+      const { order } = this.$store.state;
       return order;
     },
     orderTotal() {
-      const order: Order = this.$store.state.order;
+      const { order } = this.$store.state;
       let total: number = 0;
-      order.detail.forEach((line) => {
+      order.detail.forEach((line: any) => {
         total += line.lineTotal;
       });
       return total;
+    },
+    datos() {
+      return this.$store.state.user;
     }
   },
   methods: {
-    log(value: any) {
-      console.log(value);
-    },
     getSummaries(param: any) {
-      console.log(param);
       return [];
     },
-    buy() {
-      mercadopago.configure({
-        sandbox: true,
-        access_token: 'TEST-2231678987876568-102116-78ac94e6f5932170a82610b10f317156-214493848'
-      });
-      mercadopago.payment.create({
-        description: 'Buying a PS4',
-        transaction_amount: 10500,
-        payer: {
-          email: 'tecnica@eldescubrimiento.com',
+    input_phone_change(value: any) {
+      if (this.datos().phone) {
+        if (this.datos().phone.number) {
+          this.datos().phone.number = value.replace(/^0+/, '');
         }
-      }).then(function (mpResponse: any) {
-        console.log(mpResponse);
-      }).catch(function (mpError: any) {
-        console.log(mpError);
+      }
+    },
+    async guardarDatos() {
+      //* *Datos de usuarios */
+      const loading = this.$loading({
+        lock: true,
+        text: 'Guardando... espera un instante!',
       });
-    }
+      await firebase.firestore().collection('Auth-Users').doc(this.$store.state.userId).update({
+        name: this.datos.name,
+        surname: this.datos.surname,
+        email: this.datos.email,
+        identification: this.datos.identification,
+        phone: this.datos.phone,
+      });
+      loading.close();
+    },    buy() {
+    },
   },
 });
 </script>
