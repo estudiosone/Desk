@@ -158,20 +158,24 @@ interface IDireccionesCiudad {
 }
 
 function dynamicSort(property: any) {
-    var sortOrder = 1;
+  let sortOrder = 1;
 
-    if(property[0] === "-") {
-        sortOrder = -1;
-        property = property.substr(1);
+  if (property[0] === '-') {
+    sortOrder = -1;
+    // eslint-disable-next-line no-param-reassign
+    property = property.substr(1);
+  }
+
+  return (a: any, b: any) => {
+    let result: any;
+    if (sortOrder === -1) {
+      result = b[property].localeCompare(a[property]);
+    } else {
+      result = a[property].localeCompare(b[property]);
     }
 
-    return function (a: any, b: any) {
-        if(sortOrder == -1){
-            return b[property].localeCompare(a[property]);
-        }else{
-            return a[property].localeCompare(b[property]);
-        }        
-    }
+    return result;
+  };
 }
 
 export default Vue.extend({
@@ -187,7 +191,7 @@ export default Vue.extend({
     index: {
       type: String,
       default: '0',
-    }
+    },
   },
   data(): {
     datos: User,
@@ -196,7 +200,7 @@ export default Vue.extend({
       height: number,
     },
     direccion: Address,
-  } {
+    } {
     return {
       datos: {
         name: '',
@@ -227,14 +231,17 @@ export default Vue.extend({
         state: '',
         city: '',
         mainAddress: true,
-      }
+      },
     };
   },
   computed: {
     smAndUp() {
+      let result: boolean = false;
       if (this.window.width >= 768) {
-        return true;
+        result = true;
       }
+
+      return result;
     },
     direccionesCiudades(): IDireccionesCiudad[] {
       const result: IDireccionesCiudad[] = this.$store.state.DatosEstaticos.DireccionesCiudades.sort(dynamicSort('Nombre'));
@@ -242,15 +249,15 @@ export default Vue.extend({
       return queryResult;
     },
     direcciones() {
-      const result: any = []
+      const result: any = [];
       this.datos.address.forEach((item) => {
         result.push({
           index: this.datos.address.indexOf(item),
-          addressString: `${item.street_name} ${item.street_number}, ${item.state}, ${item.city}`
+          addressString: `${item.street_name} ${item.street_number}, ${item.state}, ${item.city}`,
         });
       });
       return result;
-    }
+    },
   },
   methods: {
     input_phone_change(value: any) {
@@ -291,14 +298,15 @@ export default Vue.extend({
     },
     editarDireccion(scope: any) {
       this.direccion = this.datos.address[scope.$index];
-      this.$router.push('/mi-cuenta/direcciones/editar/' + scope.$index);
+      this.$router.push(`/mi-cuenta/direcciones/editar/ ${scope.$index}`);
     },
     async actualizarDireccion() {
       const loading = this.$loading({
         lock: true,
         text: 'Guardando... espera un instante!',
       });
-      this.datos.address[parseInt(this.index)] = this.direccion;
+      const i: number = parseInt(this.index, 10);
+      this.datos.address[i] = this.direccion;
       this.$store.commit('userAddress', this.datos.address);
       await firebase.firestore().collection('Auth-Users').doc(this.$store.state.userId).update({
         address: this.datos.address,
@@ -353,7 +361,7 @@ export default Vue.extend({
       } else {
         this.datos.address = [];
       }
-    }
+    },
   },
   created() {
     EventBus.$on('eventAuthActualizada', () => this.ActualizarDatosDelComponente());
