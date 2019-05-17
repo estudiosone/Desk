@@ -14,10 +14,15 @@
   .s-contenido {
     width: 100%;
     .s-catalogo {
-      $item-width: calc(( 100vw - 60px ) / 2 );
-      $item-width-sm: calc(( 100vw - 80px ) / 3 );
-      $item-foto-size: calc(( 100vw - 60px - 80px ) / 2 );
-      $item-foto-size-sm: calc(( 100vw - 80px - 120px ) / 3 );
+      $item-width: calc(( 100vw - 80px ) / 2 );
+      $item-width-sm: calc(( 100vw - 100px ) / 3 );
+      $item-width-md: calc(( 100vw - 120px ) / 4 );
+      $item-width-lg: calc(( 1200px - 120px ) / 4 );
+      $item-foto-size: calc(( 100vw - 80px - 80px ) / 2 );
+      $item-foto-size-sm: calc(( 100vw - 100px - 120px ) / 3 );
+      $item-foto-size-md: calc(( 100vw - 120px - 120px ) / 4 );
+      $item-foto-size-lg: calc(( 1200px - 120px - 120px ) / 4 );
+
       display: grid;
       grid-template-columns: repeat(2, $item-width);
       grid-auto-rows: auto;
@@ -28,6 +33,12 @@
         grid-template-columns: repeat(3, $item-width-sm);
         padding: 0;
       }
+      @include md {
+        grid-template-columns: repeat(4, $item-width-md);
+      }
+      @include lg {
+        grid-template-columns: repeat(4, $item-width-lg);
+      }
 
       .s-foto {
         width: $item-foto-size;
@@ -36,6 +47,14 @@
         @include sm {
           width: $item-foto-size-sm;
           height: $item-foto-size-sm;
+        }
+        @include md {
+          width: $item-foto-size-md;
+          height: $item-foto-size-md;
+        }
+        @include lg {
+          width: $item-foto-size-lg;
+          height: $item-foto-size-lg;
         }
       }
       .s-info {
