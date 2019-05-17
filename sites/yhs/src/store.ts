@@ -50,8 +50,8 @@ export type OrderLine = {
   lineTotal: number,
 }
 export type Order = {
-  user: User;
-  sendAddress: Address;
+  user: User | undefined;
+  sendAddress: Address | undefined;
   detail: OrderLine[],
 }
 type State = {
@@ -90,16 +90,9 @@ const state: State = {
     address: [],
   },
   order: {
-    detail: [
-      {
-        itemId: 'jvfanpcb12vn1e6in9y',
-        itemName: 'Bain Chromatique',
-        itemPhotoURL: 'https://www.kerastase.uy/-/media/project/loreal/brand-sites/kerastase/americas/latam/products/reflection/packshots/bain-chromatique-reflection-250ml-01-kerastase.png?w=500&hash=F7B70C39B35D8893F5FEF32E1D4BF9280FB811D0',
-        itemPrice: 1295,
-        lineQuantity: 1,
-        lineTotal: 1295,
-      },
-    ],
+    user: undefined,
+    sendAddress: undefined,
+    detail: [],
   },
 };
 
