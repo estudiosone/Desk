@@ -2,11 +2,18 @@
   <div class="item">
     <div class="media">
       <div class="media-list">
-        <img v-for="photo in Item.Photos" :key="photo.Url" :src="photo.Url" alt="">
+        <el-card
+          shadow="never"
+          v-for="photo in Item.Photos"
+          :key="photo.Url" >
+          <img :src="photo.Url" alt="">
+        </el-card>
       </div>
-      <div class="media-presentation">
+      <el-card
+        class="media-presentation"
+        shadow="never">
         <img :src="SelectedPhotoUrl" alt="">
-      </div>
+      </el-card>
     </div>
     <div class="info">
       <h1 class="name">
