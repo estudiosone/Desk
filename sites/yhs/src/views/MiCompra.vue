@@ -52,32 +52,23 @@
         </template>
       </el-table>
       <div>
-      <el-steps :active="etapa" finish-status="success" simple style="margin-top: 20px">
-        <el-step title="Datos" ></el-step>
-        <el-step title="Envío" ></el-step>
-        <el-step title="Pago" ></el-step>
-      </el-steps>
-      <c-datos-personales v-if="etapa === 0" />
-      <div v-if="etapa === 1">
-        <el-form
-          class="s-datos"
-          :model="order"
-          label-width="140px"
-          :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'">
-          <el-form-item label="Dirección">
-            <el-select v-model="order.sendAddress" placeholder="Seleccione una dirección">
-              <el-option v-for="address in user.address" :key="address.street_name" :label="address.street_name" :value="address"></el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-      </div>
-      <div v-if="etapa === 2">
-        <el-button @click="pay">PAGAR</el-button>
-      </div>
-      <div style="display: flex">
-        <el-button :disabled="etapa === 0" @click="etapa -= 1">Volver</el-button>
-        <el-button :disabled="etapa === 2" @click="etapa += 1">Continuar</el-button>
-      </div>
+        <c-datos-personales/>
+        <div>
+          <el-form
+            class="s-datos"
+            :model="order"
+            label-width="140px"
+            :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'">
+            <el-form-item label="Dirección">
+              <el-select v-model="order.sendAddress" placeholder="Seleccione una dirección">
+                <el-option v-for="address in user.address" :key="address.street_name" :label="address.street_name" :value="address"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+        </div>
+        <div>
+          <el-button @click="pay">PAGAR</el-button>
+        </div>
       </div>
     </div>
   </div>
