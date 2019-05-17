@@ -28,7 +28,8 @@
       </h3>
         <widget-store-add-bag
           :itemId="Item.Id"
-          :itemPrice="Item.Price"
+          :itemPrice="parseInt(Item.Price, 10)"
+          :itemPhotoURL="SelectedPhotoUrl"
           :itemName="Item.Name"/>
     </div>
   </div>

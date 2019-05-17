@@ -9,7 +9,7 @@
       <button
         class="add"
         v-if="unavailable == false"
-        @click="dialogVisible = true">
+        @click="add">
         Comprar
       </button>
       <div
@@ -18,26 +18,6 @@
         Temporalmente no disponible
       </div>
     </div>
-    <el-dialog
-      title="Agregar al carrito"
-      width="360px"
-      :visible.sync="dialogVisible">
-      <el-form
-        ref="form"
-        label-width="120px"
-        label-position="top">
-        <el-form-item label="Producto">
-          <el-input :readonly="true" v-model="itemName"></el-input>
-        </el-form-item>
-        <el-form-item label="Cantidad">
-          <el-input-number v-model="quantity" :min="1" :max="10"></el-input-number>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogVisible = false">Agregar</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -50,6 +30,7 @@ export default Vue.extend({
   props: {
     itemId: String,
     itemName: String,
+    itemPhotoURL: String,
     itemPrice: Number,
   },
   data() {
@@ -86,7 +67,14 @@ export default Vue.extend({
   },
   methods: {
     add() {
-
+      this.$store.commit('order_add_detail_line', {
+        itemId: this.itemId,
+        itemName: this.itemName,
+        itemPhotoURL: this.itemPhotoURL,
+        itemPrice: parseInt(this.itemPrice, 10),
+        lineQuantity: 1,
+        lineTotal: this.itemPrice,
+      })
     },
   },
 });

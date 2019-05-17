@@ -85,13 +85,14 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import firebase from 'firebase';
+import firebase, { firestore } from 'firebase';
 import axios from 'axios';
 import { Order, OrderLine, User } from '../store';
 import CDatosPersonales from '../components/CDatosPersonales.vue';
 
 interface IItem {
   title: string,
+  picture_url: string,
   quantity: number,
   currency_id: string,
   unit_price: number,
@@ -130,9 +131,38 @@ export default Vue.extend({
       return [];
     },
     async pay() {
+      const loading = this.$loading({
+        lock: true,
+        text: 'Generando orden...',
+      });
+      let totalAmount = 0;
+      this.order.detail.forEach((linea) => {
+        totalAmount += (linea.lineQuantity * linea.itemPrice)
+      });
+      const salesRef = firebase.firestore().collection('Sales');
+      const ref = await salesRef.add({
+        Type: 'Order',
+        Customer: firebase.firestore().collection('Customers').doc(this.$store.state.userId),
+        Business: firebase.firestore().collection('Business').doc(this.$store.state.businessId),
+        Generated: firebase.firestore.Timestamp.now(),
+        GeneratedBy: firebase.firestore().collection('Customers').doc(this.$store.state.userId),
+        Payment: {
+          TotalAmount: totalAmount,
+          State: 'Pending',
+        },
+        ShippingAddress: this.order.sendAddress,
+      });
       const mPreference: {
         items: IItem[],
         payer: any,
+        back_urls: {
+          success: string,
+          pending: string,
+          failure: string,
+        },
+        notification_url: string,
+        auto_return: string,
+        external_reference: string,
       } = {
         items: [],
         payer: {
@@ -142,18 +172,40 @@ export default Vue.extend({
           phone: this.user.phone,
           identification: this.user.identification,
         },
+        back_urls: {
+          success: `${location.origin}/mi-compra/historial/${ref.id}/confirmada`,
+          pending: `${location.origin}/mi-compra/historial/${ref.id}/pendiente`,
+          failure: `${location.origin}/mi-compra/historial/${ref.id}/pago-erroneo`,
+        },
+        notification_url: 'https://us-central1-one-sig-uy.cloudfunctions.net/mercado_pago_webhooks',
+        auto_return: 'all',
+        external_reference: ref.id,
       };
+
+      const detailRef = ref.collection('Detail');
+
       this.order.detail.forEach((linea) => {
+        detailRef.add({
+          Id: firebase.firestore().collection('Inventory-Items').doc(linea.itemId),
+          Title: linea.itemName,
+          Picture_url: linea.itemPhotoURL,
+          Quantity: linea.lineQuantity,
+          Currency_id: 'UYU',
+          Unit_price: linea.itemPrice,
+        });
         mPreference.items.push({
           title: linea.itemName,
+          picture_url: linea.itemPhotoURL,
           quantity: linea.lineQuantity,
           currency_id: 'UYU',
           unit_price: linea.itemPrice,
         });
       })
+      loading.text = 'Tranfiriendo a Mercado Pago...'
       const result = await axios.post('https://api.mercadopago.com/checkout/preferences?access_token=TEST-2231678987876568-102116-78ac94e6f5932170a82610b10f317156-214493848', mPreference);
       console.info(result);
-      window.open(result.data.sandbox_init_point);
+      location.href = result.data.sandbox_init_point;
+      loading.close();
     },
   },
 });
