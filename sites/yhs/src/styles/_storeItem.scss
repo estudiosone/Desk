@@ -12,7 +12,7 @@
   box-sizing: border-box;
 
   @include md {
-    grid-template-columns: repeat(2, calc((100vw - 40px) / 2));
+    grid-template-columns: repeat(2, calc((100vw - 60px) / 2));
   }
 
   @include lg {
@@ -22,20 +22,28 @@
   .media {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 140px calc(100vw - 180px);
+    grid-template-columns: calc(100vw - 40px);
 
+    @include sm {
+      grid-template-columns: 140px calc(100vw - 200px);
+      grid-gap: 20px;
+    }
     @include md {
       grid-template-columns: 140px calc(50vw - 180px);
-      grid-gap: 20px;
     }
     @include lg {
       grid-template-columns: 140px 430px;
     }
 
     .media-list {
-      display: flex;
+      display: none;
       flex-direction: column;
       width: 140px;
+
+      @include sm {
+        display: flex;
+      }
+
       .el-card {
         width: 140px;
         height: 140px;
@@ -51,16 +59,18 @@
     .media-presentation {
       height: fit-content;
       img {
-        width: calc(100vw - 140px);
-        max-width: 390px;
-        height: calc(100vw - 140px);
-        max-height: 390px;
+        width: calc(100vw - 260px);
+        height: calc(100vw - 260px);
         box-sizing: border-box;
         object-fit: cover;
 
         @include md {
           width: calc(50vw - 180px - 40px);
           height: calc(50vw - 180px - 40px);
+        }
+        @include lg {
+          width: 390px;
+          height: 390px;
         }
       }
     }
