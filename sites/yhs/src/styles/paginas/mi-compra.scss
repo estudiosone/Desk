@@ -1,5 +1,15 @@
 .p-mi-compra {
-  padding: 0 20px;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  padding-bottom: 20px;
+
+  @include sm {
+    padding-right: 20px;
+    padding-left: 20px;
+  }
+
   .s-contenido {
     display: grid;
     grid-template-rows: auto;
@@ -8,6 +18,10 @@
 
     @include md {
       grid-template-columns: repeat(2, calc(50vw - 20px - 10px));
+    }
+
+    @include lg {
+      grid-template-columns: repeat(2, calc(600px - 20px - 10px));
     }
 
     .s-lista-de-compra {
