@@ -3,10 +3,11 @@
   display: grid;
   grid-template-rows: auto 1fr;
   grid-template-columns: calc(100vw - 40px);
+  grid-gap: 20px;
   justify-content: space-between;
   width: 100%;
   max-width: 1240px;
-  padding: 0 20px;
+  padding: 20px;
   margin: 0 auto;
   box-sizing: border-box;
 
@@ -15,41 +16,53 @@
   }
 
   @include lg {
-    grid-template-columns: repeat(2, 600px);
+    grid-template-columns: repeat(2, 590px);
   }
 
   .media {
     display: grid;
     grid-template-rows: 1fr;
-    grid-template-columns: 100px calc(100vw - 140px);
+    grid-template-columns: 140px calc(100vw - 180px);
+
+    @include md {
+      grid-template-columns: 140px calc(50vw - 180px);
+      grid-gap: 20px;
+    }
+    @include lg {
+      grid-template-columns: 140px 430px;
+    }
 
     .media-list {
       display: flex;
       flex-direction: column;
-      width: 100px;
-
-      img {
-        width: 100px;
-        height: 100px;
-        padding: 16px;
-        box-sizing: border-box;
+      width: 140px;
+      .el-card {
+        width: 140px;
+        height: 140px;
+        img {
+          width: 100px;
+          height: 100px;
+          padding: 16px;
+          box-sizing: border-box;
+        }
       }
     }
 
     .media-presentation {
+      height: fit-content;
       img {
         width: calc(100vw - 140px);
-        max-width: 420px;
+        max-width: 390px;
         height: calc(100vw - 140px);
-        max-height: 420px;
-        padding: 16px;
+        max-height: 390px;
         box-sizing: border-box;
         object-fit: cover;
-      }
-    }
 
-    @include md {
-      grid-template-columns: 100px 500px;
+        @include md {
+          width: calc(50vw - 180px - 40px);
+          height: calc(50vw - 180px - 40px);
+        }
+      }
     }
   }
 
@@ -59,7 +72,7 @@
 
     @include md {
       margin-left: auto;
-      max-width: 300px;
+      max-width: 460px;
     } 
     .name {
       font-size: 2em;
