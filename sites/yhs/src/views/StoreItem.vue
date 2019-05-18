@@ -2,17 +2,12 @@
   <div class="item">
     <div class="media">
       <div class="media-list">
-        <el-card
-          shadow="never"
-          v-for="photo in Item.Photos"
-          :key="photo.Url" >
-          <img :src="photo.Url" alt="">
+        <el-card v-for="photo in Item.Photos" :key="photo.Url" shadow="never">
+          <img :src="photo.Url" alt="" />
         </el-card>
       </div>
-      <el-card
-        class="media-presentation"
-        shadow="never">
-        <img :src="SelectedPhotoUrl" alt="">
+      <el-card class="media-presentation" shadow="never">
+        <img :src="SelectedPhotoUrl" alt="" />
       </el-card>
     </div>
     <div class="info">
@@ -33,41 +28,25 @@
       <h3 class="presentation">
         {{ presentation }}
       </h3>
-        <widget-store-add-bag
-          :itemId="Item.Id"
-          :itemPrice="parseInt(Item.Price, 10)"
-          :itemPhotoURL="SelectedPhotoUrl"
-          :itemName="Item.Name"/>
+      <widget-store-add-bag
+        :item-id="Item.Id"
+        :item-price="parseInt(Item.Price, 10)"
+        :item-photo-u-r-l="SelectedPhotoUrl"
+        :item-name="Item.Name"
+      />
     </div>
   </div>
 </template>
 <style lang="scss" scoped>
-@import '../styles/storeItem.scss';
+@import "../styles/storeItem.scss";
 </style>
 
-
 <script lang="ts">
-import Vue from 'vue';
-import firebase from 'firebase';
-import Numeral from 'numeral';
+import Vue from "vue";
+import firebase from "firebase";
+import Numeral from "numeral";
 
 export default Vue.extend({
-  data() : {
-    Item: any;
-    SelectedPhotoUrl: string;
-    } {
-    return {
-      Item: {},
-      SelectedPhotoUrl: '',
-    };
-  },
-  computed: {
-    presentation(): string {
-      const p = this.Item.Presentation ? this.Item.Presentation : '';
-      const pUnit = this.Item.PresentationUnit ? this.Item.PresentationUnit : '';
-      return `${p} ${pUnit}`;
-    },
-  },
   filters: {
     priceInUYU(value: any) {
       let val;
@@ -76,16 +55,32 @@ export default Vue.extend({
       } else {
         val = 0;
       }
-      return Numeral(val).format('$ 0.00');
-    },
+      return Numeral(val).format("$ 0.00");
+    }
+  },
+  data(): {
+    Item: any;
+    SelectedPhotoUrl: string;
+  } {
+    return {
+      Item: {},
+      SelectedPhotoUrl: ""
+    };
+  },
+  computed: {
+    presentation(): string {
+      const p = this.Item.Presentation ? this.Item.Presentation : "";
+      const pUnit = this.Item.PresentationUnit ? this.Item.PresentationUnit : "";
+      return `${p} ${pUnit}`;
+    }
   },
   async mounted() {
     const loading = this.$loading({
       lock: true,
-      text: 'Buscando productos',
+      text: "Buscando productos"
     });
     const app = firebase.firestore();
-    const col = app.collection('Inventory-Items');
+    const col = app.collection("Inventory-Items");
     const itemReference = col.doc(this.$route.params.id);
     const result = await itemReference.get();
     if (result.exists) {
@@ -94,11 +89,11 @@ export default Vue.extend({
       this.Item.Photos = [];
 
       const inventoryItemsPhotos = await app
-        .collection('Inventory-Items-Photos')
-        .where('Item', '==', itemReference)
+        .collection("Inventory-Items-Photos")
+        .where("Item", "==", itemReference)
         .get();
 
-      inventoryItemsPhotos.forEach((photo) => {
+      inventoryItemsPhotos.forEach(photo => {
         this.Item.Photos.push(photo.data());
         if (photo.data().IsCover) {
           this.SelectedPhotoUrl = photo.data().Url;
@@ -106,6 +101,6 @@ export default Vue.extend({
       });
     }
     loading.close();
-  },
+  }
 });
 </script>

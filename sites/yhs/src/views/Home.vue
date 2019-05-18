@@ -1,50 +1,40 @@
 <template>
   <div class="home">
-    <el-carousel
-      :interval="5000">
+    <el-carousel :interval="5000">
       <el-carousel-item>
-        <img src="../assets/img/PROMO-1-min.png">
+        <img src="../assets/img/PROMO-1-min.png" />
       </el-carousel-item>
       <el-carousel-item>
-        <img src="../assets/img/PROMO-2-min.png">
+        <img src="../assets/img/PROMO-2-min.png" />
       </el-carousel-item>
       <el-carousel-item>
-        <img src="../assets/img/PROMO-3-min.png">
+        <img src="../assets/img/PROMO-3-min.png" />
       </el-carousel-item>
     </el-carousel>
-    <div id="salones">
-
-    </div>
+    <div id="salones"></div>
     <div id="agendate">
-      <img src="../assets/img/agendate-bkg.jpg" alt="">
-      <widget-booking-salon/>
+      <img src="../assets/img/agendate-bkg.jpg" alt="" />
+      <WidgetBookingSalon />
     </div>
-    <div id="blog">
-
-    </div>
-    <div id="firebaseui-auth-container">
-
-    </div>
+    <div id="blog"></div>
+    <div id="firebaseui-auth-container"></div>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import firebase from 'firebase';
-import firebaseui from 'firebaseui';
-import WidgetBookingSalon from '../components/Widgets/BookingSalon.vue';
+import Vue from "vue";
+import WidgetBookingSalon from "../components/Widgets/BookingSalon.vue";
 
 export default Vue.extend({
   components: {
-    WidgetBookingSalon,
-  },
+    WidgetBookingSalon
+  }
 });
 </script>
 
-
 <style lang="scss">
 @import url("https://cdn.firebase.com/libs/firebaseui/3.5.2/firebaseui.css");
-@import '../styles/home.scss';
+@import "../styles/home.scss";
 
 .home {
   width: 100%;

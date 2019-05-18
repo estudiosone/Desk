@@ -1,3 +1,4 @@
+/* eslint-disable vue/no-v-html */
 <template>
   <div class="widget-blog-entry">
     <header class="entry-header">
@@ -12,30 +13,15 @@
           {{ entry.Category }}
         </span>
       </p>
-      <el-divider/>
+      <el-divider />
     </header>
-    <section class="entry-content" v-html="entry.Content"/>
   </div>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-
-type WidgetBlogEntry = {
-  Title: String;
-  Date: Date;
-  Category: String;
-  Content: String;
-}
-
-const props = {
-  entry: {
-    type: Object as () => WidgetBlogEntry,
-  },
-};
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'widget-blog-entry',
-  props,
+  name: "WidgetBlogEntry"
 });
 </script>

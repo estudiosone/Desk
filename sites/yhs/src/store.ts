@@ -127,7 +127,7 @@ export default new Vuex.Store({
       const db = firebase.firestore();
       const siteRef = db.collection('Sites').doc(context.state.SiteId);
       const site = await siteRef.get();
-      const siteData: Site = site.data() as Site;
+      const siteData: Site = (site.data() as Site);
       siteData.NavMenu = [];
       const navMenu = await siteRef.collection('NavMenu').orderBy('Index').get();
       navMenu.forEach(item => siteData.NavMenu.push(item.data() as NavMenu));

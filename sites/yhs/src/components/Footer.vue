@@ -1,6 +1,6 @@
 <template>
   <footer id="footer">
-    <div class="salon" v-for="salon in salons" :key="salon.name">
+    <div v-for="salon in salons" :key="salon.name" class="salon">
       <div class="name">
         {{ salon.name }}
       </div>
@@ -9,10 +9,8 @@
         <span>{{ salon.address }}</span>
       </div>
       <div class="phone">
-
         <span class="label">Teléfono:</span>
         <span>{{ salon.phone }}</span>
-
       </div>
       <div class="schedule">
         <span class="label">Horarios:</span>
@@ -25,42 +23,33 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 export default Vue.extend({
-  name: 'desk-footer',
+  name: "DeskFooter",
   data() {
     return {
       salons: [
         {
-          name: 'Portones Shopping',
-          address: 'Av. Italia 5775 local S44',
-          phone: '+598 2601 7321',
-          schedule: [
-            'L a V: 8:00 a 22:00',
-            'S y D: 10:00 a 22:00',
-          ],
+          name: "Portones Shopping",
+          address: "Av. Italia 5775 local S44",
+          phone: "+598 2601 7321",
+          schedule: ["L a V: 8:00 a 22:00", "S y D: 10:00 a 22:00"]
         },
         {
-          name: 'Portal Brunel',
-          address: 'Cno. Carrasco 6955 local 101',
-          phone: '+598 2605 9344',
-          schedule: [
-            'L: 14:00 a 19:00',
-            'M a S: 10:00 a 19:00',
-          ],
+          name: "Portal Brunel",
+          address: "Cno. Carrasco 6955 local 101",
+          phone: "+598 2605 9344",
+          schedule: ["L: 14:00 a 19:00", "M a S: 10:00 a 19:00"]
         },
         {
-          name: 'Portal Americas',
-          address: 'Av. de las Américas 6000',
-          phone: '+598 2602 3492',
-          schedule: [
-            'L: 14:00 a 19:00',
-            'M a S: 10:00 a 19:00',
-          ],
-        },
-      ],
+          name: "Portal Americas",
+          address: "Av. de las Américas 6000",
+          phone: "+598 2602 3492",
+          schedule: ["L: 14:00 a 19:00", "M a S: 10:00 a 19:00"]
+        }
+      ]
     };
-  },
+  }
 });
 </script>

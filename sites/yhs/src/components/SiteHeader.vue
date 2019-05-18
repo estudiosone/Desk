@@ -85,7 +85,7 @@
           title="Ingresar a mi cuenta"
           width="560px"
           :visible.sync="ModalesAutenticacion"
-          :fullscreen="window.width < 997"
+          :fullscreen="this.$store.state.Utilidades.UI.BP.mdUp"
           @opened="setFirebaseAuthUI">
           <div class="firebaseui-auth-container">
             <div class="logo">
@@ -135,23 +135,23 @@ import firebaseui from 'firebaseui';
 
 export default Vue.extend({
   name: 'desknavi',
-  data() {
+  data(): {
+    dialogos: {
+      ingresar: boolean,
+    },
+  } {
     return {
       dialogos: {
         ingresar: false,
-      },
-      window: {
-        width: 0,
-        height: 0,
       },
     };
   },
   computed: {
     ModalesAutenticacion: {
-      get(): boolean {
+      get(this: any): boolean {
         return this.$store.state.Utilidades.Modales.Autenticacion;
       },
-      set(value: boolean) {
+      set(this: any, value: boolean) {
         this.$store.commit('Utilidades/Modal_Autenticacion', value);
       },
     },
@@ -194,17 +194,6 @@ export default Vue.extend({
     async salirDeLaCuenta() {
       await firebase.auth().signOut();
     },
-    handleResize() {
-      this.window.width = window.innerWidth;
-      this.window.height = window.innerHeight;
-    },
-  },
-  created() {
-    window.addEventListener('resize', this.handleResize);
-    this.handleResize();
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.handleResize);
   },
 });
 </script>

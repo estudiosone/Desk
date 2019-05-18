@@ -2,14 +2,15 @@
   <div class="widget-booking-salon">
     <h2>{{ title }}</h2>
     <el-form id="step-0">
-      <el-form-item label="Fecha" id="input-date">
+      <el-form-item id="input-date" label="Fecha">
         <el-date-picker
           v-model="bookingDate"
           type="date"
           align="center"
           format="dd-MM-yyyy"
           placeholder="Pick a day"
-          :picker-options="datePickerOptions"/>
+          :picker-options="datePickerOptions"
+        />
       </el-form-item>
       <el-form-item id="btn-reservar">
         <el-button @click="dialogBookingVisible = true">Reservar</el-button>
@@ -18,11 +19,10 @@
     <el-dialog
       title="Agendate en nuestros salones"
       :fullscreen="window.width < 997"
-      :visible.sync="dialogBookingVisible">
+      :visible.sync="dialogBookingVisible"
+    >
       <el-collapse v-model="collapseValue" accordion>
-        <el-form
-          label-width="60px"
-          label-position="left">
+        <el-form label-width="60px" label-position="left">
           <el-collapse-item title="Tu reserva" name="1">
             <el-form-item label="Fecha">
               <el-date-picker
@@ -31,7 +31,8 @@
                 align="center"
                 format="dd-MM-yyyy"
                 placeholder="Pick a day"
-                :picker-options="datePickerOptions"/>
+                :picker-options="datePickerOptions"
+              />
             </el-form-item>
             <el-form-item label="Hora">
               <el-select v-model="bookingHour" placeholder="Seleccione una hora">
@@ -39,7 +40,8 @@
                   v-for="item in hourList"
                   :key="item.value"
                   :label="item.value"
-                  :value="item.value">
+                  :value="item.value"
+                >
                 </el-option>
               </el-select>
             </el-form-item>
@@ -49,7 +51,8 @@
                   v-for="item in salonList"
                   :key="item.value"
                   :label="item.label"
-                  :value="item.value">
+                  :value="item.value"
+                >
                 </el-option>
               </el-select>
             </el-form-item>
@@ -59,18 +62,16 @@
                   v-for="item in serviceList"
                   :key="item.value"
                   :label="item.value"
-                  :value="item.value">
+                  :value="item.value"
+                >
                 </el-option>
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button
-                :disabled="bookingClientDataActive"
-                @click="collapseValue = '2'">
+              <el-button :disabled="bookingClientDataActive" @click="collapseValue = '2'">
                 Siguiente
               </el-button>
             </el-form-item>
-
           </el-collapse-item>
           <el-collapse-item :disabled="bookingClientDataActive" title="Tus datos" name="2">
             <el-form-item label="Nombre">
@@ -86,15 +87,12 @@
               <el-input v-model="customerEmail"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button
-                :disabled="bookingResumeDataActive"
-                @click="collapseValue = '3'">
+              <el-button :disabled="bookingResumeDataActive" @click="collapseValue = '3'">
                 Siguiente
               </el-button>
             </el-form-item>
           </el-collapse-item>
           <el-collapse-item :disabled="bookingResumeDataActive" title="Confirmá tus datos" name="3">
-
           </el-collapse-item>
         </el-form>
       </el-collapse>
@@ -103,13 +101,19 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue from "vue";
 
 export default Vue.extend({
+  props: {
+    title: {
+      type: String,
+      default: "Agendate"
+    }
+  },
   data() {
     return {
       dialogBookingVisible: false,
-      collapseValue: '1',
+      collapseValue: "1",
       bookingDate: new Date(),
       bookingHour: undefined,
       bookingSalon: undefined,
@@ -119,72 +123,72 @@ export default Vue.extend({
       customerPhone: undefined,
       customerEmail: undefined,
       hourList: [
-        { value: '08:00' },
-        { value: '08:30' },
-        { value: '09:00' },
-        { value: '09:30' },
-        { value: '10:00' },
-        { value: '10:30' },
-        { value: '11:00' },
-        { value: '11:30' },
-        { value: '12:00' },
-        { value: '12:30' },
-        { value: '13:00' },
-        { value: '13:30' },
-        { value: '14:00' },
-        { value: '14:30' },
-        { value: '15:00' },
-        { value: '15:30' },
-        { value: '16:00' },
-        { value: '16:30' },
-        { value: '17:00' },
-        { value: '17:30' },
-        { value: '18:00' },
-        { value: '18:30' },
-        { value: '19:00' },
-        { value: '19:30' },
-        { value: '20:00' },
-        { value: '20:30' },
+        { value: "08:00" },
+        { value: "08:30" },
+        { value: "09:00" },
+        { value: "09:30" },
+        { value: "10:00" },
+        { value: "10:30" },
+        { value: "11:00" },
+        { value: "11:30" },
+        { value: "12:00" },
+        { value: "12:30" },
+        { value: "13:00" },
+        { value: "13:30" },
+        { value: "14:00" },
+        { value: "14:30" },
+        { value: "15:00" },
+        { value: "15:30" },
+        { value: "16:00" },
+        { value: "16:30" },
+        { value: "17:00" },
+        { value: "17:30" },
+        { value: "18:00" },
+        { value: "18:30" },
+        { value: "19:00" },
+        { value: "19:30" },
+        { value: "20:00" },
+        { value: "20:30" }
       ],
       salonList: [
         {
-          value: 'portones',
-          label: 'Portones Shopping',
+          value: "portones",
+          label: "Portones Shopping"
         },
         {
-          value: 'brunel',
-          label: 'Portal Brunel',
+          value: "brunel",
+          label: "Portal Brunel"
         },
         {
-          value: 'americas',
-          label: 'Portal Americas',
-        },
+          value: "americas",
+          label: "Portal Americas"
+        }
       ],
       serviceList: [
         {
-          value: 'Lavado L’Oréal',
+          value: "Lavado L’Oréal"
         },
         {
-          value: 'Lavado Kerastase',
+          value: "Lavado Kerastase"
         },
         {
-          value: 'Lavado Redken',
+          value: "Lavado Redken"
         },
         {
-          value: 'Brushing',
-        },
+          value: "Brushing"
+        }
       ],
       datePickerOptions: {
         disabledDate(date: any) {
           const d = new Date();
           d.setDate(d.getDate() - 1);
           return date <= d;
-        },
+        }
       },
       window: {
         width: 0,
-        height: 0,
-      },
+        height: 0
+      }
     };
   },
   computed: {
@@ -199,26 +203,20 @@ export default Vue.extend({
         return false;
       }
       return true;
-    },
+    }
   },
-  props: {
-    title: {
-      type: String,
-      default: 'Agendate',
-    },
+  created() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
   },
   methods: {
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
-    },
-  },
-  created() {
-    window.addEventListener('resize', this.handleResize);
-    this.handleResize();
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.handleResize);
-  },
+    }
+  }
 });
 </script>

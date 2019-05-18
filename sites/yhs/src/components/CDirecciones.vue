@@ -205,10 +205,6 @@ export default Vue.extend({
       this.accion = '';
       this.index = undefined;
     },
-    async salirDeLaCuenta() {
-      await firebase.auth().signOut();
-      this.$router.push('/');
-    },
   },
 })
 </script>
