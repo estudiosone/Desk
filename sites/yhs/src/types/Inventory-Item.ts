@@ -1,12 +1,12 @@
-type InventoryItemData = {
+interface InventoryItemData {
   Name: string;
   Description: string;
   Presentation: string;
   Brand: string;
   Category: string;
   Tags: string[];
-};
-export type InventoryItem = {
+}
+export interface InventoryItem {
   Id: string;
   Data: InventoryItemData;
-};
+}
