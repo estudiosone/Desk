@@ -15,30 +15,30 @@ import DeskFooter from "./components/Footer.vue";
 export default Vue.extend({
   name: "App",
   components: {
-    DeskFooter
+    DeskFooter,
   },
   data() {
     return {
       menu: [
         {
           name: "Agendate",
-          to: "/#agendate"
+          to: "/#agendate",
         },
         {
           name: "Blog",
-          to: "/#blog"
+          to: "/#blog",
         },
         {
           name: "Tienda",
-          to: "/store"
-        }
-      ]
+          to: "/store",
+        },
+      ],
     };
   },
   async mounted() {
     this.$store.dispatch("initializeApp");
 
-    firebase.auth().onAuthStateChanged(async userData => {
+    firebase.auth().onAuthStateChanged(async (userData) => {
       if (this.$store.state.Utilidades.Modales.Autenticacion) {
         this.$store.commit("Utilidades/Modal_Autenticacion");
       }
@@ -60,7 +60,7 @@ export default Vue.extend({
             photoUrl: userData.photoURL
               ? userData.photoURL
               : "https://img.icons8.com/material-outlined/96/000000/user-male-circle.png",
-            isAnonymous: userData.isAnonymous
+            isAnonymous: userData.isAnonymous,
           };
           this.$store.commit("user", data);
           await userRef.set(data);
@@ -81,8 +81,8 @@ export default Vue.extend({
   methods: {
     handleResize() {
       this.$store.commit("Utilidades/UI_BP", window.innerWidth);
-    }
-  }
+    },
+  },
 });
 </script>
 
