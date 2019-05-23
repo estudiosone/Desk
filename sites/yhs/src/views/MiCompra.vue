@@ -1,75 +1,36 @@
-<template>
-  <div class="p-mi-compra">
-    <div class="s-encabezado">
-      <div class="s-titulo">
-        mi compra
-      </div>
-    </div>
-    <div class="s-contenido">
-      <el-table class="s-lista-de-compra" :data="order.detail">
-        <el-table-column label="Productos" prop="itemPhotoURL">
-          <template slot-scope="scope">
-            <div class="s-producto">
-              <img class="s-producto--imagen" :src="scope.row.itemPhotoURL" />
-              <div class="s-producto--info">
-                <span class="s-producto--info-nombre">
-                  {{ scope.row.itemName }}
-                </span>
-                <div class="s-producto--info-datos">
-                  <span class="s-producto-moneda">
-                    {{ `$ ${scope.row.itemPrice}` }}
-                  </span>
-                  <el-input-number
-                    v-model="scope.row.lineQuantity"
-                    size="mini"
-                    controls-position="right"
-                    :min="1"
-                    :max="10"
-                    style="width: 80px"
-                    @change="updateLineTotal(scope)"
-                  ></el-input-number>
-                  <span class="s-producto-moneda">
-                    {{ `$ ${scope.row.lineTotal}` }}
-                  </span>
-                </div>
-              </div>
-            </div>
-          </template>
-        </el-table-column>
-        <template slot="append">
-          <div class="s-total">
-            <span class="s-etiqueta">total</span>
-            <span class="s-valor">{{ `$ ${orderTotal}` }}</span>
-          </div>
-        </template>
-      </el-table>
-      <div>
-        <CDatosPersonales />
-        <div>
-          <el-form
-            class="s-datos"
-            :model="order"
-            label-width="140px"
-            :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'"
-          >
-            <el-form-item label="Dirección">
-              <el-select v-model="order.sendAddress" placeholder="Seleccione una dirección">
-                <el-option
-                  v-for="address in user.address"
-                  :key="address.street_name"
-                  :label="address.street_name"
-                  :value="address"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div>
-          <el-button @click="pay">PAGAR</el-button>
-        </div>
-      </div>
-    </div>
-  </div>
+<template lang="pug">
+  .p-mi-compra
+    .s-encabezado
+      .s-titulo
+        | mi compra
+    .s-contenido
+      el-table.s-lista-de-compra(:data='order.detail')
+        el-table-column(label='Productos', prop='itemPhotoURL')
+          template(slot-scope='scope')
+            .s-producto
+              img.s-producto--imagen(:src='scope.row.itemPhotoURL')
+              .s-producto--info
+                span.s-producto--info-nombre
+                  | {{ scope.row.itemName }}
+                .s-producto--info-datos
+                  span.s-producto-moneda
+                    | {{ `$ ${scope.row.itemPrice}` }}
+                  el-input-number(v-model='scope.row.lineQuantity', size='mini', controls-position='right', :min='1', :max='10', style='width: 80px', @change='updateLineTotal(scope)')
+                  span.s-producto-moneda
+                    | {{ `$ ${scope.row.lineTotal}` }}
+        template(slot='append')
+          .s-total
+            span.s-etiqueta total
+            span.s-valor {{ `$ ${orderTotal}` }}
+      div
+        cdatospersonales
+          div
+            el-form.s-datos(:model='order', label-width='140px', :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'")
+              el-form-item(label='Dirección')
+                el-select(v-model='order.sendAddress', placeholder='Seleccione una dirección')
+                  el-option(v-for='address in user.address', :key='address.street_name', :label='address.street_name', :value='address')
+          div
+            el-button(@click='pay') PAGAR
 </template>
 
 <script lang="ts">
@@ -177,11 +138,16 @@ export default Vue.extend({
           identification: this.user.identification
         },
         back_urls: {
-          success: `${location.origin}/mi-compra/historial/${ref.id}/confirmada`,
+          success: `${location.origin}/mi-compra/historial/${
+            ref.id
+          }/confirmada`,
           pending: `${location.origin}/mi-compra/historial/${ref.id}/pendiente`,
-          failure: `${location.origin}/mi-compra/historial/${ref.id}/pago-erroneo`
+          failure: `${location.origin}/mi-compra/historial/${
+            ref.id
+          }/pago-erroneo`
         },
-        notification_url: "https://us-central1-one-sig-uy.cloudfunctions.net/mercado_pago_webhooks",
+        notification_url:
+          "https://us-central1-one-sig-uy.cloudfunctions.net/mercado_pago_webhooks",
         auto_return: "all",
         external_reference: ref.id
       };
