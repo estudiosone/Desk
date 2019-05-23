@@ -1,59 +1,59 @@
 export default [
   {
-    "Nombre": "Canelones"
+    Nombre: "Canelones"
   },
   {
-    "Nombre": "Maldonado"
+    Nombre: "Maldonado"
   },
   {
-    "Nombre": "Rocha"
+    Nombre: "Rocha"
   },
   {
-    "Nombre": "Treinta Y Tres"
+    Nombre: "Treinta Y Tres"
   },
   {
-    "Nombre": "Cerro Largo"
+    Nombre: "Cerro Largo"
   },
   {
-    "Nombre": "Rivera"
+    Nombre: "Rivera"
   },
   {
-    "Nombre": "Artigas"
+    Nombre: "Artigas"
   },
   {
-    "Nombre": "Salto"
+    Nombre: "Salto"
   },
   {
-    "Nombre": "Paysandu"
+    Nombre: "Paysandu"
   },
   {
-    "Nombre": "Rio Negro"
+    Nombre: "Rio Negro"
   },
   {
-    "Nombre": "Soriano"
+    Nombre: "Soriano"
   },
   {
-    "Nombre": "Colonia"
+    Nombre: "Colonia"
   },
   {
-    "Nombre": "San Jose"
+    Nombre: "San Jose"
   },
   {
-    "Nombre": "Flores"
+    Nombre: "Flores"
   },
   {
-    "Nombre": "Florida"
+    Nombre: "Florida"
   },
   {
-    "Nombre": "Lavalleja"
+    Nombre: "Lavalleja"
   },
   {
-    "Nombre": "Durazno"
+    Nombre: "Durazno"
   },
   {
-    "Nombre": "Tacuarembo"
+    Nombre: "Tacuarembo"
   },
   {
-    "Nombre": "Montevideo"
+    Nombre: "Montevideo"
   }
-]
+];
