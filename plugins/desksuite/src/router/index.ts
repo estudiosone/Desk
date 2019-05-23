@@ -1,6 +1,4 @@
-import Vue from 'vue';
-import router from 'vue-router';
+import Vue from "vue";
+import router from "vue-router";
 
-export class Router {
-
-}
+export class Router {}
