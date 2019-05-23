@@ -26,8 +26,10 @@
 }
 
 #footer {
+  width: 100%;
   display: grid;
-  grid-template-columns: 1fr;;
+  grid-template-columns: 1fr;
+  ;
   grid-template-rows: 1fr;
   background-color: $color-brand-secondary;
   color: $color-brand-secondary-alt;
@@ -35,8 +37,8 @@
   @include md {
     grid-template-columns: repeat(3, 1fr);
   }
-  
-  .salon {  
+
+  .salon {
     @extend %margin-horizontal-auto;
     padding: 12px;
     max-width: 400px;
@@ -47,14 +49,18 @@
       margin-bottom: 12px;
       text-align: center;
     }
+
     .address {
       @extend %footer-salon-line;
     }
+
     .phone {
       @extend %footer-salon-line;
     }
+
     .schedule {
       @extend %footer-salon-line;
+
       .content {
         display: flex;
         flex-direction: column;
@@ -62,4 +68,3 @@
     }
   }
 }
-
