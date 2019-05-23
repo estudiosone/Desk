@@ -1,22 +1,17 @@
 /* eslint-disable vue/no-v-html */
-<template>
-  <div class="widget-blog-entry">
-    <header class="entry-header">
-      <h1 class="title">
-        {{ entry.Title }}
-      </h1>
-      <p class="entry-meta">
-        <span class="entry-date">
-          {{ entry.Date }}
-        </span>
-        <span class="entry-category">
-          {{ entry.Category }}
-        </span>
-      </p>
-      <el-divider />
-    </header>
-  </div>
+<template lang="pug">
+  .widget-blog-entry
+    header.entry-header
+      h1.title
+        | {{ entry.Title }}
+      p.entry-meta
+        span.entry-date
+          | {{ entry.Date }}
+        span.entry-category
+          | {{ entry.Category }}
+      el-divider
 </template>
+
 
 <script lang="ts">
 import Vue from "vue";
