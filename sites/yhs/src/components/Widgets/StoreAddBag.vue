@@ -1,17 +1,12 @@
-<template>
-  <div class="widget-store-add-bag">
-    <div class="section-button">
-      <div v-if="unavailable == false" class="price">
-        {{ priceFormated }}
-      </div>
-      <button v-if="unavailable == false" class="add" @click="add">
-        Comprar
-      </button>
-      <div v-if="unavailable" class="unavailable">
-        Temporalmente no disponible
-      </div>
-    </div>
-  </div>
+<template lang="pug">
+  .widget-store-add-bag
+    .section-button
+      .price(v-if='unavailable == false')
+        | {{ priceFormated }}
+      button.add(v-if='unavailable == false', @click='add')
+        | Comprar
+      .unavailable(v-if='unavailable')
+        | Temporalmente no disponible  
 </template>
 
 <script lang="ts">
@@ -77,7 +72,9 @@ export default Vue.extend({
         itemName: this.itemName,
         itemPhotoURL: this.itemPhotoURL,
         itemPrice:
-          typeof this.itemPrice === "number" ? this.itemPrice : parseInt(this.itemPrice, 10),
+          typeof this.itemPrice === "number"
+            ? this.itemPrice
+            : parseInt(this.itemPrice, 10),
         lineQuantity: 1,
         lineTotal: this.itemPrice
       });
