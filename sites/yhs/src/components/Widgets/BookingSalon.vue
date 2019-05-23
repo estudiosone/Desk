@@ -1,104 +1,44 @@
-<template>
-  <div class="widget-booking-salon">
-    <h2>{{ title }}</h2>
-    <el-form id="step-0">
-      <el-form-item id="input-date" label="Fecha">
-        <el-date-picker
-          v-model="bookingDate"
-          type="date"
-          align="center"
-          format="dd-MM-yyyy"
-          placeholder="Pick a day"
-          :picker-options="datePickerOptions"
-        />
-      </el-form-item>
-      <el-form-item id="btn-reservar">
-        <el-button @click="dialogBookingVisible = true">Reservar</el-button>
-      </el-form-item>
-    </el-form>
-    <el-dialog
-      title="Agendate en nuestros salones"
-      :fullscreen="window.width < 997"
-      :visible.sync="dialogBookingVisible"
-    >
-      <el-collapse v-model="collapseValue" accordion>
-        <el-form label-width="60px" label-position="left">
-          <el-collapse-item title="Tu reserva" name="1">
-            <el-form-item label="Fecha">
-              <el-date-picker
-                v-model="bookingDate"
-                type="date"
-                align="center"
-                format="dd-MM-yyyy"
-                placeholder="Pick a day"
-                :picker-options="datePickerOptions"
-              />
-            </el-form-item>
-            <el-form-item label="Hora">
-              <el-select v-model="bookingHour" placeholder="Seleccione una hora">
-                <el-option
-                  v-for="item in hourList"
-                  :key="item.value"
-                  :label="item.value"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Salón">
-              <el-select v-model="bookingSalon" placeholder="Seleccione un salón">
-                <el-option
-                  v-for="item in salonList"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item label="Salón">
-              <el-select v-model="bookingService" placeholder="Seleccione un servicio">
-                <el-option
-                  v-for="item in serviceList"
-                  :key="item.value"
-                  :label="item.value"
-                  :value="item.value"
-                >
-                </el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-button :disabled="bookingClientDataActive" @click="collapseValue = '2'">
-                Siguiente
-              </el-button>
-            </el-form-item>
-          </el-collapse-item>
-          <el-collapse-item :disabled="bookingClientDataActive" title="Tus datos" name="2">
-            <el-form-item label="Nombre">
-              <el-input v-model="customerName"></el-input>
-            </el-form-item>
-            <el-form-item label="Apellido">
-              <el-input v-model="customerSurname"></el-input>
-            </el-form-item>
-            <el-form-item label="Teléfono">
-              <el-input v-model="customerPhone"></el-input>
-            </el-form-item>
-            <el-form-item label="Email">
-              <el-input v-model="customerEmail"></el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-button :disabled="bookingResumeDataActive" @click="collapseValue = '3'">
-                Siguiente
-              </el-button>
-            </el-form-item>
-          </el-collapse-item>
-          <el-collapse-item :disabled="bookingResumeDataActive" title="Confirmá tus datos" name="3">
-          </el-collapse-item>
-        </el-form>
-      </el-collapse>
-    </el-dialog>
-  </div>
+<template lang="pug">
+  .widget-booking-salon
+    h2 {{ title }}
+    el-form#step-0
+      el-form-item#input-date(label='Fecha')
+        el-date-picker(v-model='bookingDate', type='date', align='center', format='dd-MM-yyyy', placeholder='Pick a day', :picker-options='datePickerOptions')
+      el-form-item#btn-reservar
+        el-button(@click='dialogBookingVisible = true') Reservar
+    el-dialog(title='Agendate en nuestros salones', :fullscreen='window.width < 997', :visible.sync='dialogBookingVisible')
+      el-collapse(v-model='collapseValue', accordion='')
+        el-form(label-width='60px', label-position='left')
+          el-collapse-item(title='Tu reserva', name='1')
+            el-form-item(label='Fecha')
+              el-date-picker(v-model='bookingDate', type='date', align='center', format='dd-MM-yyyy', placeholder='Pick a day', :picker-options='datePickerOptions')
+            el-form-item(label='Hora')
+              el-select(v-model='bookingHour', placeholder='Seleccione una hora')
+                el-option(v-for='item in hourList', :key='item.value', :label='item.value', :value='item.value')
+            el-form-item(label='Salón')
+              el-select(v-model='bookingSalon', placeholder='Seleccione un salón')
+                el-option(v-for='item in salonList', :key='item.value', :label='item.label', :value='item.value')
+            el-form-item(label='Salón')
+              el-select(v-model='bookingService', placeholder='Seleccione un servicio')
+                el-option(v-for='item in serviceList', :key='item.value', :label='item.value', :value='item.value')
+            el-form-item
+              el-button(:disabled='bookingClientDataActive', @click="collapseValue = '2'")
+                | Siguiente
+          el-collapse-item(:disabled='bookingClientDataActive', title='Tus datos', name='2')
+            el-form-item(label='Nombre')
+              el-input(v-model='customerName')
+            el-form-item(label='Apellido')
+              el-input(v-model='customerSurname')
+            el-form-item(label='Teléfono')
+              el-input(v-model='customerPhone')
+            el-form-item(label='Email')
+              el-input(v-model='customerEmail')
+            el-form-item
+              el-button(:disabled='bookingResumeDataActive', @click="collapseValue = '3'")
+                | Siguiente
+          el-collapse-item(:disabled='bookingResumeDataActive', title='Confirmá tus datos', name='3')
 </template>
+
 
 <script lang="ts">
 import Vue from "vue";
@@ -193,13 +133,23 @@ export default Vue.extend({
   },
   computed: {
     bookingClientDataActive() {
-      if (this.bookingDate && this.bookingHour && this.bookingSalon && this.bookingService) {
+      if (
+        this.bookingDate &&
+        this.bookingHour &&
+        this.bookingSalon &&
+        this.bookingService
+      ) {
         return false;
       }
       return true;
     },
     bookingResumeDataActive() {
-      if (this.customerName && this.customerSurname && this.customerPhone && this.customerEmail) {
+      if (
+        this.customerName &&
+        this.customerSurname &&
+        this.customerPhone &&
+        this.customerEmail
+      ) {
         return false;
       }
       return true;
