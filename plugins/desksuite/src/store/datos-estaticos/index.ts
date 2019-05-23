@@ -1,5 +1,5 @@
-import DireccionesEstados from './_direcciones-estados';
-import DireccionesCiudades from './_direcciones-ciudades';
+import DireccionesEstados from "./_direcciones-estados";
+import DireccionesCiudades from "./_direcciones-ciudades";
 
 export default {
   namespaced: true,
@@ -9,20 +9,17 @@ export default {
     Telefono: {
       Areas: [
         {
-          Pais: 'Argentina',
-          Codigo: '+54',
+          Pais: "Argentina",
+          Codigo: "+54"
         },
         {
-          Pais: 'Uruguay',
-          Codigo: '+598',
-        },
-      ],
+          Pais: "Uruguay",
+          Codigo: "+598"
+        }
+      ]
     },
     Identidad: {
-      TipoDeDocumento: [
-        'CI',
-        'DNI',
-      ],
-    },
-  },
+      TipoDeDocumento: ["CI", "DNI"]
+    }
+  }
 };
