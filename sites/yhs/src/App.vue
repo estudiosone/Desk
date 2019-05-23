@@ -1,7 +1,7 @@
 <template>
   <el-container id="app">
     <desknavi></desknavi>
-    <router-view style="height: fit-content;" class="viewer"/>
+    <router-view class="viewer"/>
     <DeskFooter></DeskFooter>
   </el-container>
 </template>
@@ -101,19 +101,29 @@ body {
   margin: 0;
   width: 100%;
   height: 100%;
-  // font-family: 'Dosis', sans-serif;
   font-family: "Mukta Mahee", sans-serif;
+
+  @include sm {
+    overflow: hidden;
+  }
 }
 #app {
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: auto 1fr auto;
+
+  @include md {
+    grid-template-rows: 141px calc(100vh - 141px - 170px) 170px;
+  }
+
   .viewer {
     min-height: calc(100vh - 64px - 426px);
     grid-row: 2 / span 1;
+    overflow-x: auto;
+    overflow-y: auto;
 
     @include md {
-      min-height: calc(100vh - 141px - 142px);
+      height: calc(100vh - 141px - 170px);
     }
   }
   #footer {
