@@ -1,26 +1,20 @@
-<template>
-  <footer id="footer">
-    <div v-for="salon in salons" :key="salon.name" class="salon">
-      <div class="name">
-        {{ salon.name }}
-      </div>
-      <div class="address">
-        <span class="label">Dirección:</span>
-        <span>{{ salon.address }}</span>
-      </div>
-      <div class="phone">
-        <span class="label">Teléfono:</span>
-        <span>{{ salon.phone }}</span>
-      </div>
-      <div class="schedule">
-        <span class="label">Horarios:</span>
-        <div class="content">
-          <span v-for="schedule in salon.schedule" :key="schedule">{{ schedule }}</span>
-        </div>
-      </div>
-    </div>
-  </footer>
+<template lang="pug">
+  footer#footer
+    .salon(v-for='salon in salons', :key='salon.name')
+      .name
+        | {{ salon.name }}
+      .address
+        span.label Dirección:
+        span {{ salon.address }}
+      .phone
+        span.label Teléfono:
+        span {{ salon.phone }}
+      .schedule
+        span.label Horarios:
+        .content
+          span(v-for='schedule in salon.schedule', :key='schedule') {{ schedule }}
 </template>
+
 
 <script lang="ts">
 import Vue from "vue";
