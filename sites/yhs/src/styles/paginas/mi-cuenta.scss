@@ -2,7 +2,6 @@
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: auto 1fr;
-
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -18,30 +17,45 @@
       justify-content: center;
     }
   }
+
   .s-contenido {
-    .s-menu.el-menu--horizontal{
+    .s-menu.el-menu--horizontal {
       display: flex;
       justify-content: center;
     }
+
     @include sm {
       display: flex;
     }
+
     .s-menu {
       @include sm {
         width: 200px;
         min-height: 400px;
       }
     }
+
     .s-datos {
       @extend %margin-horizontal-auto;
       max-width: 468px;
       padding: 20px 20px;
+
       @include sm {
         margin: 0px;
         margin-left: 40px;
       }
     }
+
+    .s-direcciones {
+      width: calc(100vw - 40px);
+      padding: 20px 20px;
+
+      @include sm {
+        width: calc(100vw - 261px);
+      }
+    }
   }
+
   #btn-salir {
     margin-top: -24px;
     font-style: italic;
