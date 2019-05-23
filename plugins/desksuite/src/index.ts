@@ -1,9 +1,9 @@
-import Vuex from './store';
+import Vuex from "./store";
 
-export const install = function (Vue: any, options: any) {
+export const install = (Vue: any, options: any) => {
   Vuex.Registrar(options.store);
-}
+};
 
 export default {
-  install,
-}
+  install
+};
