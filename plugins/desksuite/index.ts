@@ -1,3 +1,3 @@
-import desksuite from './src';
+import desksuite from "./src";
 
 export default desksuite;
