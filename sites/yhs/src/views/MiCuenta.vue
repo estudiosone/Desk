@@ -36,27 +36,27 @@ import CDirecciones from "../components/CDirecciones.vue";
 export default Vue.extend({
   components: {
     CDatosPersonales,
-    CDirecciones
+    CDirecciones,
   },
   props: {
     seccion: {
       type: String,
-      default: "datos"
+      default: "datos",
     },
     accion: {
       type: String,
-      default: "listar"
+      default: "listar",
     },
     index: {
       type: String,
-      default: "0"
-    }
+      default: "0",
+    },
   },
   methods: {
     async salirDeLaCuenta() {
       await firebase.auth().signOut();
       this.$router.push("/");
-    }
-  }
+    },
+  },
 });
 </script>
