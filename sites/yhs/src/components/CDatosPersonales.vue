@@ -1,65 +1,23 @@
-<template>
-  <el-form
-    class="s-datos"
-    :model="datos"
-    label-width="140px"
-    :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'"
-  >
-    <el-form-item label="Nombre">
-      <el-input v-model="datos.name"></el-input>
-    </el-form-item>
-    <el-form-item label="Apellido">
-      <el-input v-model="datos.surname"></el-input>
-    </el-form-item>
-    <el-form-item label="Correo Electrónico">
-      <el-input v-model="datos.email"></el-input>
-    </el-form-item>
-    <el-form-item label="Identificación">
-      <el-input
-        v-model="datos.identification.number"
-        placeholder="Ejemplo: 12345678, sin puntos ni guiones"
-      >
-        <el-select
-          slot="prepend"
-          v-model="datos.identification.type"
-          placeholder="Tipo"
-          style="width: 120px;"
-        >
-          <el-option
-            v-for="identificacion in this.$store.state.DatosEstaticos.Identidad.TipoDeDocumento"
-            :key="identificacion"
-            :label="identificacion"
-            :value="identificacion"
-          />
-        </el-select>
-      </el-input>
-    </el-form-item>
-    <el-form-item label="Teléfono">
-      <el-input
-        v-model="datos.phone.number"
-        placeholder="Sin el primer 0"
-        @input="input_phone_change"
-      >
-        <el-select
-          slot="prepend"
-          v-model="datos.phone.area_code"
-          placeholder="Area"
-          style="width: 120px;"
-        >
-          <el-option
-            v-for="area in this.$store.state.DatosEstaticos.Telefono.Areas"
-            :key="area.Codigo"
-            :label="area.Pais"
-            :value="area.Codigo"
-          />
-        </el-select>
-      </el-input>
-    </el-form-item>
-    <el-form-item class="s-acciones s-acciones--centrado">
-      <el-button type="primary" @click="guardarDatos">Guardar</el-button>
-    </el-form-item>
-  </el-form>
+<template lang="pug">
+  el-form.s-datos(:model='datos', label-width='140px', :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'")
+    el-form-item(label='Nombre')
+      el-input(v-model='datos.name')
+    el-form-item(label='Apellido')
+      el-input(v-model='datos.surname')
+    el-form-item(label='Correo Electrónico')
+      el-input(v-model='datos.email')
+    el-form-item(label='Identificación')
+      el-input(v-model='datos.identification.number', placeholder='Ejemplo: 12345678, sin puntos ni guiones')
+        el-select(slot='prepend', v-model='datos.identification.type', placeholder='Tipo', style='width: 120px;')
+          el-option(v-for='identificacion in this.$store.state.DatosEstaticos.Identidad.TipoDeDocumento', :key='identificacion', :label='identificacion', :value='identificacion')
+    el-form-item(label='Teléfono')
+      el-input(v-model='datos.phone.number', placeholder='Sin el primer 0', @input='input_phone_change')
+        el-select(slot='prepend', v-model='datos.phone.area_code', placeholder='Area', style='width: 120px;')
+          el-option(v-for='area in this.$store.state.DatosEstaticos.Telefono.Areas', :key='area.Codigo', :label='area.Pais', :value='area.Codigo')
+    el-form-item.s-acciones.s-acciones--centrado
+      el-button(type='primary', @click='guardarDatos') Guardar
 </template>
+
 
 <script lang="ts">
 import Vue from "vue";
@@ -107,7 +65,7 @@ export default Vue.extend({
         },
         address: []
       },
-      //* *BP */
+      // * *BP */
       window: {
         width: 0,
         height: 0
@@ -125,7 +83,9 @@ export default Vue.extend({
     };
   },
   created() {
-    EventBus.$on("eventAuthActualizada", () => this.ActualizarDatosDelComponente());
+    EventBus.$on("eventAuthActualizada", () =>
+      this.ActualizarDatosDelComponente()
+    );
     this.ActualizarDatosDelComponente();
   },
   methods: {
@@ -137,7 +97,7 @@ export default Vue.extend({
       }
     },
     async guardarDatos() {
-      //* *Datos de usuarios */
+      // * *Datos de usuarios */
       const loading = this.$loading({
         lock: true,
         text: "Guardando... espera un instante!"
@@ -161,26 +121,16 @@ export default Vue.extend({
       this.datos.email = this.$store.state.user.email;
       this.datos.photoUrl = this.$store.state.user.photoUrl;
       if (this.$store.state.user.identification) {
-        if (this.$store.state.user.identification.type) {
-          this.datos.identification.type = this.$store.state.user.identification.type;
-        }
-        if (this.$store.state.user.identification.number) {
-          this.datos.identification.number = this.$store.state.user.identification.number;
-        }
+        this.datos.identification.type = this.$store.state.user.identification.type;
+        this.datos.identification.number = this.$store.state.user.identification.number;
       }
       if (this.$store.state.user.phone) {
-        if (this.$store.state.user.phone.area_code) {
-          this.datos.phone.area_code = this.$store.state.user.phone.area_code;
-        }
-        if (this.$store.state.user.phone.number) {
-          this.datos.phone.number = this.$store.state.user.phone.number;
-        }
+        this.datos.phone.area_code = this.$store.state.user.phone.area_code;
+        this.datos.phone.number = this.$store.state.user.phone.number;
       }
-      if (this.$store.state.user.address) {
-        this.datos.address = this.$store.state.user.address;
-      } else {
-        this.datos.address = [];
-      }
+      this.datos.address = this.$store.state.user.address
+        ? this.$store.state.user.address
+        : [];
     }
   }
 });
