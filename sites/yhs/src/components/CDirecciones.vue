@@ -1,6 +1,6 @@
 <template lang="pug">
-  div
-    el-table.s-direcciones(:data='direcciones')
+  .s-direcciones
+    el-table(:data='direcciones')
       el-table-column(prop='addressString', label='Mis direcciones')
       el-table-column(width='200px', prop='index')
         template(slot='header')
