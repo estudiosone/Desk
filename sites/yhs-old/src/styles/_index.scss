@@ -1,0 +1,65 @@
+@import './bp';
+
+/* CONST */
+@import './_lib/const';
+
+/* BASE */
+@import './_lib/base';
+
+/* WIDGETS */
+@import './widgets/_store-add-bag';
+
+/* PAGE IMPORTS */
+@import './store.scss';
+@import './user/user';
+@import './paginas/mi-cuenta';
+@import './paginas/mi-compra';
+@import './paginas/tienda';
+
+%footer-salon-line {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  grid-template-rows: 1fr;
+  grid-gap: 8px;
+  margin-bottom: 8px;
+  font-size: 12px;
+}
+
+#footer {
+  display: grid;
+  grid-template-columns: 1fr;;
+  grid-template-rows: 1fr;
+  background-color: $color-brand-secondary;
+  color: $color-brand-secondary-alt;
+
+  @include md {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .salon {  
+    @extend %margin-horizontal-auto;
+    padding: 12px;
+    max-width: 400px;
+
+    .name {
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .address {
+      @extend %footer-salon-line;
+    }
+    .phone {
+      @extend %footer-salon-line;
+    }
+    .schedule {
+      @extend %footer-salon-line;
+      .content {
+        display: flex;
+        flex-direction: column;
+      }
+    }
+  }
+}
+

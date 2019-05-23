@@ -1,0 +1,25 @@
+@import './bp.scss';
+@import './store/filters';
+@import './store/catalogue';
+@import url('https://fonts.googleapis.com/css?family=Lora');
+
+.desk-store {
+  width: 100%;
+  max-width: 1240px;
+  padding: 0 20px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-rows: 72px auto;
+  grid-template-columns: 0px auto;
+  box-sizing: border-box;
+
+  @include sm {
+  }
+  @include md {
+    grid-template-columns: 240px auto;
+    grid-column-gap: 20px;
+  }
+  @include xl {
+    grid-template-columns: 240px auto;
+  }
+}

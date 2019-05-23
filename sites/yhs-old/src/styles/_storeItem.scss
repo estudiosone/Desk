@@ -1,0 +1,106 @@
+@import './bp.scss';
+.item {
+  display: grid;
+  grid-template-rows: auto 1fr;
+  grid-template-columns: calc(100vw - 40px);
+  grid-gap: 20px;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1240px;
+  padding: 20px;
+  margin: 0 auto;
+  box-sizing: border-box;
+
+  @include md {
+    grid-template-columns: repeat(2, calc((100vw - 60px) / 2));
+  }
+
+  @include lg {
+    grid-template-columns: repeat(2, 590px);
+  }
+
+  .media {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: calc(100vw - 40px);
+
+    @include sm {
+      grid-template-columns: 140px calc(100vw - 200px);
+      grid-gap: 20px;
+    }
+    @include md {
+      grid-template-columns: 140px calc(50vw - 180px);
+    }
+    @include lg {
+      grid-template-columns: 140px 430px;
+    }
+
+    .media-list {
+      display: none;
+      flex-direction: column;
+      width: 140px;
+
+      @include sm {
+        display: flex;
+      }
+
+      .el-card {
+        width: 140px;
+        height: 140px;
+        img {
+          width: 100px;
+          height: 100px;
+          padding: 16px;
+          box-sizing: border-box;
+        }
+      }
+    }
+
+    .media-presentation {
+      height: fit-content;
+      img {
+        width: calc(100vw - 260px);
+        height: calc(100vw - 260px);
+        box-sizing: border-box;
+        object-fit: cover;
+
+        @include md {
+          width: calc(50vw - 180px - 40px);
+          height: calc(50vw - 180px - 40px);
+        }
+        @include lg {
+          width: 390px;
+          height: 390px;
+        }
+      }
+    }
+  }
+
+  .info {
+    display: flex;
+    flex-direction: column;
+
+    @include md {
+      margin-left: auto;
+      max-width: 460px;
+    } 
+    .name {
+      font-size: 2em;
+    }
+
+    .brand-category {
+      display: flex;
+
+      .brand {
+        border-left: 4px solid #A52518;
+        padding: 0 8px;
+      }
+
+      .category {
+        border-left: 4px solid #A52518;
+        padding: 0 8px;
+      }
+    }
+  }
+}
+

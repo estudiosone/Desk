@@ -1,0 +1,61 @@
+%button {
+  width: fit-content;
+  height: 60px;
+  padding-right: 12px;
+  padding-left: 12px;
+  border-radius: 8px;
+  border: 1px solid $color-brand-primary;
+  background-color: white;
+  color: $color-brand-secondary;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 600;
+}
+
+%button:hover {
+  background-color: $color-brand-primary;
+  color: $color-brand-secondary-alt;
+}
+
+.button {
+  @extend %button;
+}
+.button-icon {
+  @extend %button;
+  display: flex;
+
+  .icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 12px;
+  }
+
+  .label {
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+}
+.button-icon:hover {
+  @extend %button:hover;
+}
+
+
+.s-titulo {
+  padding-top: 20px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+  padding-left: 20px;
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 24px;
+  font-weight: 600;
+  text-align: center;
+  text-transform: uppercase;
+}
+.alternativo {
+  margin-right: auto;
+  margin-left: auto;
+  font-size: 12px;
+  font-weight: 200;
+  text-align: center;
+  text-transform: uppercase;
+}

@@ -1,0 +1,18 @@
+// Icons
+// -------------------------
+
+
+[data-icons8]:before,
+.icons8-menu:before,
+.icons8-search:before,
+.icons8-shopping-bag:before,
+.icons8-user:before
+{ @include icons8-font; }
+
+[data-icons8]:before { content: attr(data-icons8); }
+
+.icons8-menu:before { content: $icons8-var-menu; }
+.icons8-search:before { content: $icons8-var-search; }
+.icons8-shopping-bag:before { content: $icons8-var-shopping-bag; }
+.icons8-user:before { content: $icons8-var-user; }
+
