@@ -29,10 +29,10 @@
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  ;
   grid-template-rows: 1fr;
   background-color: $color-brand-secondary;
   color: $color-brand-secondary-alt;
+  z-index: 2006;
 
   @include md {
     grid-template-columns: repeat(3, 1fr);
