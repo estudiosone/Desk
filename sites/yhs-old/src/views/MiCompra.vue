@@ -74,7 +74,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import axios from "axios";
 import { Loading } from "element-ui";
 import { Order, User } from "../store";

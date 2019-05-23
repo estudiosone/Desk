@@ -63,7 +63,7 @@
 
 <script lang="ts">
 import Vue from "vue";
-import firebase from "firebase";
+import firebase from "firebase/app";
 import { User, Address } from "../store";
 import EventBus from "../eventBus";
 

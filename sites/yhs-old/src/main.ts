@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Element from "element-ui";
 // import InfiniteLoading from 'vue-infinite-loading';
-import firebase from "firebase";
+import firebase from "firebase/app";
 import firebaseui from "firebaseui";
 import locale from "element-ui/lib/locale/lang/es";
 import App from "./App.vue";

@@ -33,7 +33,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/firestore";
 import Numeral from "numeral";
 
 // import WidgetStoreAddBag from '../components/Widgets/StoreAddBag.vue';
