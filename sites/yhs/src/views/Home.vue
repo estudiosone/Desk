@@ -1,24 +1,18 @@
-<template>
-  <div class="home">
-    <el-carousel :interval="5000">
-      <el-carousel-item>
-        <img src="../assets/img/PROMO-1-min.png" />
-      </el-carousel-item>
-      <el-carousel-item>
-        <img src="../assets/img/PROMO-2-min.png" />
-      </el-carousel-item>
-      <el-carousel-item>
-        <img src="../assets/img/PROMO-3-min.png" />
-      </el-carousel-item>
-    </el-carousel>
-    <div id="salones"></div>
-    <div id="agendate">
-      <img src="../assets/img/agendate-bkg.jpg" alt="" />
-      <WidgetBookingSalon />
-    </div>
-    <div id="blog"></div>
-    <div id="firebaseui-auth-container"></div>
-  </div>
+<template lang="pug">
+  .home
+    el-carousel(:interval='5000')
+      el-carousel-item
+        img(src='../assets/img/PROMO-1-min.png')
+      el-carousel-item
+        img(src='../assets/img/PROMO-2-min.png')
+      el-carousel-item
+        img(src='../assets/img/PROMO-3-min.png')
+    #salones
+    #agendate
+      img(src='../assets/img/agendate-bkg.jpg', alt='')
+      widgetbookingsalon
+    #blog
+    #firebaseui-auth-container
 </template>
 
 <script lang="ts">
