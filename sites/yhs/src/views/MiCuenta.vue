@@ -1,62 +1,49 @@
-<template>
-  <div class="p-mi-cuenta">
-    <div class="s-encabezado">
-      <div class="s-titulo">
-        mi cuenta
-      </div>
-      <div class="s-acciones s-acciones--centrado">
-        <el-button id="btn-salir" type="text" @click.native="salirDeLaCuenta">
-          SALIR DE LA CUENTA
-        </el-button>
-      </div>
-    </div>
-    <div class="s-contenido">
-      <el-menu
-        class="s-menu"
-        :default-active="'/mi-cuenta/' + seccion"
-        :router="true"
-        :mode="this.$store.state.Utilidades.UI.BP.smUp ? 'vertical' : 'horizontal'"
-      >
-        <el-menu-item index="/mi-cuenta/datos">Mis Datos</el-menu-item>
-        <el-menu-item index="/mi-cuenta/direcciones">Mis Direcciones</el-menu-item>
-        <el-menu-item index="/mi-cuenta/historial">Mi Historial</el-menu-item>
-      </el-menu>
-      <CDatosPersonales v-if="seccion == 'datos'" />
-      <CDirecciones v-if="seccion == 'direcciones'" />
-    </div>
-  </div>
+<template lang="pug">
+.p-mi-cuenta
+  .s-encabezado
+    .s-titulo mi cuenta
+    .s-acciones.s-acciones--centrado
+      el-button#btn-salir(type='text', @click.native='salirDeLaCuenta') SALIR DE LA CUENTA
+  .s-contenido
+    el-menu.s-menu(:default-active="'/mi-cuenta/' + seccion", :router='true', :mode="this.$store.state.Utilidades.UI.BP.smUp ? 'vertical' : 'horizontal'")
+      el-menu-item(index='/mi-cuenta/datos') Mis Datos
+      el-menu-item(index='/mi-cuenta/direcciones') Mis Direcciones
+      el-menu-item(index='/mi-cuenta/historial') Mi Historial
+    c-datos-personales(v-if="seccion == 'datos'")
+    c-direcciones(v-if="seccion == 'direcciones'")
 </template>
 
 <script lang="ts">
 import Vue from "vue";
-import firebase from "firebase";
+import firebase from "firebase/app";
+import "firebase/auth";
 import CDatosPersonales from "../components/CDatosPersonales.vue";
 import CDirecciones from "../components/CDirecciones.vue";
 
 export default Vue.extend({
   components: {
     CDatosPersonales,
-    CDirecciones,
+    CDirecciones
   },
   props: {
     seccion: {
       type: String,
-      default: "datos",
+      default: "datos"
     },
     accion: {
       type: String,
-      default: "listar",
+      default: "listar"
     },
     index: {
       type: String,
-      default: "0",
-    },
+      default: "0"
+    }
   },
   methods: {
     async salirDeLaCuenta() {
       await firebase.auth().signOut();
       this.$router.push("/");
-    },
-  },
+    }
+  }
 });
 </script>
