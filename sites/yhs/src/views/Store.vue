@@ -1,50 +1,26 @@
-<template>
-  <div class="p-tienda">
-    <div class="s-encabezado">
-      <div class="s-titulo">
-        tienda
-      </div>
-    </div>
-    <div class="s-contenido">
-      <div class="s-catalogo">
-        <el-card
-          v-for="item in catalogue"
-          :key="item.Id"
-          class="s-item"
-          shadow="hover"
-          @click.native="$router.push(`/store/item/${item.Id}`)"
-        >
-          <img :src="item.Photo" alt="" class="s-foto" />
-          <div class="s-info">
-            <div class="s-item-nombre">
-              {{ item.Name }}
-            </div>
-            <div v-if="disponibilidad(item.Price)" class="s-item-precio">
-              <div class="s-simbolo">
-                $
-              </div>
-              <div class="s-importe">
-                {{ item.Price | importe }}
-              </div>
-            </div>
-            <div v-else class="s-item-no-disponible">
-              temporalmente no disponible
-            </div>
-            <!-- <widget-store-add-bag
+<template lang="pug">
+  .p-tienda
+    .s-encabezado
+      .s-titulo tienda
+    .s-contenido
+      .s-catalogo
+        el-card.s-item(v-for='item in catalogue', :key='item.Id', shadow='hover', @click.native='$router.push(`/store/item/${item.Id}`)')
+          img.s-foto(:src='item.Photo', alt='')
+          .s-info
+            .s-item-nombre {{ item.Name }}
+            .s-item-precio(v-if='disponibilidad(item.Price)')
+              .s-simbolo $
+              .s-importe {{ item.Price | importe }}
+            .s-item-no-disponible(v-else='') temporalmente no disponible
+            //
+              <widget-store-add-bag
               :itemId="item.Id"
               :itemPrice="item.Price"
-              :itemName="item.Name"/> -->
-          </div>
-        </el-card>
-      </div>
-      <div class="s-catalogo-pie s-acciones s-acciones--centrado">
-        <el-button v-if="catalogueExpand" @click="loadMore">
-          VER MAS
-        </el-button>
-      </div>
-    </div>
-  </div>
+              :itemName="item.Name"/>
+      .s-catalogo-pie.s-acciones.s-acciones--centrado
+        el-button(v-if='catalogueExpand', @click='loadMore') VER MAS
 </template>
+
 
 <style lang="scss">
 .desk-store {
@@ -87,12 +63,12 @@ export default Vue.extend({
   data(): {
     catalogue: ICatalogueItem[];
     catalogueExpand: boolean;
-    data: {
+    data: Array<{
       label: string;
-      children: {
+      children: Array<{
         label: string;
-      }[];
-    }[];
+      }>;
+    }>;
     defaultProps: {
       children: string;
       label: string;
@@ -164,12 +140,20 @@ export default Vue.extend({
       let query: firebase.firestore.Query;
       if (firstLoad) {
         query = col
-          .where("Business", "==", app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX"))
+          .where(
+            "Business",
+            "==",
+            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+          )
           .orderBy("Name")
           .limit(12);
       } else {
         query = col
-          .where("Business", "==", app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX"))
+          .where(
+            "Business",
+            "==",
+            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+          )
           .orderBy("Name")
           .startAfter(this.catalogue[this.catalogue.length - 1].Name)
           .limit(12);
@@ -199,11 +183,7 @@ export default Vue.extend({
 
         this.catalogue.push(catalogueItem);
       });
-      if (i === 0) {
-        this.catalogueExpand = true;
-      } else {
-        this.catalogueExpand = false;
-      }
+      this.catalogueExpand = i === 0 ? true : false;
       loading.close();
     },
     disponibilidad(value: any) {
