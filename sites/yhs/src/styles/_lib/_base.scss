@@ -11,11 +11,6 @@
   font-weight: 600;
 }
 
-%button:hover {
-  background-color: $color-brand-primary;
-  color: $color-brand-secondary-alt;
-}
-
 .button {
   @extend %button;
 }
@@ -34,10 +29,6 @@
     text-transform: uppercase;
   }
 }
-.button-icon:hover {
-  @extend %button:hover;
-}
-
 
 .s-titulo {
   padding-top: 20px;
