@@ -23,14 +23,14 @@
             span.s-etiqueta total
             span.s-valor {{ `$ ${orderTotal}` }}
       div
-        cdatospersonales
-          div
-            el-form.s-datos(:model='order', label-width='140px', :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'")
-              el-form-item(label='Dirección')
-                el-select(v-model='order.sendAddress', placeholder='Seleccione una dirección')
-                  el-option(v-for='address in user.address', :key='address.street_name', :label='address.street_name', :value='address')
-          div
-            el-button(@click='pay') PAGAR
+        c-datos-personales
+        div
+          el-form.s-datos(:model='order', label-width='140px', :label-position="this.$store.state.Utilidades.UI.BP.smUp ? 'left' : 'top'")
+            el-form-item(label='Dirección')
+              el-select(v-model='order.sendAddress', placeholder='Seleccione una dirección')
+                el-option(v-for='address in user.address', :key='address.street_name', :label='address.street_name', :value='address')
+        div
+          el-button(@click='pay') PAGAR
 </template>
 
 <script lang="ts">
