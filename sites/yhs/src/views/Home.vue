@@ -10,7 +10,7 @@
     #salones
     #agendate
       img(src='../assets/img/agendate-bkg.jpg', alt='')
-      widgetbookingsalon
+      widget-booking-salon
     #blog
     #firebaseui-auth-container
 </template>
