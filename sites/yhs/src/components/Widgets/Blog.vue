@@ -1,5 +1,5 @@
-<template>
-  <div class="widget-blog"></div>
+<template lang="pug">
+  .widget-blog
 </template>
 
 <script lang="ts">
