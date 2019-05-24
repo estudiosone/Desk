@@ -1,10 +1,12 @@
-<template>
-  <el-container id="app">
-    <desknavi></desknavi>
-    <router-view class="viewer"/>
-    <DeskFooter></DeskFooter>
-  </el-container>
+<template lang="pug">
+  el-container#app
+    desknavi
+    el-scrollbar.viewer
+      el-scrollbar.viewer-container
+        router-view
+      desk-footer
 </template>
+
 
 <script lang="ts">
 import Vue from "vue";
@@ -103,27 +105,33 @@ body {
   height: 100%;
   font-family: "Mukta Mahee", sans-serif;
 
+  overflow: hidden;
   @include sm {
-    overflow: hidden;
   }
 }
 #app {
   display: grid;
   grid-template-columns: 100%;
-  grid-template-rows: auto 1fr auto;
+  grid-template-rows: auto 1fr;
 
   @include md {
-    grid-template-rows: 141px calc(100vh - 141px - 170px) 170px;
+    grid-template-rows: 141px calc(100vh - 141px);
   }
 
   .viewer {
-    min-height: calc(100vh - 64px - 426px);
+    height: calc(100vh - 64px);
     grid-row: 2 / span 1;
-    overflow-x: auto;
-    overflow-y: auto;
 
     @include md {
-      height: calc(100vh - 141px - 170px);
+      height: calc(100vh - 141px);
+    }
+
+    .viewer-container {
+      height: fit-content;
+
+      @include md {
+        height: calc(100vh - 141px - 170px);
+      }
     }
   }
   #footer {
