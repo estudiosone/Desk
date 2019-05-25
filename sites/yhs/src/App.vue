@@ -115,7 +115,7 @@ body {
   grid-template-rows: auto 1fr;
 
   @include md {
-    grid-template-rows: 141px calc(100vh - 141px);
+    grid-template-rows: 112px calc(100vh - 112px);
   }
 
   .viewer {
@@ -123,14 +123,14 @@ body {
     grid-row: 2 / span 1;
 
     @include md {
-      height: calc(100vh - 141px);
+      height: calc(100vh - 112px);
     }
 
     .viewer-container {
       height: fit-content;
 
       @include md {
-        height: calc(100vh - 141px - 170px);
+        height: calc(100vh - 112px - 170px);
       }
     }
   }
