@@ -19,6 +19,7 @@
     "numeral": "^2.0.6",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
+    "vue-scrolly": "^0.9.3",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
