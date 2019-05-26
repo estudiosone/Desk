@@ -30,7 +30,7 @@ export default Vue.extend({
         },
         {
           name: "Blog",
-          to: "/#blog"
+          to: "/blog"
         },
         {
           name: "Tienda",
@@ -125,7 +125,9 @@ body {
     @include md {
       height: calc(100vh - 112px);
     }
-
+    .el-scrollbar__wrap {
+      overflow: auto;
+    }
     .viewer-container {
       height: fit-content;
 

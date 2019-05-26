@@ -1,7 +1,7 @@
 <template lang="pug">
 .p-mi-cuenta
   .s-encabezado
-    .s-titulo mi cuenta
+    .s-titlemi cuenta
     .s-acciones.s-acciones--centrado
       el-button#btn-salir(type='text', @click.native='salirDeLaCuenta') SALIR DE LA CUENTA
   .s-contenido

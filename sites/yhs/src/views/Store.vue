@@ -1,7 +1,7 @@
 <template lang="pug">
   .p-tienda
     .s-encabezado
-      .s-titulo tienda
+      .s-titletienda
     .s-contenido
       .s-catalogo
         el-card.s-item(v-for='item in catalogue', :key='item.Id', shadow='hover', @click.native='$router.push(`/store/item/${item.Id}`)')
