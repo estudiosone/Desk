@@ -1,0 +1,27 @@
+.p-blog-entry {
+  background-color: ghostwhite;
+
+  .s-contenido {
+    width: calc(100vw - 40px);
+    max-width: 860px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+
+    @include md {
+      margin-right: auto;
+      margin-left: auto;
+
+    }
+
+    .el-carousel__item {
+      display: flex;
+      justify-content: center;
+
+      img {
+        object-fit: contain;
+        object-position: center;
+      }
+    }
+  }
+}
