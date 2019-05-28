@@ -11,7 +11,7 @@
             .s-item-precio(v-if='disponibilidad(item.Price)')
               .s-simbolo $
               .s-importe {{ item.Price | importe }}
-            .s-item-no-disponible(v-else='') temporalmente no disponible
+            .s-item-no-disponible(v-else) temporalmente no disponible
             //
               <widget-store-add-bag
               :itemId="item.Id"
