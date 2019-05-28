@@ -1,7 +1,7 @@
 <template lang="pug">
   .p-mi-compra
     .s-encabezado
-      .s-titulo
+      .s-title
         | mi compra
     .s-contenido
       el-table.s-lista-de-compra(:data='order.detail')
@@ -18,6 +18,7 @@
                   el-input-number(v-model='scope.row.lineQuantity', size='mini', controls-position='right', :min='1', :max='10', style='width: 80px', @change='updateLineTotal(scope)')
                   span.s-producto-moneda
                     | {{ `$ ${scope.row.lineTotal}` }}
+                  el-button(@click="deleteLine(scope.$index)",type="danger",icon="el-icon-delete",round,size="mini")
         template(slot='append')
           .s-total
             span.s-etiqueta total
@@ -30,7 +31,7 @@
               el-select(v-model='order.sendAddress', placeholder='Seleccione una dirección')
                 el-option(v-for='address in user.address', :key='address.street_name', :label='address.street_name', :value='address')
         div
-          el-button(@click='pay') PAGAR
+          el-button(@click='pay',:disabled="order.detail.length < 1") PAGAR
 </template>
 
 <script lang="ts">
@@ -89,6 +90,9 @@ export default Vue.extend({
     },
     updateLineTotal(scope: any) {
       scope.row.lineTotal = scope.row.itemPrice * scope.row.lineQuantity;
+    },
+    deleteLine(index: any) {
+      this.$store.commit("order_remove_detail_line", this.order.detail[index]);
     },
     async pay() {
       const loading = Loading.service(this.componentes.loading);
