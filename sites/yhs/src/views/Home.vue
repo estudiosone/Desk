@@ -12,6 +12,19 @@
       img(src='../assets/img/agendate-bkg.jpg', alt='')
       widget-booking-salon
     #blog
+      .s-encabezado
+        .s-title blog
+      .s-contenido
+        .s-filtro
+        .s-list
+          el-card.i-entry(shadow="hover",v-for="entry in this.$store.state.blog.entries",:key="entry.id")
+            img.s-media(:src="entry.mediaURL")
+            .s-title {{entry.title}}
+            p.s-texto {{ entry.childrens | extractContent }}
+            .s-tags
+              el-tag(size="mini",type="info",v-for="tag in entry.tags") {{tag}}
+            .s-action
+              el-button(type="primary" round @click.primary="$router.push(`/blog/${entry.id}`)") Leer más
     #firebaseui-auth-container
 </template>
 
@@ -22,6 +35,19 @@ import WidgetBookingSalon from "../components/Widgets/BookingSalon.vue";
 export default Vue.extend({
   components: {
     WidgetBookingSalon
+  },
+  filters: {
+    extractContent(childrens: any) {
+      let text = "";
+
+      for (const children of childrens) {
+        if (children.type === "p") {
+          text += `${children.data} `;
+        }
+      }
+
+      return text;
+    }
   }
 });
 </script>
