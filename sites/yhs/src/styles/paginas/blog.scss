@@ -1,21 +1,24 @@
 %s-listado {
   padding: 20px;
+  display: grid;
+  grid-template-rows: auto;
+  grid-gap: 20px;
 
   @include md {
-    display: grid;
-    grid-template-rows: auto;
     grid-template-columns: repeat(2, 400px);
-    grid-gap: 20px;
   }
 }
 
 %s-media {
+  width: calc(100vw - 40px - 40px);
+  height: calc(((100vw - 40px - 40px) / 4) * 3);
+  object-fit: cover;
+  object-position: center;
+
   @include md {
     width: 400px;
     height: 300px;
     margin: -20px -20px 0px -20px;
-    object-fit: cover;
-    object-position: center;
   }
 }
 
@@ -29,10 +32,14 @@
   .s-contenido {
     width: 100vw;
     max-width: 860px;
-    margin-right: auto;
-    margin-left: auto;
     display: flex;
     flex-direction: row;
+
+    @include md {
+      margin-right: auto;
+      margin-left: auto;
+
+    }
 
     .s-list {
       @extend %s-listado;
