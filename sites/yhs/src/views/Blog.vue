@@ -8,7 +8,7 @@
         el-card.i-entry(shadow="hover",v-for="entry in this.$store.state.blog.entries",:key="entry.id")
           img.s-media(:src="entry.mediaURL")
           .s-title {{entry.title}}
-          p.s-texto {{ entry.content | extractContent }}
+          p.s-texto {{ entry.childrens | extractContent }}
           .s-tags
             el-tag(size="mini",type="info",v-for="tag in entry.tags") {{tag}}
           .s-action
