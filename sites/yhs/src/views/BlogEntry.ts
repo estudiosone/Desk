@@ -11,7 +11,8 @@ export default Vue.extend({
     return {
       title: "",
       tags: [""],
-      content: ""
+      content: "",
+      childrens: [{ type: '', data: '' }],
     };
   },
   mounted() {
@@ -21,5 +22,6 @@ export default Vue.extend({
     this.title = data.title;
     this.tags = data.tags;
     this.content = data.content;
+    this.childrens = data.childrens;
   }
 });
