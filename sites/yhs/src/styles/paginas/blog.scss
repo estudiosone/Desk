@@ -22,7 +22,8 @@
   }
 }
 
-.p-blog {
+.p-blog,
+#blog {
   background-color: ghostwhite;
 
   @include md {
