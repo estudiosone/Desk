@@ -11,6 +11,7 @@
       el-menu-item(index='/mi-cuenta/historial') Mi Historial
     c-datos-personales(v-if="seccion == 'datos'")
     c-direcciones(v-if="seccion == 'direcciones'")
+    c-historial(v-if="seccion == 'historial'",:id="id",:action="action")
 </template>
 
 <script lang="ts">
@@ -19,20 +20,26 @@ import firebase from "firebase/app";
 import "firebase/auth";
 import CDatosPersonales from "../components/CDatosPersonales.vue";
 import CDirecciones from "../components/CDirecciones.vue";
+import CHistorial from "../components/CHistorial.vue";
 
 export default Vue.extend({
   components: {
     CDatosPersonales,
-    CDirecciones
+    CDirecciones,
+    CHistorial
   },
   props: {
     seccion: {
       type: String,
       default: "datos"
     },
-    accion: {
+    id: {
       type: String,
-      default: "listar"
+      default: ""
+    },
+    action: {
+      type: String,
+      default: ""
     },
     index: {
       type: String,
