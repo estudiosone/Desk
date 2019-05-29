@@ -5,7 +5,7 @@
       el-form-item#input-date(label='Fecha')
         el-date-picker(v-model='bookingDate', type='date', align='center', format='dd-MM-yyyy', placeholder='Pick a day', :picker-options='datePickerOptions')
       el-form-item#btn-reservar
-        el-button(@click='dialogBookingVisible = true') Reservar
+        el-button(@click='dialogBookingVisible = false') Reservar
     el-dialog(title='Agendate en nuestros salones', :fullscreen='window.width < 997', :visible.sync='dialogBookingVisible')
       el-collapse(v-model='collapseValue', accordion='')
         el-form(label-width='60px', label-position='left')
