@@ -50,12 +50,54 @@
       }
     }
 
-    .s-direcciones {
+    .s-direcciones,
+    .s-historial {
       width: calc(100vw - 40px);
       padding: 20px 20px;
 
       @include sm {
         width: calc(100vw - 261px - 40px);
+      }
+    }
+
+    .s-historial {
+      display: flex;
+      flex-direction: column;
+
+      @include md {
+        flex-direction: row;
+      }
+
+      .s-order-data,
+      .s-approved,
+      .s-pending,
+      .s-failed {
+        max-width: calc(100vw - 40px);
+
+        @include md {
+          width: calc(((100vw - 201px - 40px) / 2) - 10px);
+        }
+
+        @include lg {
+          width: calc((992px / 2) - 10px);
+        }
+
+        .s-producto--info-datos {
+          grid-template-columns: 1fr 20px 80px !important;
+        }
+      }
+
+      .s-order-data {
+        @include md {
+          margin-right: 20px;
+        }
+      }
+
+      .s-approved,
+      .s-pending,
+      .s-failed {
+        display: flex;
+        flex-direction: column;
       }
     }
   }
