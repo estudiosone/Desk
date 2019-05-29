@@ -148,11 +148,11 @@ export default Vue.extend({
           identification: this.user.identification
         },
         back_urls: {
-          success: `${location.origin}/mi-compra/historial/${
+          success: `${location.origin}/mi-cuenta/historial/${
             ref.id
           }/confirmada`,
-          pending: `${location.origin}/mi-compra/historial/${ref.id}/pendiente`,
-          failure: `${location.origin}/mi-compra/historial/${
+          pending: `${location.origin}/mi-cuenta/historial/${ref.id}/pendiente`,
+          failure: `${location.origin}/mi-cuenta/historial/${
             ref.id
           }/pago-erroneo`
         },
@@ -190,6 +190,11 @@ export default Vue.extend({
         mPreference
       );
       location.href = result.data.sandbox_init_point;
+      this.$store.commit("order", {
+        user: undefined,
+        sendAddress: undefined,
+        detail: []
+      });
       loading.close();
     }
   }
