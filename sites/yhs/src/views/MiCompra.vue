@@ -3,7 +3,12 @@
     .s-encabezado
       .s-title
         | mi compra
-    .s-contenido
+    .s-contenido(v-if="order.detail.length < 1")
+      .bag-empty
+        img(src="../assets/Bag.svg")
+        .s-sub-title
+          | aún no tienes nada aquí
+    .s-contenido(v-else)
       el-table.s-lista-de-compra(:data='order.detail')
         el-table-column(label='Productos', prop='itemPhotoURL')
           template(slot-scope='scope')
