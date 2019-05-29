@@ -23,7 +23,7 @@
 <script lang="ts">
 import Vue from "vue";
 import firebase from "firebase/app";
-import 'firebase/firestore'
+import "firebase/firestore";
 import Numeral from "numeral";
 
 export default Vue.extend({
