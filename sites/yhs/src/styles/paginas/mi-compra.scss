@@ -23,6 +23,20 @@
       grid-template-columns: repeat(2, calc(600px - 20px - 10px));
     }
 
+    .bag-empty {
+      max-width: calc(100vw - 40px);
+      grid-column: 1 / span 2;
+      display: flex;
+      flex-direction: column;
+
+      img {
+        margin: 20px auto;
+        height: calc((100vh - 112px - 170px) / 2);
+        object-fit: contain;
+        object-position: center;
+      }
+    }
+
     .s-lista-de-compra {
       width: calc(100vw - 40px);
 
