@@ -2,11 +2,7 @@
   .home
     el-carousel(:interval='5000')
       el-carousel-item
-        img(src='../assets/img/PROMO-1-min.png')
-      el-carousel-item
-        img(src='../assets/img/PROMO-2-min.png')
-      el-carousel-item
-        img(src='../assets/img/PROMO-3-min.png')
+        img(src='../assets/img/19_05---Promo-Elixir-Ultimate.jpg')
     #salones
     #agendate
       img(src='../assets/img/agendate-bkg.jpg', alt='')
@@ -57,10 +53,9 @@ export default Vue.extend({
 @import "../styles/home.scss";
 
 .home {
-  width: 100%;
   // height: calc(100vh - 64px);
   .el-carousel {
-    height: calc(100vh - 64px);
+    height: 450px;
     max-height: 100vw;
     .el-carousel__container {
       height: 100%;
@@ -70,6 +65,10 @@ export default Vue.extend({
       width: 100%;
       object-fit: cover;
       object-position: center;
+
+      @include md {
+        transform: scale(0.9, 0.9);
+      }
     }
   }
 }
