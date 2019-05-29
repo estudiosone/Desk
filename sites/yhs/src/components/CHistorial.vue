@@ -1,6 +1,6 @@
 <template lang="pug">
   .s-historial
-    .s-order-data
+    .s-order-data(v-if="$route.params.id !== undefined")
       el-form(label-width='120px', label-position='left', :model="order")
         el-divider Orden
         el-form-item(label="Id")
