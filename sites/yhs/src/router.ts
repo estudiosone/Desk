@@ -46,7 +46,7 @@ const router = new Router({
       props: true
     },
     {
-      path: "/mi-cuenta/:seccion/:accion",
+      path: "/mi-cuenta/:seccion/:id/:action",
       name: "mi-cuenta-accion",
       component: () =>
         import(/* webpackChunkName: "p-mi-cuenta" */ "./views/MiCuenta.vue"),
