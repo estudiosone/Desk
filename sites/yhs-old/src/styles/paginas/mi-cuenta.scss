@@ -18,30 +18,37 @@
       justify-content: center;
     }
   }
+
   .s-contenido {
-    .s-menu.el-menu--horizontal{
+    .s-menu.el-menu--horizontal {
       display: flex;
       justify-content: center;
     }
+
     @include sm {
       display: flex;
     }
+
     .s-menu {
       @include sm {
         width: 200px;
         min-height: 400px;
       }
     }
+
     .s-datos {
       @extend %margin-horizontal-auto;
-      max-width: 468px;
+      max-width: calc(100vw - 40px);
+      // max-width: 468px;
       padding: 20px 20px;
+
       @include sm {
         margin: 0px;
         margin-left: 40px;
       }
     }
   }
+
   #btn-salir {
     margin-top: -24px;
     font-style: italic;
