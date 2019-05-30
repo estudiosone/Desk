@@ -129,6 +129,7 @@ body {
       overflow: auto;
     }
     .viewer-container {
+      max-width: 100vw;
       height: fit-content;
 
       @include md {
