@@ -71,9 +71,8 @@ const router = new Router({
       return {
         selector: to.hash
         // , offset: { x: 0, y: 10 }
-      };
+      }
     }
-    return { x: 0, y: 0 };
   }
 });
 
