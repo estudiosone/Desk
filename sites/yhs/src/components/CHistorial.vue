@@ -69,12 +69,12 @@ export default Vue.extend({
           .set(doc.data()!.Generated.toDate())
           .format("DD/MM/YYYY - HH:mm:SS");
         const detailResult = await docRef.collection("Detail").get();
-        const detail: {
+        const detail: Array<{
           Picture_url: string;
           Quantity: number;
           Title: string;
           Unit_price: number;
-        }[] = [];
+        }> = [];
         for (const det of detailResult.docs) {
           detail.push({
             Picture_url: det.data()!.Picture_url,
