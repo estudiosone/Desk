@@ -1,4 +1,5 @@
 @import './bp.scss';
+
 .item {
   display: grid;
   grid-template-rows: auto 1fr;
@@ -28,9 +29,11 @@
       grid-template-columns: 140px calc(100vw - 200px);
       grid-gap: 20px;
     }
+
     @include md {
       grid-template-columns: 140px calc(50vw - 180px);
     }
+
     @include lg {
       grid-template-columns: 140px 430px;
     }
@@ -47,6 +50,7 @@
       .el-card {
         width: 140px;
         height: 140px;
+
         img {
           width: 100px;
           height: 100px;
@@ -57,7 +61,11 @@
     }
 
     .media-presentation {
+      width: fit-content;
       height: fit-content;
+
+      margin: 0 auto;
+
       img {
         width: calc(100vw - 260px);
         height: calc(100vw - 260px);
@@ -68,6 +76,7 @@
           width: calc(50vw - 180px - 40px);
           height: calc(50vw - 180px - 40px);
         }
+
         @include lg {
           width: 390px;
           height: 390px;
@@ -83,7 +92,8 @@
     @include md {
       margin-left: auto;
       max-width: 460px;
-    } 
+    }
+
     .name {
       font-size: 2em;
     }
@@ -103,4 +113,3 @@
     }
   }
 }
-
