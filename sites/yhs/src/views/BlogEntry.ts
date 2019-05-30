@@ -12,7 +12,7 @@ export default Vue.extend({
       title: "",
       tags: [""],
       content: "",
-      childrens: [{ type: '', data: '' }],
+      childrens: [{ type: "", data: "" }],
     };
   },
   mounted() {
