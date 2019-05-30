@@ -59,7 +59,7 @@ export default Vue.extend({
     };
   },
   async mounted() {
-    if (this.$route.params.id !== "") {
+    if (this.$route.params.id !== undefined) {
       const db = firebase.firestore();
       const docRef = db.collection("Sales").doc(this.$route.params.id);
       const doc = await docRef.get();
