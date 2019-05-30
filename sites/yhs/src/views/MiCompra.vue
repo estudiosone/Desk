@@ -186,7 +186,7 @@ export default Vue.extend({
       });
       this.componentes.loading.text = "Tranfiriendo a Mercado Pago...";
       const result = await axios.post(
-        "https://api.mercadopago.com/checkout/preferences?access_token=TEST-2231678987876568-102116-78ac94e6f5932170a82610b10f317156-214493848",
+        "https://api.mercadopago.com/checkout/preferences?access_token=APP_USR-1192694136518499-030614-53c699f1a31490382ff6acaea1af8c07-247390463",
         mPreference
       );
       location.href = result.data.sandbox_init_point;
