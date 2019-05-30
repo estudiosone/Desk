@@ -147,24 +147,26 @@ export default new Vuex.Store({
             id: "b1",
             title: "tendencias - invierno 2019",
             mediaURL:
-              "http://yhairstylist.com/wp-content/uploads/2019/05/06_guetzli-10-300x300.jpg",
+              "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-invierno-2019--1.jpg?alt=media&token=4f83f838-3a42-47c3-98e9-879e16411297",
             tags: ["Tendencias", "Invierno", "2019"],
             childrens: [
               {
-                type: 'img',
+                type: "img",
                 data: [
-                  'http://yhairstylist.com/wp-content/uploads/2019/05/06_guetzli-10-300x300.jpg',
-                  'http://yhairstylist.com/wp-content/uploads/2019/05/cortesestilobobcortepuntas-225x300.jpg',
-                  'http://yhairstylist.com/wp-content/uploads/2019/05/f13e956ed68ccf50ff430eb8f826cf5b-199x300.jpg'
+                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-invierno-2019--1.jpg?alt=media&token=4f83f838-3a42-47c3-98e9-879e16411297",
+                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-invierno-2019--2.jpg?alt=media&token=404d9d8a-96ca-40c3-9fd0-b7da5ec0f17d",
+                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-invierno-2019--3.jpg?alt=media&token=21302d6e-6dab-45c4-8ff3-ef0b2578f68a"
                 ]
               },
               {
-                type: 'p',
-                data: 'El corte de pelo Bob, la tendencia capilar que regresó este verano, sigue siendo una de las tendencias claras para este invierno. También conocido como ¾ porque representa tres cuartas partes de lo que se considera un peinado de cabello largo,empieza en la nuca y tiene una progresión lineal continua hacia delante.'
+                type: "p",
+                data:
+                  "El corte de pelo Bob, la tendencia capilar que regresó este verano, sigue siendo una de las tendencias claras para este invierno. También conocido como ¾ porque representa tres cuartas partes de lo que se considera un peinado de cabello largo,empieza en la nuca y tiene una progresión lineal continua hacia delante."
               },
               {
-                type: 'p',
-                data: 'Este corte de pelo te dejará una melena corta que te permitirá evitar el secador y las planchas. Y, al no abusar de los productos de peinado, este corte ayudará a tu pelo a recuperarse de los excesos de sol y sequedad del verano y el otoño.'
+                type: "p",
+                data:
+                  "Este corte de pelo te dejará una melena corta que te permitirá evitar el secador y las planchas. Y, al no abusar de los productos de peinado, este corte ayudará a tu pelo a recuperarse de los excesos de sol y sequedad del verano y el otoño."
               }
             ]
           },
@@ -172,23 +174,24 @@ export default new Vuex.Store({
             id: "b2",
             title: "tendencias - color 2019",
             mediaURL:
-              "http://yhairstylist.com/wp-content/uploads/2019/05/25dbc8c9aae8cf215667c221ea4df570-238x300.jpg",
+              "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--1.jpg?alt=media&token=aea1a527-c1fb-4947-a7f6-888672d2a438",
             tags: ["Tendencias", "Color", "2019"],
             childrens: [
               {
-                type: 'img',
+                type: "img",
                 data: [
-                  'http://yhairstylist.com/wp-content/uploads/2019/05/25dbc8c9aae8cf215667c221ea4df570-238x300.jpg',
-                  'http://yhairstylist.com/wp-content/uploads/2019/05/57ff37414776ace0dd76522df6f31f1a-240x300.jpg',
-                  'http://yhairstylist.com/wp-content/uploads/2019/05/f8b017c542c3f51f5de45e8e33c5ba3d-182x300.jpg',
-                  'http://yhairstylist.com/wp-content/uploads/2019/05/6b8038d591dae0ca6483a9391657cf78-218x300.jpg',
-                  'http://yhairstylist.com/wp-content/uploads/2019/05/trucos_para_reinventar_un_long_bob_841193398_562x908-186x300.jpg'
+                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--1.jpg?alt=media&token=aea1a527-c1fb-4947-a7f6-888672d2a438",
+                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--2.jpg?alt=media&token=f5aea938-8d32-4235-b13a-66b5071ae0ae",
+                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--3.jpg?alt=media&token=5344af52-d4a0-45df-b098-7b02c380ad21",
+                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--4.jpg?alt=media&token=fe5d548e-f24b-4afa-b799-41bac58891c8",
+                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--5.jpg?alt=media&token=38030c9e-8c8a-41ba-8bd9-24a1d8073aa8"
                 ]
               },
               {
-                type: 'p',
-                data: 'Las mechas balayage, los rubios soda, los tonos bronde, castaños profundos, pelirrojos y rosas se convierten en los favoritos de la temporada.'
-              },
+                type: "p",
+                data:
+                  "Las mechas balayage, los rubios soda, los tonos bronde, castaños profundos, pelirrojos y rosas se convierten en los favoritos de la temporada."
+              }
             ]
           }
         ]
