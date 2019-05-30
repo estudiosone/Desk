@@ -24,11 +24,12 @@ Vue.use(Element, { locale });
 
 const config = {
   apiKey: "AIzaSyBmHcyoT3Yrmz8g6IDlVK0ogPd89-M-lWQ",
-  authDomain: "desk-uy.firebaseapp.com",
+  authDomain: "yhairstylist.firebaseapp.com",
   databaseURL: "https://desk-uy.firebaseio.com",
   projectId: "desk-uy",
   storageBucket: "desk-uy.appspot.com",
-  messagingSenderId: "456998131508"
+  messagingSenderId: "456998131508",
+  appId: "1:456998131508:web:9771938dd1cc84e2"
 };
 
 const app = firebase.initializeApp(config);
