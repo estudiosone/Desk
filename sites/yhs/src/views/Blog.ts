@@ -3,10 +3,10 @@ export default Vue.extend({
   name: "blog",
   filters: {
     extractContent(childrens: any) {
-      let text = '';
+      let text = "";
 
       for (const children of childrens) {
-        if (children.type === 'p') {
+        if (children.type === "p") {
           text += `${children.data} `;
         }
       }
