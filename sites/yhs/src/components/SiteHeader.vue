@@ -39,7 +39,7 @@
               | mi historial
             el-dropdown-item.w-mi-cuenta(@click.native='salirDeLaCuenta', :divided='true')
               | salir
-        el-dialog.firebaseui-auth-dialog(title='Ingresar a mi cuenta', width='560px', :visible.sync='ModalesAutenticacion', :fullscreen='this.$store.state.Utilidades.UI.BP.mdUp', @opened='setFirebaseAuthUI')
+        el-dialog.firebaseui-auth-dialog(title='Ingresar a mi cuenta', width='560px', :visible.sync='ModalesAutenticacion', :fullscreen='this.$store.state.Utilidades.UI.BP.smDown', @opened='setFirebaseAuthUI')
           .firebaseui-auth-container
             .logo
               img.logo(:src='this.$store.state.Site.LogoURL', alt='')
