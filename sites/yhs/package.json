@@ -17,7 +17,6 @@
     "firebaseui": "^4.0.0",
     "moment": "^2.24.0",
     "numeral": "^2.0.6",
-    "perfect-scrollbar": "^1.4.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vue-scrolly": "^0.9.3",
