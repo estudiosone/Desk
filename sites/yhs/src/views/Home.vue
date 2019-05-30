@@ -18,7 +18,7 @@
             .s-title {{entry.title}}
             p.s-texto {{ entry.childrens | extractContent }}
             .s-tags
-              el-tag(size="mini",type="info",v-for="tag in entry.tags") {{tag}}
+              el-tag(size="mini",type="info",v-for="tag in entry.tags",:key="tag") {{tag}}
             .s-action
               el-button(type="primary" round @click.primary="$router.push(`/blog/${entry.id}`)") Leer más
     #firebaseui-auth-container
