@@ -1,8 +1,8 @@
 <template lang="pug">
   el-container#app
     desknavi
-    el-scrollbar.viewer
-      el-scrollbar.viewer-container
+    .viewer
+      .viewer-container
         router-view
       desk-footer
 </template>
@@ -121,17 +121,14 @@ body {
   .viewer {
     height: calc(100vh - 64px);
     grid-row: 2 / span 1;
-
+    overflow-y: overlay;
     @include md {
       height: calc(100vh - 112px);
-    }
-    .el-scrollbar__wrap {
-      overflow: auto;
     }
     .viewer-container {
       max-width: 100vw;
       height: fit-content;
-
+      overflow-y: overlay;
       @include md {
         height: calc(100vh - 112px - 170px);
       }
