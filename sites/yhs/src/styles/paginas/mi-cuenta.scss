@@ -23,6 +23,8 @@
   }
 
   .s-contenido {
+    max-width: calc(100vw);
+
     .s-menu.el-menu--horizontal {
       display: flex;
       justify-content: center;
@@ -41,7 +43,8 @@
 
     .s-datos {
       @extend %margin-horizontal-auto;
-      max-width: 468px;
+      max-width: calc(100vw - 40px);
+      // max-width: 468px;
       padding: 20px 20px;
 
       @include sm {
