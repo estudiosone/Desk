@@ -189,7 +189,7 @@ export default Vue.extend({
         "https://api.mercadopago.com/checkout/preferences?access_token=APP_USR-1192694136518499-030614-53c699f1a31490382ff6acaea1af8c07-247390463",
         mPreference
       );
-      location.href = result.data.sandbox_init_point;
+      location.href = result.data.init_point;
       this.$store.commit("order", {
         user: undefined,
         sendAddress: undefined,
