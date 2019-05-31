@@ -3,6 +3,18 @@
     el-carousel(:interval='5000')
       el-carousel-item
         img(src='../assets/img/19_05---Promo-Elixir-Ultimate.jpg')
+        img(src='../assets/img/Dibujo.jpg')
+        img(src='../assets/img/Dibujo1.jpg')
+        img(src='../assets/img/Dibujo2.jpg')
+        img(src='../assets/img/Dibujo3.jpg')
+        img(src='../assets/img/Dibujo4.jpg')
+        img(src='../assets/img/PROMO_CUP_COLOR.jpg')
+        img(src='../assets/img/PROMO_CUP_CORTE.jpg')
+        img(src='../assets/img/PROMO_CUP_KERASTASE.jpg')
+        img(src='../assets/img/PROMO_CUP_LOREAL.jpg')
+        img(src='../assets/img/PROMO_CUP_MANOS.jpg')
+        img(src='../assets/img/PROMO_CUP_REDKEN.jpg')
+        img(src='../assets/img/PROMO_CUP_RITUALES.jpg')
     #salones
     #agendate
       img(src='../assets/img/agendate-bkg.jpg', alt='')
