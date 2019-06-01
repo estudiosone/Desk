@@ -3,17 +3,29 @@
     el-carousel(:interval='5000')
       el-carousel-item
         img(src='../assets/img/19_05---Promo-Elixir-Ultimate.jpg')
+      el-carousel-item
         img(src='../assets/img/Dibujo.jpg')
+      el-carousel-item
         img(src='../assets/img/Dibujo1.jpg')
+      el-carousel-item
         img(src='../assets/img/Dibujo2.jpg')
+      el-carousel-item
         img(src='../assets/img/Dibujo3.jpg')
+      el-carousel-item
         img(src='../assets/img/Dibujo4.jpg')
+      el-carousel-item
         img(src='../assets/img/PROMO_CUP_COLOR.jpg')
+      el-carousel-item
         img(src='../assets/img/PROMO_CUP_CORTE.jpg')
+      el-carousel-item
         img(src='../assets/img/PROMO_CUP_KERASTASE.jpg')
+      el-carousel-item
         img(src='../assets/img/PROMO_CUP_LOREAL.jpg')
+      el-carousel-item
         img(src='../assets/img/PROMO_CUP_MANOS.jpg')
+      el-carousel-item
         img(src='../assets/img/PROMO_CUP_REDKEN.jpg')
+      el-carousel-item
         img(src='../assets/img/PROMO_CUP_RITUALES.jpg')
     #salones
     #agendate
@@ -75,7 +87,7 @@ export default Vue.extend({
     img {
       height: 100%;
       width: 100%;
-      object-fit: cover;
+      object-fit: contain;
       object-position: center;
 
       @include md {
