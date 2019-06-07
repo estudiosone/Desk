@@ -13,12 +13,13 @@
   grid-template-columns: 0px auto;
   box-sizing: border-box;
 
-  @include sm {
-  }
+  @include sm {}
+
   @include md {
     grid-template-columns: 240px auto;
     grid-column-gap: 20px;
   }
+
   @include xl {
     grid-template-columns: 240px auto;
   }
