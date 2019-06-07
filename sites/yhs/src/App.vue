@@ -121,17 +121,14 @@ body {
   .viewer {
     height: calc(100vh - 64px);
     grid-row: 2 / span 1;
-    overflow-y: overlay;
+    overflow-y: auto;
     @include md {
       height: calc(100vh - 112px);
     }
     .viewer-container {
       max-width: 100vw;
       height: fit-content;
-      overflow-y: overlay;
-      @include md {
-        height: calc(100vh - 112px - 170px);
-      }
+      overflow-y: auto;
     }
   }
   #footer {
