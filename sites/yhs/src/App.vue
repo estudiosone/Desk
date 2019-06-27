@@ -16,6 +16,8 @@ import "firebase/firestore";
 import EventBus from "./eventBus";
 import DeskFooter from "./components/Footer.vue";
 
+Vue.prototype.$turnsDate = new Array<string>();
+
 export default Vue.extend({
   name: "App",
   components: {
