@@ -5,7 +5,7 @@
       el-form-item#input-date(label='Fecha')
         el-date-picker(v-model='bookingDate', type='date', align='center', format='dd-MM-yyyy', placeholder='Pick a day', :picker-options='datePickerOptions')
       el-form-item#btn-reservar
-        el-button(@click='dialogBookingVisible = false') Reservar
+        el-button(@click='dialogBookingVisible = true') Reservar
     el-dialog(title='Agendate en nuestros salones', :fullscreen='window.width < 997', :visible.sync='dialogBookingVisible')
       el-collapse(v-model='collapseValue', accordion='')
         el-form(label-width='60px', label-position='left')
@@ -42,6 +42,10 @@
 
 <script lang="ts">
 import Vue from "vue";
+import firebase from "firebase/app";
+import "firebase/firestore";
+import moment from "moment";
+import EventBus from "../../eventBus";
 
 export default Vue.extend({
   props: {
@@ -51,7 +55,10 @@ export default Vue.extend({
     }
   },
   data() {
+    var vm = this;
     return {
+      turns: new Array<object>(),
+      turnsDate: new Array<string>(),
       dialogBookingVisible: false,
       collapseValue: "1",
       bookingDate: new Date(),
@@ -119,10 +126,23 @@ export default Vue.extend({
         }
       ],
       datePickerOptions: {
-        disabledDate(date: any) {
-          const d = new Date();
-          d.setDate(d.getDate() - 1);
-          return date <= d;
+        disabledDate(date: Date, ot: string) {
+          console.log(Vue.prototype.$turnsDate, moment(date).format("YYMMDD"));
+          const minDate = new Date();
+          const maxDate = new Date();
+          console.log(ot);
+          minDate.setDate(minDate.getDate() - 1);
+          maxDate.setDate(maxDate.getDate() + 30);
+          if (date <= minDate) {
+            return true;
+          } else if (date >= maxDate) {
+            return true;
+          } else if (vm.turnsDate.includes(moment(date).format("YYMMDD"))) {
+            return false;
+            console.log(date);
+          } else {
+            return true;
+          }
         }
       },
       window: {
@@ -158,6 +178,41 @@ export default Vue.extend({
   created() {
     window.addEventListener("resize", this.handleResize);
     this.handleResize();
+    EventBus.$on("eventAuthActualizada", async () => {
+      const turnsRefs = await firebase
+        .firestore()
+        .collection(
+          "Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/availability"
+        )
+        .where("turn", ">", new Date())
+        .get();
+      const turns = new Array<object>();
+      turnsRefs.forEach(element => {
+        const date = moment(element.data().turn.toDate());
+        turns.push({
+          id: element.id,
+          turn: {
+            date: new Date(
+              element
+                .data()
+                .turn.toDate()
+                .toDateString()
+            ),
+            turn: `${element
+              .data()
+              .turn.toDate()
+              .getHours()}:${element
+              .data()
+              .turn.toDate()
+              .getMinutes()}`
+          }
+        });
+        const dateString = `${date.format("YYMMDD")}`;
+        console.log(dateString);
+        this.turnsDate.push(dateString);
+      });
+      this.turns = turns;
+    });
   },
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
