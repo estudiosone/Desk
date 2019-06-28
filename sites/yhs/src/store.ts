@@ -4,6 +4,12 @@ import firebase from "firebase/app";
 import "firebase/firestore";
 
 import { IState } from "../types/store";
+/// Modulos
+
+// Salon Booking
+import Availability from "./types/modules/salonBooking/Availability";
+import BeautySalon from "./types/modules/salonBooking/BeautySalon";
+import Service from "./types/modules/salonBooking/Service";
 
 interface NavMenu {
   Index: number;
@@ -139,6 +145,75 @@ export default new Vuex.Store({
     }
   },
   modules: {
+    salonBooking: {
+      namespaced: true,
+      state: {
+        availability: Object,
+        beautySalons: new Array<BeautySalon>(),
+        services: new Array<Service>()
+      },
+      mutations: {
+        setAvailability(state, payload: Availability) {
+          state.availability = payload;
+        },
+        setBeautySalons(state, payload: BeautySalon[]) {
+          state.beautySalons = payload;
+        },
+        setServices(state, payload: Service[]) {
+          state.services = payload;
+        }
+      },
+      actions: {
+        async initialization(context) {
+          const siteId = stateConst.SiteId;
+          const db = firebase.firestore();
+
+          // Obtener los salones
+          const beautySalons = new Array<BeautySalon>();
+          const resultBeautySalons = await db
+            .collection(`Sites/${siteId}/modules/salon-booking/beauty-salons`)
+            .get();
+          resultBeautySalons.forEach(
+            (element: firebase.firestore.QueryDocumentSnapshot) => {
+              beautySalons.push({
+                id: element.id,
+                name: element.data()!.name,
+                schedule: element.data()!.schedule,
+                shiftBasedOnCalendar: element.data()!.shiftBasedOnCalendar,
+                shiftBasedOnSchedule: element.data()!.shiftBasedOnSchedule
+              });
+            }
+          );
+
+          // Obtener los servicios
+          const services = new Array<Service>();
+          const resultServices = await db
+            .collection(`Sites/${siteId}/modules/salon-booking/services`)
+            .get();
+          resultServices.forEach(
+            (element: firebase.firestore.QueryDocumentSnapshot) => {
+              services.push({
+                id: element.id,
+                name: element.data()!.name
+              });
+            }
+          );
+          services.sort((a, b) => {
+            if (a.name > b.name) {
+              return 1;
+            }
+            if (a.name < b.name) {
+              return -1;
+            }
+            // a must be equal to b
+            return 0;
+          });
+          // Guardo los nuevos estados
+          context.commit("setBeautySalons", beautySalons);
+          context.commit("setServices", services);
+        }
+      }
+    },
     blog: {
       namespaced: true,
       state: {
