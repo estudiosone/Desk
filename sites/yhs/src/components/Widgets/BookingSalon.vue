@@ -12,12 +12,12 @@
           el-collapse-item(title='Tu reserva', name='1')
             el-form-item(label='Fecha')
               el-date-picker(v-model='bookingDate', type='date', align='center', format='dd-MM-yyyy', placeholder='Pick a day', :picker-options='datePickerOptions')
-            el-form-item(label='Hora')
-              el-select(v-model='bookingHour', placeholder='Seleccione una hora')
-                el-option(v-for='item in hourList', :key='item.value', :label='item.value', :value='item.value')
             el-form-item(label='Salón')
-              el-select(v-model='bookingSalon', placeholder='Seleccione un salón')
+              el-select(v-model='bookingSalon', placeholder='Seleccione un salón', @change="getTurns()")
                 el-option(v-for='item in salonList', :key='item.value', :label='item.label', :value='item.value')
+            el-form-item(label='Hora', v-if="bookingDate && bookingSalon")
+              el-select(v-model='bookingHour', placeholder='Seleccione una hora', :no-data-text="turnNoMatch")
+                el-option(v-for='item in hourList', :key='item.value', :label='item.value', :value='item.value')
             el-form-item(label='Salón')
               el-select(v-model='bookingService', placeholder='Seleccione un servicio')
                 el-option(v-for='item in serviceList', :key='item.value', :label='item.value', :value='item.value')
@@ -55,7 +55,6 @@ export default Vue.extend({
     }
   },
   data() {
-    var vm = this;
     return {
       turns: new Array<object>(),
       turnsDate: new Array<string>(),
@@ -97,50 +96,18 @@ export default Vue.extend({
         { value: "20:00" },
         { value: "20:30" }
       ],
-      salonList: [
-        {
-          value: "portones",
-          label: "Portones Shopping"
-        },
-        {
-          value: "brunel",
-          label: "Portal Brunel"
-        },
-        {
-          value: "americas",
-          label: "Portal Americas"
-        }
-      ],
-      serviceList: [
-        {
-          value: "Lavado L’Oréal"
-        },
-        {
-          value: "Lavado Kerastase"
-        },
-        {
-          value: "Lavado Redken"
-        },
-        {
-          value: "Brushing"
-        }
-      ],
+      salonList: new Array<{ value: string; label: string }>(),
+      salonListLoading: false,
+      serviceList: new Array<{ value: string }>(),
       datePickerOptions: {
         disabledDate(date: Date, ot: string) {
-          console.log(Vue.prototype.$turnsDate, moment(date).format("YYMMDD"));
           const minDate = new Date();
           const maxDate = new Date();
-          console.log(ot);
           minDate.setDate(minDate.getDate() - 1);
           maxDate.setDate(maxDate.getDate() + 30);
           if (date <= minDate) {
             return true;
           } else if (date >= maxDate) {
-            return true;
-          } else if (vm.turnsDate.includes(moment(date).format("YYMMDD"))) {
-            return false;
-            console.log(date);
-          } else {
             return true;
           }
         }
@@ -173,6 +140,10 @@ export default Vue.extend({
         return false;
       }
       return true;
+    },
+    turnNoMatch() {
+      const date = moment(this.bookingDate).format("DD/MM/YYYY");
+      return "No hay turno disponibles";
     }
   },
   created() {
@@ -208,10 +179,27 @@ export default Vue.extend({
           }
         });
         const dateString = `${date.format("YYMMDD")}`;
-        console.log(dateString);
         this.turnsDate.push(dateString);
       });
       this.turns = turns;
+      const result = await firebase
+        .firestore()
+        .collection(
+          "Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/beauty-salons"
+        )
+        .get();
+      result.forEach(item =>
+        this.salonList.push({ value: item.id, label: item.data().name })
+      );
+    });
+  },
+  async mounted() {
+    const result = await firebase
+      .firestore()
+      .collection("Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/services")
+      .get();
+    result.forEach((element: any) => {
+      this.serviceList.push({ value: element.data()!.name });
     });
   },
   destroyed() {
@@ -221,6 +209,35 @@ export default Vue.extend({
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
+    },
+    async remoteMethod(query: string) {
+      this.salonListLoading = true;
+      const result = await firebase
+        .firestore()
+        .collection(
+          "Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/beauty-salons"
+        )
+        .get();
+      result.forEach(item =>
+        this.salonList.push({ value: item.id, label: item.data().name })
+      );
+      this.salonListLoading = false;
+    },
+    async getTurns() {
+      const result = await firebase
+        .firestore()
+        .doc(
+          `Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/availability/${moment(
+            this.bookingDate
+          ).format("YYMMDD")}-${this.bookingSalon}`
+        )
+        .get();
+      this.hourList = new Array<{ value: string }>();
+      if (result.exists) {
+        result.data()!.turns.forEach((element: string) => {
+          this.hourList.push({ value: element });
+        });
+      }
     }
   }
 });
