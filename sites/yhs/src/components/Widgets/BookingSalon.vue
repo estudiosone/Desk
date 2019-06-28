@@ -3,40 +3,44 @@
     h2 {{ title }}
     el-form#step-0
       el-form-item#input-date(label='Fecha')
-        el-date-picker(v-model='bookingDate', type='date', align='center', format='dd-MM-yyyy', placeholder='Pick a day', :picker-options='datePickerOptions')
+        el-date-picker(v-model='data.bookingDate', type='date', align='center', format='dd-MM-yyyy', placeholder='Pick a day', :picker-options='datePickerOptions')
       el-form-item#btn-reservar
         el-button(@click='dialogBookingVisible = true') Reservar
     el-dialog(title='Agendate en nuestros salones', :fullscreen='window.width < 997', :visible.sync='dialogBookingVisible')
       el-collapse(v-model='collapseValue', accordion='')
-        el-form(label-width='60px', label-position='left')
+        el-form(label-width='120px', label-position='left', :rules="rules", :model="data")
           el-collapse-item(title='Tu reserva', name='1')
             el-form-item(label='Fecha')
-              el-date-picker(v-model='bookingDate', type='date', align='center', format='dd-MM-yyyy', placeholder='Pick a day', :picker-options='datePickerOptions')
+              el-date-picker(v-model='data.bookingDate', type='date', align='center', format='dd-MM-yyyy', placeholder='Pick a day', :picker-options='datePickerOptions' @change="changeBookingDate")
             el-form-item(label='Salón')
-              el-select(v-model='bookingSalon', placeholder='Seleccione un salón', @change="getTurns()")
-                el-option(v-for='item in salonList', :key='item.value', :label='item.label', :value='item.value')
-            el-form-item(label='Hora', v-if="bookingDate && bookingSalon")
-              el-select(v-model='bookingHour', placeholder='Seleccione una hora', :no-data-text="turnNoMatch")
+              el-select(v-model='data.bookingSalon', placeholder='Seleccione un salón', @change="changeBookingSalon")
+                el-option(v-for='item in this.$store.state.salonBooking.beautySalons', :key='item.id', :label='item.name', :value='item.id')
+            el-form-item(label='Turno', v-if="data.bookingSalon")
+              el-select(v-model='data.bookingHour', placeholder='Seleccione una hora', no-data-text="No hay turnos disponibles en este salón")
                 el-option(v-for='item in hourList', :key='item.value', :label='item.value', :value='item.value')
-            el-form-item(label='Salón')
-              el-select(v-model='bookingService', placeholder='Seleccione un servicio')
-                el-option(v-for='item in serviceList', :key='item.value', :label='item.value', :value='item.value')
+            el-form-item(label='Servicios', v-if="data.bookingHour")
+              el-select(v-model='data.bookingService', placeholder='Seleccione un servicio')
+                el-option(v-for='item in this.$store.state.salonBooking.services', :key='item.id', :label='item.name', :value='item.id')
             el-form-item
               el-button(:disabled='bookingClientDataActive', @click="collapseValue = '2'")
                 | Siguiente
           el-collapse-item(:disabled='bookingClientDataActive', title='Tus datos', name='2')
-            el-form-item(label='Nombre')
-              el-input(v-model='customerName')
-            el-form-item(label='Apellido')
-              el-input(v-model='customerSurname')
-            el-form-item(label='Teléfono')
-              el-input(v-model='customerPhone')
-            el-form-item(label='Email')
-              el-input(v-model='customerEmail')
+            el-form-item(label='Nombre', prop="customerName")
+              el-input(v-model='data.customerName')
+            el-form-item(label='Apellido', prop="customerSurname")
+              el-input(v-model='data.customerSurname')
+            el-form-item(label='Teléfono', prop="customerPhone")
+              el-input(v-model='data.customerPhone')
+            el-form-item(label='Email', prop="customerEmail")
+              el-input(v-model='data.customerEmail')
             el-form-item
               el-button(:disabled='bookingResumeDataActive', @click="collapseValue = '3'")
                 | Siguiente
           el-collapse-item(:disabled='bookingResumeDataActive', title='Confirmá tus datos', name='3')
+            el-divider Datos de la reserva
+            div
+              span Fecha:
+              span {{ sumary.bookingDate }}
 </template>
 
 
@@ -60,45 +64,8 @@ export default Vue.extend({
       turnsDate: new Array<string>(),
       dialogBookingVisible: false,
       collapseValue: "1",
-      bookingDate: new Date(),
-      bookingHour: undefined,
-      bookingSalon: undefined,
-      bookingService: undefined,
-      customerName: undefined,
-      customerSurname: undefined,
-      customerPhone: undefined,
-      customerEmail: undefined,
-      hourList: [
-        { value: "08:00" },
-        { value: "08:30" },
-        { value: "09:00" },
-        { value: "09:30" },
-        { value: "10:00" },
-        { value: "10:30" },
-        { value: "11:00" },
-        { value: "11:30" },
-        { value: "12:00" },
-        { value: "12:30" },
-        { value: "13:00" },
-        { value: "13:30" },
-        { value: "14:00" },
-        { value: "14:30" },
-        { value: "15:00" },
-        { value: "15:30" },
-        { value: "16:00" },
-        { value: "16:30" },
-        { value: "17:00" },
-        { value: "17:30" },
-        { value: "18:00" },
-        { value: "18:30" },
-        { value: "19:00" },
-        { value: "19:30" },
-        { value: "20:00" },
-        { value: "20:30" }
-      ],
-      salonList: new Array<{ value: string; label: string }>(),
+      hourList: new Array<{ value: string }>(),
       salonListLoading: false,
-      serviceList: new Array<{ value: string }>(),
       datePickerOptions: {
         disabledDate(date: Date, ot: string) {
           const minDate = new Date();
@@ -112,6 +79,46 @@ export default Vue.extend({
           }
         }
       },
+      data: {
+        bookingDate: new Date(),
+        bookingHour: undefined,
+        bookingSalon: undefined,
+        bookingService: undefined,
+        customerName: undefined,
+        customerSurname: undefined,
+        customerPhone: undefined,
+        customerEmail: undefined
+      },
+      rules: {
+        customerName: [
+          {
+            required: true,
+            message: "Debe ingresar su nombre",
+            trigger: "blur"
+          }
+        ],
+        customerSurname: [
+          {
+            required: true,
+            message: "Debe ingresar su apellido",
+            trigger: "blur"
+          }
+        ],
+        customerPhone: [
+          {
+            required: true,
+            message: "Debe ingresar su teléfono",
+            trigger: "blur"
+          }
+        ],
+        customerEmail: [
+          {
+            required: true,
+            message: "Debe ingresar su e-mail",
+            trigger: "blur"
+          }
+        ]
+      },
       window: {
         width: 0,
         height: 0
@@ -121,10 +128,10 @@ export default Vue.extend({
   computed: {
     bookingClientDataActive() {
       if (
-        this.bookingDate &&
-        this.bookingHour &&
-        this.bookingSalon &&
-        this.bookingService
+        this.data.bookingDate &&
+        this.data.bookingHour &&
+        this.data.bookingSalon &&
+        this.data.bookingService
       ) {
         return false;
       }
@@ -132,18 +139,20 @@ export default Vue.extend({
     },
     bookingResumeDataActive() {
       if (
-        this.customerName &&
-        this.customerSurname &&
-        this.customerPhone &&
-        this.customerEmail
+        this.data.customerName &&
+        this.data.customerSurname &&
+        this.data.customerPhone &&
+        this.data.customerEmail
       ) {
         return false;
       }
       return true;
     },
-    turnNoMatch() {
-      const date = moment(this.bookingDate).format("DD/MM/YYYY");
-      return "No hay turno disponibles";
+    sumary() {
+      const nn = moment().format("dddd, DD [de] MMMM [de] YYYY");
+      return {
+        bookingDate: nn
+      };
     }
   },
   created() {
@@ -182,25 +191,17 @@ export default Vue.extend({
         this.turnsDate.push(dateString);
       });
       this.turns = turns;
-      const result = await firebase
-        .firestore()
-        .collection(
-          "Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/beauty-salons"
-        )
-        .get();
-      result.forEach(item =>
-        this.salonList.push({ value: item.id, label: item.data().name })
-      );
     });
   },
   async mounted() {
-    const result = await firebase
-      .firestore()
-      .collection("Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/services")
-      .get();
-    result.forEach((element: any) => {
-      this.serviceList.push({ value: element.data()!.name });
-    });
+    await this.$store.dispatch("salonBooking/initialization");
+    // const result = await firebase
+    //   .firestore()
+    //   .collection("Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/services")
+    //   .get();
+    // result.forEach((element: any) => {
+    //   this.serviceList.push({ value: element.data()!.name });
+    // });
   },
   destroyed() {
     window.removeEventListener("resize", this.handleResize);
@@ -210,34 +211,60 @@ export default Vue.extend({
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
     },
-    async remoteMethod(query: string) {
-      this.salonListLoading = true;
-      const result = await firebase
-        .firestore()
-        .collection(
-          "Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/beauty-salons"
-        )
-        .get();
-      result.forEach(item =>
-        this.salonList.push({ value: item.id, label: item.data().name })
-      );
-      this.salonListLoading = false;
+    async changeBookingDate() {
+      this.data.bookingSalon = undefined;
+      this.changeBookingSalon();
     },
-    async getTurns() {
-      const result = await firebase
-        .firestore()
-        .doc(
-          `Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/availability/${moment(
-            this.bookingDate
-          ).format("YYMMDD")}-${this.bookingSalon}`
-        )
-        .get();
+    async changeBookingSalon() {
+      this.data.bookingHour = undefined;
       this.hourList = new Array<{ value: string }>();
-      if (result.exists) {
-        result.data()!.turns.forEach((element: string) => {
-          this.hourList.push({ value: element });
-        });
+      const beautySalon = this.$store.state.salonBooking.beautySalons.find(
+        (x: any) => x.id === this.data.bookingSalon
+      );
+      if (beautySalon.shiftBasedOnSchedule) {
+        const dayOfWeek: number = moment(this.data.bookingDate).day();
+        const schedule = beautySalon.schedule[dayOfWeek];
+        if (schedule.open !== "" && schedule.close !== "") {
+          const open = moment(this.data.bookingDate);
+          const openHour = parseInt(schedule.open.split(":")[0], 10);
+          const openMinutes = parseInt(schedule.open.split(":")[1], 10);
+          open.hours(openHour);
+          open.minute(openMinutes);
+          open.second(0);
+          const close = moment(this.data.bookingDate);
+          const closeHour = parseInt(schedule.close.split(":")[0], 10);
+          const closeMinutes = parseInt(schedule.close.split(":")[1], 10);
+          close.hour(closeHour);
+          close.minute(closeMinutes);
+          close.second(0);
+          while (open.format("HH:mm") !== close.format("HH:mm")) {
+            if (moment().isBefore(open)) {
+              this.hourList.push({ value: open.format("HH:mm") });
+            }
+            open.add(30, "minutes");
+          }
+        }
+      } else {
+        const result = await firebase
+          .firestore()
+          .doc(
+            `Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/availability/${moment(
+              this.data.bookingDate
+            ).format("YYMMDD")}-${this.data.bookingSalon}`
+          )
+          .get();
+        this.hourList = new Array<{ value: string }>();
+        if (result.exists) {
+          result.data()!.turns.forEach((element: string) => {
+            this.hourList.push({ value: element });
+          });
+        }
       }
+
+      this.changeBookingShift();
+    },
+    async changeBookingShift() {
+      this.data.bookingService = undefined;
     }
   }
 });
