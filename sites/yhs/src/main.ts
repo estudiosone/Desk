@@ -6,6 +6,7 @@ import "firebase/auth";
 import "firebase/performance";
 import firebaseui from "firebaseui";
 import locale from "element-ui/lib/locale/lang/es";
+import moment from "moment";
 import App from "./App.vue";
 import router from "./router";
 import store from "./store";
@@ -35,6 +36,8 @@ const config = {
 const app = firebase.initializeApp(config);
 const perf = firebase.performance();
 const firebaseUI = new firebaseui.auth.AuthUI(firebase.auth());
+
+moment.locale("es");
 Vue.use(desksuite, { store });
 
 Register();
