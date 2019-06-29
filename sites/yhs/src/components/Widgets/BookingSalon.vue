@@ -69,7 +69,7 @@
             span Su reserva quedará registrada en estado pendiente una vez que presione el botón confirmar, y pronto nos comunicaremos con usted para confirmar la misma.
       span(slot="footer" class="dialog-footer")
         el-button(@click="resetForm") Reiniciar
-        el-button(type="primary" @click="dialogFormVisible = false" :disabled='!bookingConfirmActive') Confirmar
+        el-button(type="primary" @click="confirmReservation" :disabled='!bookingConfirmActive') Confirmar
 </template>
 
 
@@ -78,6 +78,7 @@ import Vue from "vue";
 import firebase from "firebase/app";
 import "firebase/firestore";
 import moment from "moment";
+import axios from "axios";
 import EventBus from "../../eventBus";
 
 export default Vue.extend({
@@ -340,6 +341,35 @@ export default Vue.extend({
       this.data.customerPhone = undefined;
       this.data.customerEmail = undefined;
       this.collapseValue = "1";
+    },
+    async confirmReservation() {
+      const result = await firebase
+        .firestore()
+        .collection(
+          "Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/reservations"
+        )
+        .add({
+          bookingDate: this.data.bookingDate,
+          bookingHour: this.data.bookingHour,
+          bookingSalon: this.data.bookingSalon,
+          bookingService: this.data.bookingService,
+          customerName: this.data.customerName,
+          customerSurname: this.data.customerSurname,
+          customerPhone: this.data.customerPhone,
+          customerEmail: this.data.customerEmail,
+          reservationState: "Pending",
+          reservationTimestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      const data = {
+        siteId: "8DgciBZUYfrLfnKonpml",
+        reservationId: result.id
+      };
+
+      await axios.post(
+        "https://us-central1-desk-uy.cloudfunctions.net/modulesSalonBookingSendReservation",
+        data
+      );
+      this.dialogBookingVisible = false;
     }
   }
 });
