@@ -34,23 +34,23 @@
             el-form-item(label='Email', prop="customerEmail")
               el-input(v-model='data.customerEmail')
             el-form-item
-              el-button(:disabled='bookingResumeDataActive', @click="collapseValue = '3'")
+              el-button(:disabled='bookingSummaryDataActive', @click="collapseValue = '3'")
                 | Siguiente
-          el-collapse-item(:disabled='bookingResumeDataActive', title='Confirmá tus datos', name='3')
+          el-collapse-item(:disabled='bookingSummaryDataActive', title='Confirmá tus datos', name='3')
             el-divider(content-position="left") Datos de la reserva
             table
               tr
                 td(style="font-weight: 600; min-width: 80px;") Fecha:
-                td {{ sumary.bookingDate }}
+                td {{ summary.bookingDate }}
               tr
                 td(style="font-weight: 600; min-width: 80px;") Hora:
-                td {{ sumary.bookingHour }}
+                td {{ summary.bookingHour }}
               tr
                 td(style="font-weight: 600; min-width: 80px;") Salon:
-                td {{ sumary.bookingSalon }}
+                td {{ summary.bookingSalon }}
               tr
                 td(style="font-weight: 600; min-width: 80px;") Servicio:
-                td {{ sumary.bookingService }}
+                td {{ summary.bookingService }}
             el-divider(content-position="left") Datos del titular
             table
               tr
@@ -68,8 +68,8 @@
             el-divider(content-position="left") Información a tener en cuenta
             span Su reserva quedará registrada en estado pendiente una vez que presione el botón confirmar, y pronto nos comunicaremos con usted para confirmar la misma.
       span(slot="footer" class="dialog-footer")
-        el-button(@click="dialogFormVisible = false") Reiniciar
-        el-button(type="primary" @click="dialogFormVisible = false" :disabled='bookingResumeDataActive') Confirmar
+        el-button(@click="resetForm") Reiniciar
+        el-button(type="primary" @click="dialogFormVisible = false" :disabled='!bookingConfirmActive') Confirmar
 </template>
 
 
@@ -166,7 +166,7 @@ export default Vue.extend({
       }
       return true;
     },
-    bookingResumeDataActive() {
+    bookingSummaryDataActive() {
       if (
         this.data.customerName &&
         this.data.customerSurname &&
@@ -177,7 +177,20 @@ export default Vue.extend({
       }
       return true;
     },
-    sumary(): any {
+    bookingConfirmActive() {
+      if (
+        this.data.customerName &&
+        this.data.customerSurname &&
+        this.data.customerPhone &&
+        this.data.customerEmail &&
+        this.collapseValue === "3"
+      ) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    summary(): any {
       const bookingDate = moment(this.data.bookingDate).format(
         "dddd, DD [de] MMMM [de] YYYY"
       );
@@ -316,6 +329,17 @@ export default Vue.extend({
     },
     async changeBookingShift() {
       this.data.bookingService = undefined;
+    },
+    resetForm() {
+      this.data.bookingDate = new Date();
+      this.data.bookingHour = undefined;
+      this.data.bookingSalon = undefined;
+      this.data.bookingService = undefined;
+      this.data.customerName = undefined;
+      this.data.customerSurname = undefined;
+      this.data.customerPhone = undefined;
+      this.data.customerEmail = undefined;
+      this.collapseValue = "1";
     }
   }
 });
