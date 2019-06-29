@@ -37,10 +37,39 @@
               el-button(:disabled='bookingResumeDataActive', @click="collapseValue = '3'")
                 | Siguiente
           el-collapse-item(:disabled='bookingResumeDataActive', title='Confirmá tus datos', name='3')
-            el-divider Datos de la reserva
-            div
-              span Fecha:
-              span {{ sumary.bookingDate }}
+            el-divider(content-position="left") Datos de la reserva
+            table
+              tr
+                td(style="font-weight: 600; min-width: 80px;") Fecha:
+                td {{ sumary.bookingDate }}
+              tr
+                td(style="font-weight: 600; min-width: 80px;") Hora:
+                td {{ sumary.bookingHour }}
+              tr
+                td(style="font-weight: 600; min-width: 80px;") Salon:
+                td {{ sumary.bookingSalon }}
+              tr
+                td(style="font-weight: 600; min-width: 80px;") Servicio:
+                td {{ sumary.bookingService }}
+            el-divider(content-position="left") Datos del titular
+            table
+              tr
+                td(style="font-weight: 600; min-width: 80px;") Nombre:
+                td {{ data.customerName }}
+              tr
+                td(style="font-weight: 600; min-width: 80px;") Apellido:
+                td {{ data.customerSurname }}
+              tr
+                td(style="font-weight: 600; min-width: 80px;") Teléfono:
+                td {{ data.customerPhone }}
+              tr
+                td(style="font-weight: 600; min-width: 80px;") E-mail:
+                td {{ data.customerEmail }}
+            el-divider(content-position="left") Información a tener en cuenta
+            span Su reserva quedará registrada en estado pendiente una vez que presione el botón confirmar, y pronto nos comunicaremos con usted para confirmar la misma.
+      span(slot="footer" class="dialog-footer")
+        el-button(@click="dialogFormVisible = false") Reiniciar
+        el-button(type="primary" @click="dialogFormVisible = false" :disabled='bookingResumeDataActive') Confirmar
 </template>
 
 
@@ -148,10 +177,28 @@ export default Vue.extend({
       }
       return true;
     },
-    sumary() {
-      const nn = moment().format("dddd, DD [de] MMMM [de] YYYY");
+    sumary(): any {
+      const bookingDate = moment(this.data.bookingDate).format(
+        "dddd, DD [de] MMMM [de] YYYY"
+      );
+      const bookingHour = this.data.bookingHour;
+      let bookingSalon: string = "";
+      if (this.data.bookingSalon) {
+        bookingSalon = this.$store.state.salonBooking.beautySalons.find(
+          (x: any) => x.id === this.data.bookingSalon
+        ).name;
+      }
+      let bookingService: string = "";
+      if (this.data.bookingService) {
+        bookingService = this.$store.state.salonBooking.services.find(
+          (x: any) => x.id === this.data.bookingService
+        ).name;
+      }
       return {
-        bookingDate: nn
+        bookingDate,
+        bookingHour,
+        bookingSalon,
+        bookingService
       };
     }
   },
@@ -238,7 +285,11 @@ export default Vue.extend({
           close.minute(closeMinutes);
           close.second(0);
           while (open.format("HH:mm") !== close.format("HH:mm")) {
-            if (moment().isBefore(open)) {
+            if (
+              moment()
+                .add(1, "hours")
+                .isBefore(open)
+            ) {
               this.hourList.push({ value: open.format("HH:mm") });
             }
             open.add(30, "minutes");
