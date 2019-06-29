@@ -343,33 +343,51 @@ export default Vue.extend({
       this.collapseValue = "1";
     },
     async confirmReservation() {
-      const result = await firebase
-        .firestore()
-        .collection(
-          "Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/reservations"
-        )
-        .add({
-          bookingDate: this.data.bookingDate,
-          bookingHour: this.data.bookingHour,
-          bookingSalon: this.data.bookingSalon,
-          bookingService: this.data.bookingService,
-          customerName: this.data.customerName,
-          customerSurname: this.data.customerSurname,
-          customerPhone: this.data.customerPhone,
-          customerEmail: this.data.customerEmail,
-          reservationState: "Pending",
-          reservationTimestamp: firebase.firestore.FieldValue.serverTimestamp()
-        });
-      const data = {
-        siteId: "8DgciBZUYfrLfnKonpml",
-        reservationId: result.id
-      };
+      const loading = this.$loading({
+        lock: true,
+        text: "Aguarde un instante... ingresando la reserva.",
+        spinner: "el-icon-loading"
+      });
+      try {
+        const result = await firebase
+          .firestore()
+          .collection(
+            "Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/reservations"
+          )
+          .add({
+            bookingDate: this.data.bookingDate,
+            bookingHour: this.data.bookingHour,
+            bookingSalon: this.data.bookingSalon,
+            bookingService: this.data.bookingService,
+            customerName: this.data.customerName,
+            customerSurname: this.data.customerSurname,
+            customerPhone: this.data.customerPhone,
+            customerEmail: this.data.customerEmail,
+            reservationState: "Pending",
+            reservationTimestamp: firebase.firestore.FieldValue.serverTimestamp()
+          });
+        const data = {
+          siteId: "8DgciBZUYfrLfnKonpml",
+          reservationId: result.id
+        };
 
-      await axios.post(
-        "https://us-central1-desk-uy.cloudfunctions.net/modulesSalonBookingSendReservation",
-        data
-      );
+        await axios.post(
+          "https://us-central1-desk-uy.cloudfunctions.net/modulesSalonBookingSendReservation",
+          data
+        );
+        loading.close();
+        this.$message({
+          message: "Reserva ingresada correctamente",
+          type: "success"
+        });
+      } catch (error) {
+        loading.close();
+        this.$message.error(
+          "Oops, tenemos algunos problemas para ingresar la reserva, intente nuevamente en unos minutos"
+        );
+      }
       this.dialogBookingVisible = false;
+      this.resetForm();
     }
   }
 });
