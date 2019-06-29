@@ -1,8 +1,9 @@
 import * as firebase from "firebase-admin";
 import * as functions from "firebase-functions";
 import * as cors from "cors";
-import * as nodemailer from "nodemailer";
+// import * as nodemailer from "nodemailer";
 import * as moment from "moment";
+import * as aws from "aws-sdk";
 
 const corsHandler = cors({ origin: true });
 // import { request } from "https";
@@ -15,6 +16,12 @@ if (!firebase.apps.length) {
 }
 
 moment.locale("es");
+
+aws.config.update({
+  accessKeyId: functions.config().ses.key,
+  secretAccessKey: functions.config().ses.secret,
+  region: functions.config().ses.region
+});
 
 export const helloWorld = functions.https.onRequest((request, response) => {
   response.send("Hello from Firebase!");
@@ -134,22 +141,106 @@ export const modulesSalonBookingSendReservation = functions.https.onRequest(
 
         // tslint:disable-next-line: no-console
         console.log(reservation);
-        const transporter = nodemailer.createTransport({
-          host: "email-smtp.us-east-1.amazonaws.com",
-          port: 465,
-          secure: true, // true for 465, false for other ports
-          auth: {
-            user: "AKIAVSDA5KGENDJUKBV3", // generated ethereal user
-            pass: "BO8NHTJNDCkK+Cw3xJKGpfpl2vJDxCYP6oFmXmvq4oh6" // generated ethereal password
-          }
-        });
-        await transporter.sendMail({
-          from:
-            // tslint:disable-next-line: quotemark
-            '"Yhair Stylist | Reservas Web" <reservas-web@yhairstylist.com>', // sender address
-          to: "tecnica@eldescubrimiento.com, staff@yhairstylist.com", // list of receivers
-          subject: "Nueva reserva", // Subject line
-          html: `
+
+        try {
+          const params = {
+            Destination: {
+              ToAddresses: [
+                "tecnica@eldescubrimiento.com",
+                "staff@yhairstylist.com"
+              ]
+            },
+            Message: {
+              Body: {
+                Html: {
+                  Charset: "UTF-8",
+                  Data: `
+                  <div>
+                    <div style="max-width: 600px; margin: 0 auto; padding: 0 40px;">
+                        <div
+                            style="background-color: #dcdfe6; position: relative;display: block; height: 1px; width: 100%; margin: 24px 0;">
+                            <div
+                                style="left: 20px; -webkit-transform: translateY(-50%); transform: translateY(-50%); position: absolute; background-color: #fff; padding: 0 20px; color: #303133;">
+                                Datos de la reserva</div>
+                        </div>
+                        <table>
+                            <tr>
+                                <td style="font-weight: 600; min-width: 80px;">Id de reserva:</td>
+                                <td>${reservation.reservationId}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; min-width: 80px;">Fecha:</td>
+                                <td>${reservation.bookingDate}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; min-width: 80px;">Hora:</td>
+                                <td>${reservation.bookingHour}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; min-width: 80px;">Salon:</td>
+                                <td>${reservation.bookingSalon}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; min-width: 80px;">Servicio:</td>
+                                <td>${reservation.bookingService}</td>
+                            </tr>
+                        </table>
+                        <div
+                            style="background-color: #dcdfe6; position: relative;display: block; height: 1px; width: 100%; margin: 24px 0;">
+                            <div
+                                style="left: 20px; -webkit-transform: translateY(-50%); transform: translateY(-50%); position: absolute; background-color: #fff; padding: 0 20px; color: #303133;">
+                                Datos del titular</div>
+                        </div>
+                        <table>
+                            <tr>
+                                <td style="font-weight: 600; min-width: 80px;">Nombre:</td>
+                                <td>${reservation.customerName}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; min-width: 80px;">Apellido:</td>
+                                <td>${reservation.customerSurname}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; min-width: 80px;">Teléfono:</td>
+                                <td>${reservation.customerPhone}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: 600; min-width: 80px;">E-mail:</td>
+                                <td>${reservation.customerEmail}</td>
+                            </tr>
+                        </table>
+                        <div
+                            style="background-color: #dcdfe6; position: relative;display: block; height: 1px; width: 100%; margin: 24px 0;">
+                            <div
+                                style="left: 20px; -webkit-transform: translateY(-50%); transform: translateY(-50%); position: absolute; background-color: #fff; padding: 0 20px; color: #303133;">
+                                Información a tener en cuenta</div>
+                        </div><span>Su reserva está generada en estado pendiente, una vez que nuestro staff reciba la misma, se
+                            comunicará con usted para confirmarla.</span>
+                    </div>
+                </div>`
+                }
+              },
+              Subject: {
+                Charset: "UTF-8",
+                Data: "Nueva reserva"
+              }
+            },
+            Source:
+              // tslint:disable-next-line: quotemark
+              '"Yhair Stylist | Reservas Web" <reservas-web@yhairstylist.com>',
+            ReplyToAddresses: [
+              // tslint:disable-next-line: quotemark
+              '"Yhair Stylist | Reservas Web" <staff@yhairstylist.com>'
+              /* more items */
+            ]
+          };
+
+          await new aws.SES({ apiVersion: "2010-12-01" })
+            .sendEmail(params)
+            .promise();
+
+          params.Destination.ToAddresses = [reservation.customerEmail];
+          params.Message.Body.Html.Data = `
           <div>
             <div style="max-width: 600px; margin: 0 auto; padding: 0 40px;">
                 <div
@@ -212,79 +303,15 @@ export const modulesSalonBookingSendReservation = functions.https.onRequest(
                 </div><span>Su reserva está generada en estado pendiente, una vez que nuestro staff reciba la misma, se
                     comunicará con usted para confirmarla.</span>
             </div>
-        </div>`
-        });
-        await transporter.sendMail({
-          from:
-            // tslint:disable-next-line: quotemark
-            '"Yhair Stylist | Reservas Web" <reservas-web@yhairstylist.com>', // sender address
-          to: reservation.customerEmail, // list of receivers
-          subject: "Nueva reserva", // Subject line
-          html: `
-          <div>
-            <div style="max-width: 600px; margin: 0 auto; padding: 0 40px;">
-                <div
-                    style="background-color: #dcdfe6; position: relative;display: block; height: 1px; width: 100%; margin: 24px 0;">
-                    <div
-                        style="left: 20px; -webkit-transform: translateY(-50%); transform: translateY(-50%); position: absolute; background-color: #fff; padding: 0 20px; color: #303133;">
-                        Datos de la reserva</div>
-                </div>
-                <table>
-                    <tr>
-                        <td style="font-weight: 600; min-width: 80px;">Id de reserva:</td>
-                        <td>${reservation.reservationId}</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; min-width: 80px;">Fecha:</td>
-                        <td>${reservation.bookingDate}</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; min-width: 80px;">Hora:</td>
-                        <td>${reservation.bookingHour}</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; min-width: 80px;">Salon:</td>
-                        <td>${reservation.bookingSalon}</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; min-width: 80px;">Servicio:</td>
-                        <td>${reservation.bookingService}</td>
-                    </tr>
-                </table>
-                <div
-                    style="background-color: #dcdfe6; position: relative;display: block; height: 1px; width: 100%; margin: 24px 0;">
-                    <div
-                        style="left: 20px; -webkit-transform: translateY(-50%); transform: translateY(-50%); position: absolute; background-color: #fff; padding: 0 20px; color: #303133;">
-                        Datos del titular</div>
-                </div>
-                <table>
-                    <tr>
-                        <td style="font-weight: 600; min-width: 80px;">Nombre:</td>
-                        <td>${reservation.customerName}</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; min-width: 80px;">Apellido:</td>
-                        <td>${reservation.customerSurname}</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; min-width: 80px;">Teléfono:</td>
-                        <td>${reservation.customerPhone}</td>
-                    </tr>
-                    <tr>
-                        <td style="font-weight: 600; min-width: 80px;">E-mail:</td>
-                        <td>${reservation.customerEmail}</td>
-                    </tr>
-                </table>
-                <div
-                    style="background-color: #dcdfe6; position: relative;display: block; height: 1px; width: 100%; margin: 24px 0;">
-                    <div
-                        style="left: 20px; -webkit-transform: translateY(-50%); transform: translateY(-50%); position: absolute; background-color: #fff; padding: 0 20px; color: #303133;">
-                        Información a tener en cuenta</div>
-                </div><span>Su reserva está generada en estado pendiente, una vez que nuestro staff reciba la misma, se
-                    comunicará con usted para confirmarla.</span>
-            </div>
-        </div>`
-        });
+        </div>`;
+
+          await new aws.SES({ apiVersion: "2010-12-01" })
+            .sendEmail(params)
+            .promise();
+        } catch (error) {
+          // tslint:disable-next-line: no-console
+          console.error(error);
+        }
         response.sendStatus(200);
       } catch (error) {
         // tslint:disable-next-line: no-console
