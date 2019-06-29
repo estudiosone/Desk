@@ -3,6 +3,12 @@
     .s-encabezado
       .s-titletienda
     .s-contenido
+      el-menu(mode="horizontal" menu-trigger='click')
+        el-menu-item(index="all" @click="setFilter('', '')") Todos
+        el-submenu(v-for="brand in data" :key="brand.label" :index="brand.label")
+          template(slot="title") {{ brand.label }}
+          el-menu-item(:index="`${brand.label}-todos`" @click="setFilter(brand.label, '')") Todos
+          el-menu-item(v-for="item in brand.children" :key="item.label" :index="item.label" @click="setFilter(brand.label, item.label)") {{ item.label }}
       .s-catalogo
         el-card.s-item(v-for='item in catalogue', :key='item.Id', shadow='hover', @click.native='$router.push(`/store/item/${item.Id}`)')
           img.s-foto(:src='item.Photo', alt='')
@@ -70,6 +76,10 @@ export default Vue.extend({
         label: string;
       }>;
     }>;
+    filter: {
+      brand: string;
+      category: string;
+    };
     defaultProps: {
       children: string;
       label: string;
@@ -116,8 +126,44 @@ export default Vue.extend({
               label: "Spécifique"
             }
           ]
+        },
+        {
+          label: "Redken",
+          children: [
+            {
+              label: "All Soft"
+            },
+            {
+              label: "Beach Envy"
+            },
+            {
+              label: "Color Extend Graydiant"
+            },
+            {
+              label: "Curvaceous"
+            },
+            {
+              label: "Extreme"
+            },
+            {
+              label: "Frizz Dismiss"
+            },
+            {
+              label: "Glow Dry"
+            },
+            {
+              label: "High Rise"
+            },
+            {
+              label: "One United"
+            }
+          ]
         }
       ],
+      filter: {
+        brand: "",
+        category: ""
+      },
       defaultProps: {
         children: "children",
         label: "label"
@@ -128,6 +174,11 @@ export default Vue.extend({
     this.loadItems(true);
   },
   methods: {
+    setFilter(brand: string, category: string) {
+      this.filter.brand = brand;
+      this.filter.category = category;
+      this.loadItems(true);
+    },
     loadMore() {
       this.loadItems();
     },
@@ -140,12 +191,77 @@ export default Vue.extend({
       const col = app.collection("Inventory-Items");
       let query: firebase.firestore.Query;
       if (firstLoad) {
+        this.catalogue = new Array<ICatalogueItem>();
+      }
+      if (
+        this.filter.brand.length === 0 &&
+        this.filter.category.length === 0 &&
+        firstLoad
+      ) {
         query = col
           .where(
             "Business",
             "==",
             app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
           )
+          .orderBy("Name")
+          .limit(12);
+      } else if (
+        this.filter.brand.length === 0 &&
+        this.filter.category.length === 0 &&
+        !firstLoad
+      ) {
+        query = col
+          .where(
+            "Business",
+            "==",
+            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+          )
+          .orderBy("Name")
+          .startAfter(this.catalogue[this.catalogue.length - 1].Name)
+          .limit(12);
+      } else if (
+        this.filter.brand.length > 0 &&
+        this.filter.category.length === 0 &&
+        firstLoad
+      ) {
+        query = col
+          .where(
+            "Business",
+            "==",
+            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+          )
+          .where("Brand", "==", this.filter.brand)
+          .orderBy("Name")
+          .limit(12);
+      } else if (
+        this.filter.brand.length > 0 &&
+        this.filter.category.length === 0 &&
+        !firstLoad
+      ) {
+        query = col
+          .where(
+            "Business",
+            "==",
+            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+          )
+          .where("Brand", "==", this.filter.brand)
+          .orderBy("Name")
+          .startAfter(this.catalogue[this.catalogue.length - 1].Name)
+          .limit(12);
+      } else if (
+        this.filter.brand.length > 0 &&
+        this.filter.category.length > 0 &&
+        firstLoad
+      ) {
+        query = col
+          .where(
+            "Business",
+            "==",
+            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+          )
+          .where("Category", "==", this.filter.category)
+          .where("Brand", "==", this.filter.brand)
           .orderBy("Name")
           .limit(12);
       } else {
@@ -155,7 +271,10 @@ export default Vue.extend({
             "==",
             app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
           )
+          .where("Brand", "==", this.filter.brand)
           .orderBy("Name")
+          .where("Category", "==", this.filter.category)
+          .where("Brand", "==", this.filter.brand)
           .startAfter(this.catalogue[this.catalogue.length - 1].Name)
           .limit(12);
       }
