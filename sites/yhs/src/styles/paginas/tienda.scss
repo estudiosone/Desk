@@ -15,6 +15,7 @@
 
   .s-contenido {
     width: 100%;
+    min-height: calc(100vh - 302px);
 
     .s-catalogo {
       $item-width: calc((100vw - 80px) / 2);
@@ -31,6 +32,7 @@
       grid-auto-rows: auto;
       grid-gap: 20px;
       padding: 0 20px;
+      margin-top: 24px;
 
       @include sm {
         grid-template-columns: repeat(3, $item-width-sm);
