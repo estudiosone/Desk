@@ -2,31 +2,17 @@
   .home
     el-carousel(:interval='5000')
       el-carousel-item
-        img(src='../assets/img/19_05---Promo-Elixir-Ultimate.jpg')
+        img(src='../assets/img/pr01.jpg')
       el-carousel-item
-        img(src='../assets/img/Dibujo.jpg')
+        img(src='../assets/img/pr02.jpg')
       el-carousel-item
-        img(src='../assets/img/Dibujo1.jpg')
+        img(src='../assets/img/pr03.jpg')
       el-carousel-item
-        img(src='../assets/img/Dibujo2.jpg')
+        img(src='../assets/img/pr04.jpg')
       el-carousel-item
-        img(src='../assets/img/Dibujo3.jpg')
+        img(src='../assets/img/pr05.jpg')
       el-carousel-item
-        img(src='../assets/img/Dibujo4.jpg')
-      el-carousel-item
-        img(src='../assets/img/PROMO_CUP_COLOR.jpg')
-      el-carousel-item
-        img(src='../assets/img/PROMO_CUP_CORTE.jpg')
-      el-carousel-item
-        img(src='../assets/img/PROMO_CUP_KERASTASE.jpg')
-      el-carousel-item
-        img(src='../assets/img/PROMO_CUP_LOREAL.jpg')
-      el-carousel-item
-        img(src='../assets/img/PROMO_CUP_MANOS.jpg')
-      el-carousel-item
-        img(src='../assets/img/PROMO_CUP_REDKEN.jpg')
-      el-carousel-item
-        img(src='../assets/img/PROMO_CUP_RITUALES.jpg')
+        img(src='../assets/img/pr06.jpg')
     #salones
     #agendate
       img(src='../assets/img/agendate-bkg.jpg', alt='')
