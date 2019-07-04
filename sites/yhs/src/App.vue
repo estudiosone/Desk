@@ -13,6 +13,7 @@ import Vue from "vue";
 import firebase from "firebase/app";
 import "firebase/auth";
 import "firebase/firestore";
+import "firebase/messaging";
 import EventBus from "./eventBus";
 import DeskFooter from "./components/Footer.vue";
 
@@ -81,6 +82,25 @@ export default Vue.extend({
       }
       EventBus.$emit("eventAuthActualizada");
     });
+
+    // FCM
+    const messaging = firebase.messaging();
+    messaging
+      .requestPermission()
+      .then(function() {
+        console.log("Notification permission granted.");
+        console.log("Notification permission granted.");
+
+        // get the token in the form of promise
+        return messaging.getToken();
+      })
+      .then(function(token) {
+        // print the token on the HTML page
+        console.log("token is : " + token);
+      })
+      .catch(function(err) {
+        console.error(err);
+      });
   },
   created() {
     window.addEventListener("resize", this.handleResize);
