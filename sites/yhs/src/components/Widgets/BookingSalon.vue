@@ -256,6 +256,7 @@ export default Vue.extend({
   },
   async mounted() {
     await this.$store.dispatch("salonBooking/initialization");
+    console.log("dispatched");
     // const result = await firebase
     //   .firestore()
     //   .collection("Sites/8DgciBZUYfrLfnKonpml/modules/salon-booking/services")
@@ -285,7 +286,7 @@ export default Vue.extend({
       if (beautySalon.shiftBasedOnSchedule) {
         const dayOfWeek: number = moment(this.data.bookingDate).day();
         const schedule = beautySalon.schedule[dayOfWeek];
-        if (schedule.open !== "" && schedule.close !== "") {
+        if (schedule.open !== "0" && schedule.close !== "0") {
           const open = moment(this.data.bookingDate);
           const openHour = parseInt(schedule.open.split(":")[0], 10);
           const openMinutes = parseInt(schedule.open.split(":")[1], 10);

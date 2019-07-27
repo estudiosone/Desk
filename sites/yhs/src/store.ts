@@ -21,6 +21,9 @@ interface Site {
   name: string;
   logoURL: string;
   navMenu: NavMenu[];
+  bookingSalons: {
+    beautySalons: BeautySalon[];
+  };
 }
 export interface Phone {
   area_code: any;
@@ -74,13 +77,16 @@ interface State {
 Vue.use(Vuex);
 
 const stateConst: State = {
-  SiteId: "8DgciBZUYfrLfnKonpml",
+  SiteId: "6460b669-17ab-41eb-bf55-eafccad959b1",
   Site: {
     name: "",
     logoURL: "",
-    navMenu: []
+    navMenu: [],
+    bookingSalons: {
+      beautySalons: []
+    }
   },
-  businessId: "hN4Z7KaHwWxniNgVHjTX",
+  businessId: "26083601-220d-43b0-9550-310634e07e1c",
   userId: undefined,
   user: {
     name: "",
@@ -131,8 +137,8 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    async initializeApp(context) {
-      const siteData = await axios.post(
+    async initializeApp(context, rootContext) {
+      const site = await axios.post(
         "https://ey1wdbg3mk.execute-api.us-east-1.amazonaws.com/production",
         {
           operation: "get site from id",
@@ -141,14 +147,53 @@ export default new Vuex.Store({
           }
         }
       );
-      console.log(siteData.data.Item);
-      // siteData.NavMenu = [];
-      // const navMenu = await siteRef
-      //   .collection("NavMenu")
-      //   .orderBy("Index")
-      //   .get();
-      // navMenu.forEach(item => siteData.NavMenu.push(item.data() as NavMenu));
-      context.commit("set_site", siteData.data.Item);
+      const siteModules: {
+        navMenu: any;
+      } = {
+        navMenu: undefined
+      };
+      siteModules.navMenu = await axios.post(
+        "https://ey1wdbg3mk.execute-api.us-east-1.amazonaws.com/production",
+        {
+          operation: "get siteModules from site type",
+          param: {
+            site: "6460b669-17ab-41eb-bf55-eafccad959b1",
+            type: "Nav Menu"
+          }
+        }
+      );
+      const siteData: Site = {
+        name: site.data.Item.name,
+        logoURL: site.data.Item.logoURL,
+        navMenu: [],
+        bookingSalons: site.data.Item.modules.bookingSalons
+      };
+      siteModules.navMenu.data.Items[0].data.items.forEach((item: any) =>
+        siteData.navMenu.push(item as NavMenu)
+      );
+
+      // Iniciar modulo BookingSalon
+      const beautySalons = new Array<BeautySalon>();
+      console.log(site.data.Item.modules.bookingSalons);
+      site.data.Item.modules.bookingSalons.forEach(
+        async (element: BeautySalon) => {
+          console.log(element.id);
+          const resultBeautySalons: BeautySalon = (await axios.post(
+            "https://ey1wdbg3mk.execute-api.us-east-1.amazonaws.com/production",
+            {
+              operation: "get beautySalons from id",
+              param: {
+                id: element.id
+              }
+            }
+          )).data.Item;
+          console.log(resultBeautySalons);
+
+          beautySalons.push(resultBeautySalons);
+        }
+      );
+      siteData.bookingSalons.beautySalons = beautySalons;
+      context.commit("set_site", siteData);
     }
   },
   modules: {
@@ -172,52 +217,31 @@ export default new Vuex.Store({
       },
       actions: {
         async initialization(context) {
-          const siteId = stateConst.SiteId;
-          const db = firebase.firestore();
-
-          // Obtener los salones
-          const beautySalons = new Array<BeautySalon>();
-          const resultBeautySalons = await db
-            .collection(`Sites/${siteId}/modules/salon-booking/beauty-salons`)
-            .get();
-          resultBeautySalons.forEach(
-            (element: firebase.firestore.QueryDocumentSnapshot) => {
-              beautySalons.push({
-                id: element.id,
-                name: element.data()!.name,
-                schedule: element.data()!.schedule,
-                shiftBasedOnCalendar: element.data()!.shiftBasedOnCalendar,
-                shiftBasedOnSchedule: element.data()!.shiftBasedOnSchedule
-              });
-            }
-          );
-
           // Obtener los servicios
-          const services = new Array<Service>();
-          const resultServices = await db
-            .collection(`Sites/${siteId}/modules/salon-booking/services`)
-            .get();
-          resultServices.forEach(
-            (element: firebase.firestore.QueryDocumentSnapshot) => {
-              services.push({
-                id: element.id,
-                name: element.data()!.name
-              });
-            }
-          );
-          services.sort((a, b) => {
-            if (a.name > b.name) {
-              return 1;
-            }
-            if (a.name < b.name) {
-              return -1;
-            }
-            // a must be equal to b
-            return 0;
-          });
+          // const services = new Array<Service>();
+          // const resultServices = await db
+          //   .collection(`Sites/${siteId}/modules/salon-booking/services`)
+          //   .get();
+          // resultServices.forEach(
+          //   (element: firebase.firestore.QueryDocumentSnapshot) => {
+          //     services.push({
+          //       id: element.id,
+          //       name: element.data()!.name
+          //     });
+          //   }
+          // );
+          // services.sort((a, b) => {
+          //   if (a.name > b.name) {
+          //     return 1;
+          //   }
+          //   if (a.name < b.name) {
+          //     return -1;
+          //   }
+          //   // a must be equal to b
+          //   return 0;
+          // });
           // Guardo los nuevos estados
-          context.commit("setBeautySalons", beautySalons);
-          context.commit("setServices", services);
+          // context.commit("setServices", services);
         }
       }
     },

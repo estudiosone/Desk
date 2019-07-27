@@ -1,123 +1,141 @@
 <template>
-  <div id="app" v-bind:class="[this.$store.getters['auth/isLogged'] ? 'logged' : 'not-logged']">
-     <el-menu
+  <div
+    id="app"
+    v-bind:class="[
+      this.$store.getters['auth/isLogged'] ? 'logged' : 'not-logged'
+    ]"
+  >
+    <el-menu
       v-if="this.$store.getters['auth/isLogged']"
       default-active="/"
       class="app-module-menu"
-      :router="true">
+      :router="true"
+    >
       <div class="app-module-menu-user">
         <div class="app-module-menu-user-img">
-          <img src="http://serviastro.am.ub.edu/twiki/pub/Main/UserProfileHeader/default-user-profile.jpg" alt="">
+          <img
+            src="http://serviastro.am.ub.edu/twiki/pub/Main/UserProfileHeader/default-user-profile.jpg"
+            alt
+          />
         </div>
         <el-submenu index="1">
           <template slot="title">
             <div class="user">
-              <span style="
+              <span
+                style="
                 margin-top: 2px;
                 font-size: 18px;
                 font-weight: 800;
-                text-align: center;">
-                Hola, Diego
-              </span>
-              <span style="
+                text-align: center;"
+                >Hola, Diego</span
+              >
+              <span
+                style="
                 margin-top: 6px;
                 text-align: center;
                 font-weight: lighter;
-                font-size: 12px;">
-                Administrador IT
-              </span>
+                font-size: 12px;"
+                >Administrador IT</span
+              >
             </div>
           </template>
           <el-menu-item @click="handleSignOut">Cerrar sesión</el-menu-item>
         </el-submenu>
       </div>
-      <br/>
-      <el-menu-item
-        v-for="item in menu"
-        :key="item.to"
-        :index="item.to">
-        <img v-if="item.iconSvg" class="la" :src="item.iconSvg" :alt="item.name">
+      <br />
+      <el-menu-item v-for="item in menu" :key="item.to" :index="item.to">
+        <img
+          v-if="item.iconSvg"
+          class="la"
+          :src="item.iconSvg"
+          :alt="item.name"
+        />
         <i v-else class="la" :class="item.iconClass"></i>
         <span>{{ item.name }}</span>
       </el-menu-item>
     </el-menu>
     <div class="router">
-      <router-view/>
+      <router-view />
     </div>
   </div>
 </template>
 
 <script>
-import firebase from 'firebase';
+import firebase from "firebase";
 
 export default {
   data() {
     return {
       menu: [
         {
-          to: '/',
-          name: 'Dashboard',
-          iconClass: 'la-dashboard',
-          iconSvg: 'https://firebasestorage.googleapis.com/v0/b/one-sig-uy.appspot.com/o/console%2Fassets%2Ficons%2Fcolor%2Fsvg%2Fdashboard.svg?alt=media&token=1d3d3b2f-068f-4e20-a1bd-2378669f7688',
+          to: "/",
+          name: "Dashboard",
+          iconClass: "la-dashboard",
+          iconSvg:
+            "https://firebasestorage.googleapis.com/v0/b/one-sig-uy.appspot.com/o/console%2Fassets%2Ficons%2Fcolor%2Fsvg%2Fdashboard.svg?alt=media&token=1d3d3b2f-068f-4e20-a1bd-2378669f7688"
         },
         {
-          to: '/marketing',
-          name: 'Marketing',
-          iconClass: 'la-cloud',
-          iconSvg: 'https://firebasestorage.googleapis.com/v0/b/one-sig-uy.appspot.com/o/console%2Fassets%2Ficons%2Fcolor%2Fsvg%2Fcommercial.svg?alt=media&token=578a6590-9f71-4820-88d8-1d8abebb7411',
+          to: "/marketing",
+          name: "Marketing",
+          iconClass: "la-cloud",
+          iconSvg:
+            "https://firebasestorage.googleapis.com/v0/b/one-sig-uy.appspot.com/o/console%2Fassets%2Ficons%2Fcolor%2Fsvg%2Fcommercial.svg?alt=media&token=578a6590-9f71-4820-88d8-1d8abebb7411"
         },
         {
-          to: '/cloud',
-          name: 'Cloud',
-          iconClass: 'la-cloud',
-          iconSvg: 'https://firebasestorage.googleapis.com/v0/b/one-sig-uy.appspot.com/o/console%2Fassets%2Ficons%2Fcolor%2Fsvg%2Fcloud.svg?alt=media&token=38978850-7bd7-48e1-84e3-bfcc0478734e',
+          to: "/cloud",
+          name: "Cloud",
+          iconClass: "la-cloud",
+          iconSvg:
+            "https://firebasestorage.googleapis.com/v0/b/one-sig-uy.appspot.com/o/console%2Fassets%2Ficons%2Fcolor%2Fsvg%2Fcloud.svg?alt=media&token=38978850-7bd7-48e1-84e3-bfcc0478734e"
         },
         {
-          to: '/settings',
-          name: 'Configuración',
-          iconClass: 'la-cog',
-          iconSvg: 'https://firebasestorage.googleapis.com/v0/b/one-sig-uy.appspot.com/o/console%2Fassets%2Ficons%2Fcolor%2Fsvg%2Fsettings.svg?alt=media&token=9ce7252e-3c50-4d8a-880a-3fc6096cb938',
+          to: "/settings",
+          name: "Configuración",
+          iconClass: "la-cog",
+          iconSvg:
+            "https://firebasestorage.googleapis.com/v0/b/one-sig-uy.appspot.com/o/console%2Fassets%2Ficons%2Fcolor%2Fsvg%2Fsettings.svg?alt=media&token=9ce7252e-3c50-4d8a-880a-3fc6096cb938"
         },
         {
-          to: '/system',
-          name: 'Sistema',
-          iconClass: 'la-desktop',
-          iconSvg: 'https://firebasestorage.googleapis.com/v0/b/one-sig-uy.appspot.com/o/console%2Fassets%2Ficons%2Fcolor%2Fsvg%2Fsystem-task.svg?alt=media&token=da22707c-58ce-4037-9047-f770ae5e64c9',
-        },
-      ],
+          to: "/system",
+          name: "Sistema",
+          iconClass: "la-desktop",
+          iconSvg:
+            "https://firebasestorage.googleapis.com/v0/b/one-sig-uy.appspot.com/o/console%2Fassets%2Ficons%2Fcolor%2Fsvg%2Fsystem-task.svg?alt=media&token=da22707c-58ce-4037-9047-f770ae5e64c9"
+        }
+      ]
     };
   },
   methods: {
     handleSignOut() {
-      this.$store.dispatch('auth/signOut');
-    },
+      this.$store.dispatch("auth/signOut");
+    }
   },
   beforeMount() {
-    this.$store.dispatch('business/getProfile', 'qMIwYj1HsFYqNgi7xZ64');
-    firebase.auth().onAuthStateChanged((user) => {
+    this.$store.dispatch("business/getProfile", "qMIwYj1HsFYqNgi7xZ64");
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        this.$store.commit('auth/set_isLogged', true);
-        this.$router.push({ path: this.$route.query.redirect || '/' });
+        this.$store.commit("auth/set_isLogged", true);
+        this.$router.push({ path: this.$route.query.redirect || "/" });
       } else {
-        this.$store.commit('auth/set_isLogged', false);
-        this.$router.push({ path: '/auth/sign-in' });
+        this.$store.commit("auth/set_isLogged", false);
+        this.$router.push({ path: "/auth/sign-in" });
       }
     });
-  },
+  }
 };
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Ubuntu');
-@import url('https://fonts.googleapis.com/css?family=Quicksand');
-@import './assets/css/line-awesome.min.css';
+@import url("https://fonts.googleapis.com/css?family=Ubuntu");
+@import url("https://fonts.googleapis.com/css?family=Quicksand");
+@import "./assets/css/line-awesome.min.css";
 
 body {
   position: absolute;
   margin: 0;
   width: 100%;
   height: 100%;
-  font-family: 'Quicksand', sans-serif;
+  font-family: "Quicksand", sans-serif;
   #app {
     display: grid;
     grid-template-rows: 100%;
@@ -156,7 +174,7 @@ body {
       border-radius: 60px;
       margin: 42px 52px;
       overflow: hidden;
-      box-shadow: 0 12px 24px 0 rgba(0,0,0,.1);
+      box-shadow: 0 12px 24px 0 rgba(0, 0, 0, 0.1);
       img {
         width: 100%;
       }
@@ -188,7 +206,6 @@ body {
     position: absolute;
     top: 18px;
     left: 24px;
-
   }
   .title {
     position: absolute;

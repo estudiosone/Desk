@@ -10,8 +10,8 @@
               | Mi Cuenta
             el-dropdown-item.w-mi-cuenta(v-else='', @click.native="$router.push('/mi-cuenta/datos')")
               | {{ `Hola, ${this.$store.state.user.name}` }}
-            el-dropdown-item(v-for='NavMenu in this.$store.state.Site.navMenu', :key='NavMenu.To', @click.native='$router.push(NavMenu.To)')
-              | {{ NavMenu.Name }}
+            el-dropdown-item(v-for='NavMenu in this.$store.state.Site.navMenu', :key='NavMenu.to', @click.native='$router.push(NavMenu.to)')
+              | {{ NavMenu.name }}
       .info
         .telefono
           img(src='../styles/utilities/desksuite-icons/svg/icons8-phone-20.svg')
@@ -53,8 +53,8 @@
         .logo
           router-link(to='/', tag='img', :src='this.$store.state.Site.logoURL')
         nav.menu
-          el-button(type='text', v-for='NavMenu in this.$store.state.Site.NavMenu', :key='NavMenu.To', @click.native='$router.push(NavMenu.To)')
-            | {{ NavMenu.Name }}
+          el-button(type='text', v-for='NavMenu in this.$store.state.Site.navMenu', :key='NavMenu.to', @click.native='$router.push(NavMenu.to)')
+            | {{ NavMenu.name }}
 </template>
 
 
