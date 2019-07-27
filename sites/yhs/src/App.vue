@@ -10,10 +10,6 @@
 
 <script lang="ts">
 import Vue from "vue";
-import firebase from "firebase/app";
-import "firebase/auth";
-import "firebase/firestore";
-import "firebase/messaging";
 import EventBus from "./eventBus";
 import DeskFooter from "./components/Footer.vue";
 
@@ -44,63 +40,63 @@ export default Vue.extend({
   },
   async mounted() {
     this.$store.dispatch("initializeApp");
-    firebase.auth().onAuthStateChanged(async userData => {
-      if (this.$store.state.Utilidades.Modales.Autenticacion) {
-        this.$store.commit("Utilidades/Modal_Autenticacion");
-      }
-      if (userData) {
-        const collectionRef = firebase.firestore().collection("Auth-Users");
-        const userRef = collectionRef.doc(userData.uid);
-        const user = await userRef.get();
+    // firebase.auth().onAuthStateChanged(async userData => {
+    //   if (this.$store.state.Utilidades.Modales.Autenticacion) {
+    //     this.$store.commit("Utilidades/Modal_Autenticacion");
+    //   }
+    //   if (userData) {
+    //     const collectionRef = firebase.firestore().collection("Auth-Users");
+    //     const userRef = collectionRef.doc(userData.uid);
+    //     const user = await userRef.get();
 
-        this.$store.commit("userId", userData.uid);
+    //     this.$store.commit("userId", userData.uid);
 
-        if (user.exists) {
-          const data = user.data();
-          this.$store.commit("user", data);
-        } else {
-          const data = {
-            name:
-              (userData.displayName
-                ? userData.displayName.split(" ")[0]
-                : "") || "",
-            surname:
-              (userData.displayName
-                ? userData.displayName.split(" ")[1]
-                : "") || "",
-            email: userData.email ? userData.email : "",
-            photoUrl: userData.photoURL
-              ? userData.photoURL
-              : "https://img.icons8.com/material-outlined/96/000000/user-male-circle.png",
-            isAnonymous: userData.isAnonymous
-          };
-          this.$store.commit("user", data);
-          await userRef.set(data);
-        }
-      } else {
-        this.$store.commit("userId", undefined);
-      }
-      EventBus.$emit("eventAuthActualizada");
-    });
+    //     if (user.exists) {
+    //       const data = user.data();
+    //       this.$store.commit("user", data);
+    //     } else {
+    //       const data = {
+    //         name:
+    //           (userData.displayName
+    //             ? userData.displayName.split(" ")[0]
+    //             : "") || "",
+    //         surname:
+    //           (userData.displayName
+    //             ? userData.displayName.split(" ")[1]
+    //             : "") || "",
+    //         email: userData.email ? userData.email : "",
+    //         photoUrl: userData.photoURL
+    //           ? userData.photoURL
+    //           : "https://img.icons8.com/material-outlined/96/000000/user-male-circle.png",
+    //         isAnonymous: userData.isAnonymous
+    //       };
+    //       this.$store.commit("user", data);
+    //       await userRef.set(data);
+    //     }
+    //   } else {
+    //     this.$store.commit("userId", undefined);
+    //   }
+    //   EventBus.$emit("eventAuthActualizada");
+    // });
 
     // FCM
-    const messaging = firebase.messaging();
-    messaging
-      .requestPermission()
-      .then(function() {
-        console.log("Notification permission granted.");
-        console.log("Notification permission granted.");
+    // const messaging = firebase.messaging();
+    // messaging
+    //   .requestPermission()
+    //   .then(function() {
+    //     console.log("Notification permission granted.");
+    //     console.log("Notification permission granted.");
 
-        // get the token in the form of promise
-        return messaging.getToken();
-      })
-      .then(function(token) {
-        // print the token on the HTML page
-        console.log("token is : " + token);
-      })
-      .catch(function(err) {
-        console.error(err);
-      });
+    //     // get the token in the form of promise
+    //     return messaging.getToken();
+    //   })
+    //   .then(function(token) {
+    //     // print the token on the HTML page
+    //     console.log("token is : " + token);
+    //   })
+    //   .catch(function(err) {
+    //     console.error(err);
+    //   });
   },
   created() {
     window.addEventListener("resize", this.handleResize);

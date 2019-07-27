@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import firebase from "firebase/app";
 import "firebase/firestore";
+import axios from "axios";
 
 import { IState } from "../types/store";
 /// Modulos
@@ -17,9 +18,9 @@ interface NavMenu {
   To: string;
 }
 interface Site {
-  Name: string;
-  LogoURL: string;
-  NavMenu: NavMenu[];
+  name: string;
+  logoURL: string;
+  navMenu: NavMenu[];
 }
 export interface Phone {
   area_code: any;
@@ -75,9 +76,9 @@ Vue.use(Vuex);
 const stateConst: State = {
   SiteId: "8DgciBZUYfrLfnKonpml",
   Site: {
-    Name: "",
-    LogoURL: "",
-    NavMenu: []
+    name: "",
+    logoURL: "",
+    navMenu: []
   },
   businessId: "hN4Z7KaHwWxniNgVHjTX",
   userId: undefined,
@@ -131,17 +132,23 @@ export default new Vuex.Store({
   },
   actions: {
     async initializeApp(context) {
-      const db = firebase.firestore();
-      const siteRef = db.collection("Sites").doc(context.state.SiteId);
-      const site = await siteRef.get();
-      const siteData: Site = site.data() as Site;
-      siteData.NavMenu = [];
-      const navMenu = await siteRef
-        .collection("NavMenu")
-        .orderBy("Index")
-        .get();
-      navMenu.forEach(item => siteData.NavMenu.push(item.data() as NavMenu));
-      context.commit("set_site", siteData);
+      const siteData = await axios.post(
+        "https://ey1wdbg3mk.execute-api.us-east-1.amazonaws.com/production",
+        {
+          operation: "get site from id",
+          param: {
+            id: "6460b669-17ab-41eb-bf55-eafccad959b1"
+          }
+        }
+      );
+      console.log(siteData.data.Item);
+      // siteData.NavMenu = [];
+      // const navMenu = await siteRef
+      //   .collection("NavMenu")
+      //   .orderBy("Index")
+      //   .get();
+      // navMenu.forEach(item => siteData.NavMenu.push(item.data() as NavMenu));
+      context.commit("set_site", siteData.data.Item);
     }
   },
   modules: {

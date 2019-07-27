@@ -10,14 +10,14 @@
               | Mi Cuenta
             el-dropdown-item.w-mi-cuenta(v-else='', @click.native="$router.push('/mi-cuenta/datos')")
               | {{ `Hola, ${this.$store.state.user.name}` }}
-            el-dropdown-item(v-for='NavMenu in this.$store.state.Site.NavMenu', :key='NavMenu.To', @click.native='$router.push(NavMenu.To)')
+            el-dropdown-item(v-for='NavMenu in this.$store.state.Site.navMenu', :key='NavMenu.To', @click.native='$router.push(NavMenu.To)')
               | {{ NavMenu.Name }}
       .info
         .telefono
           img(src='../styles/utilities/desksuite-icons/svg/icons8-phone-20.svg')
           span +598 2601 7321
         .logo
-          router-link(to='/', tag='img', :src='this.$store.state.Site.LogoURL')
+          router-link(to='/', tag='img', :src='this.$store.state.Site.logoURL')
       .w-buscar
         el-button(type='text', size='mini', style='border: none;')
           img(src='../styles/utilities/desksuite-icons/svg/icons8-search-20.svg')
@@ -51,7 +51,7 @@
           span {{ `$ ${orderTotal}` }}
       .principal
         .logo
-          router-link(to='/', tag='img', :src='this.$store.state.Site.LogoURL')
+          router-link(to='/', tag='img', :src='this.$store.state.Site.logoURL')
         nav.menu
           el-button(type='text', v-for='NavMenu in this.$store.state.Site.NavMenu', :key='NavMenu.To', @click.native='$router.push(NavMenu.To)')
             | {{ NavMenu.Name }}
