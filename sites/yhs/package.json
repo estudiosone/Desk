@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@types/numeral": "^0.0.25",
+    "@types/uuid": "^3.4.5",
     "aws-sdk": "^2.500.0",
     "axios": "^0.18.0",
     "core-js": "^2.6.5",
@@ -20,6 +21,7 @@
     "firebaseui": "^4.0.0",
     "moment": "^2.24.0",
     "numeral": "^2.0.6",
+    "uuid": "^3.3.2",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
     "vue-scrolly": "^0.9.3",

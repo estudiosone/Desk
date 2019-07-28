@@ -10,7 +10,7 @@ import { IState } from "../types/store";
 // Salon Booking
 import Availability from "./types/modules/salonBooking/Availability";
 import BeautySalon from "./types/modules/salonBooking/BeautySalon";
-import Service from "./types/modules/salonBooking/Service";
+import BeautyService from "./types/modules/salonBooking/Service";
 
 interface NavMenu {
   Index: number;
@@ -23,6 +23,7 @@ interface Site {
   navMenu: NavMenu[];
   bookingSalons: {
     beautySalons: BeautySalon[];
+    beautyServices: BeautyService[];
   };
 }
 export interface Phone {
@@ -83,7 +84,8 @@ const stateConst: State = {
     logoURL: "",
     navMenu: [],
     bookingSalons: {
-      beautySalons: []
+      beautySalons: [],
+      beautyServices: []
     }
   },
   businessId: "26083601-220d-43b0-9550-310634e07e1c",
@@ -174,25 +176,38 @@ export default new Vuex.Store({
 
       // Iniciar modulo BookingSalon
       const beautySalons = new Array<BeautySalon>();
-      console.log(site.data.Item.modules.bookingSalons);
-      site.data.Item.modules.bookingSalons.forEach(
+      site.data.Item.modules.bookingSalons.beautySalons.forEach(
         async (element: BeautySalon) => {
-          console.log(element.id);
           const resultBeautySalons: BeautySalon = (await axios.post(
             "https://ey1wdbg3mk.execute-api.us-east-1.amazonaws.com/production",
             {
               operation: "get beautySalons from id",
               param: {
-                id: element.id
+                id: element
               }
             }
           )).data.Item;
-          console.log(resultBeautySalons);
-
           beautySalons.push(resultBeautySalons);
         }
       );
       siteData.bookingSalons.beautySalons = beautySalons;
+
+      const beautyServices = new Array<BeautyService>();
+      site.data.Item.modules.bookingSalons.beautyServices.forEach(
+        async (element: BeautyService) => {
+          const resultBeautyServices: BeautySalon = (await axios.post(
+            "https://ey1wdbg3mk.execute-api.us-east-1.amazonaws.com/production",
+            {
+              operation: "get beautyServices from id",
+              param: {
+                id: element
+              }
+            }
+          )).data.Item;
+          beautyServices.push(resultBeautyServices);
+        }
+      );
+      siteData.bookingSalons.beautyServices = beautyServices;
       context.commit("set_site", siteData);
     }
   },
@@ -202,7 +217,7 @@ export default new Vuex.Store({
       state: {
         availability: Object,
         beautySalons: new Array<BeautySalon>(),
-        services: new Array<Service>()
+        services: new Array<BeautyService>()
       },
       mutations: {
         setAvailability(state, payload: Availability) {
@@ -211,7 +226,7 @@ export default new Vuex.Store({
         setBeautySalons(state, payload: BeautySalon[]) {
           state.beautySalons = payload;
         },
-        setServices(state, payload: Service[]) {
+        setServices(state, payload: BeautyService[]) {
           state.services = payload;
         }
       },

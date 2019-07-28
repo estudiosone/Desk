@@ -42,7 +42,7 @@
         el-dialog.firebaseui-auth-dialog(title='Ingresar a mi cuenta', width='560px', :visible.sync='ModalesAutenticacion', :fullscreen='this.$store.state.Utilidades.UI.BP.smDown', @opened='setFirebaseAuthUI')
           .firebaseui-auth-container
             .logo
-              img.logo(:src='this.$store.state.Site.LogoURL', alt='')
+              img.logo(:src='this.$store.state.Site.logoURL', alt='')
             #firebaseui-auth-container
       .w-mi-compra
         el-button(type='text', size='mini', style='border: none;', @click.native="$router.push('/mi-compra')")
