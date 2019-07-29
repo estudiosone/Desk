@@ -268,15 +268,17 @@ export default new Vuex.Store({
             id: "b1",
             title: "tendencias - invierno 2019",
             mediaURL:
-              "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-invierno-2019--1.jpg?alt=media&token=4f83f838-3a42-47c3-98e9-879e16411297",
+              "https://yhairstylist.s3.amazonaws.com/media/img/corte+19+01.jpg",
             tags: ["Tendencias", "Invierno", "2019"],
             childrens: [
               {
                 type: "img",
                 data: [
-                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-invierno-2019--1.jpg?alt=media&token=4f83f838-3a42-47c3-98e9-879e16411297",
-                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-invierno-2019--2.jpg?alt=media&token=404d9d8a-96ca-40c3-9fd0-b7da5ec0f17d",
-                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-invierno-2019--3.jpg?alt=media&token=21302d6e-6dab-45c4-8ff3-ef0b2578f68a"
+                  "https://yhairstylist.s3.amazonaws.com/media/img/corte+19+01.jpg",
+                  "https://yhairstylist.s3.amazonaws.com/media/img/corte+19+02.jpg",
+                  "https://yhairstylist.s3.amazonaws.com/media/img/corte+19+03.jpg",
+                  "https://yhairstylist.s3.amazonaws.com/media/img/corte+19+04.jpg",
+                  "https://yhairstylist.s3.amazonaws.com/media/img/corte+19+05.jpg"
                 ]
               },
               {
@@ -295,17 +297,16 @@ export default new Vuex.Store({
             id: "b2",
             title: "tendencias - color 2019",
             mediaURL:
-              "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--1.jpg?alt=media&token=aea1a527-c1fb-4947-a7f6-888672d2a438",
+              "https://yhairstylist.s3.amazonaws.com/media/img/color+19+01.jpg",
             tags: ["Tendencias", "Color", "2019"],
             childrens: [
               {
                 type: "img",
                 data: [
-                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--1.jpg?alt=media&token=aea1a527-c1fb-4947-a7f6-888672d2a438",
-                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--2.jpg?alt=media&token=f5aea938-8d32-4235-b13a-66b5071ae0ae",
-                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--3.jpg?alt=media&token=5344af52-d4a0-45df-b098-7b02c380ad21",
-                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--4.jpg?alt=media&token=fe5d548e-f24b-4afa-b799-41bac58891c8",
-                  "https://firebasestorage.googleapis.com/v0/b/desk-uy.appspot.com/o/yhs%2Fassets%2Fblog-tendencias-color-2019--5.jpg?alt=media&token=38030c9e-8c8a-41ba-8bd9-24a1d8073aa8"
+                  "https://yhairstylist.s3.amazonaws.com/media/img/color+19+01.jpg",
+                  "https://yhairstylist.s3.amazonaws.com/media/img/color+19+02.jpg",
+                  "https://yhairstylist.s3.amazonaws.com/media/img/color+19+03.jpg",
+                  "https://yhairstylist.s3.amazonaws.com/media/img/color+19+04.jpg"
                 ]
               },
               {
