@@ -10,13 +10,13 @@
           el-menu-item(:index="`${brand.label}-todos`" @click="setFilter(brand.label, '')") Todos
           el-menu-item(v-for="item in brand.children" :key="item.label" :index="item.label" @click="setFilter(brand.label, item.label)") {{ item.label }}
       .s-catalogo
-        el-card.s-item(v-for='item in catalogue', :key='item.Id', shadow='hover', @click.native='$router.push(`/store/item/${item.Id}`)')
-          img.s-foto(:src='item.Photo', alt='')
+        el-card.s-item(v-for='item in catalogue', :key='item.id', shadow='hover', @click.native='$router.push(`/store/item/${item.id}`)')
+          img.s-foto(:src='item.photo', alt='')
           .s-info
-            .s-item-nombre {{ item.Name }}
-            .s-item-precio(v-if='disponibilidad(item.Price)')
+            .s-item-nombre {{ item.name }}
+            .s-item-precio(v-if='disponibilidad(item.price)')
               .s-simbolo $
-              .s-importe {{ item.Price | importe }}
+              .s-importe {{ item.price | importe }}
             .s-item-no-disponible(v-else) temporalmente no disponible
             //
               <widget-store-add-bag
@@ -41,6 +41,7 @@
 import Vue from "vue";
 import firebase from "firebase/app";
 import "firebase/firestore";
+import axios from "axios";
 import Numeral from "numeral";
 
 // import WidgetStoreAddBag from '../components/Widgets/StoreAddBag.vue';
@@ -187,123 +188,127 @@ export default Vue.extend({
         lock: true,
         text: "Buscando productos"
       });
-      const app = firebase.firestore();
-      const col = app.collection("Inventory-Items");
-      let query: firebase.firestore.Query;
-      if (firstLoad) {
-        this.catalogue = new Array<ICatalogueItem>();
-      }
-      if (
-        this.filter.brand.length === 0 &&
-        this.filter.category.length === 0 &&
-        firstLoad
-      ) {
-        query = col
-          .where(
-            "Business",
-            "==",
-            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
-          )
-          .orderBy("Name")
-          .limit(12);
-      } else if (
-        this.filter.brand.length === 0 &&
-        this.filter.category.length === 0 &&
-        !firstLoad
-      ) {
-        query = col
-          .where(
-            "Business",
-            "==",
-            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
-          )
-          .orderBy("Name")
-          .startAfter(this.catalogue[this.catalogue.length - 1].Name)
-          .limit(12);
-      } else if (
-        this.filter.brand.length > 0 &&
-        this.filter.category.length === 0 &&
-        firstLoad
-      ) {
-        query = col
-          .where(
-            "Business",
-            "==",
-            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
-          )
-          .where("Brand", "==", this.filter.brand)
-          .orderBy("Name")
-          .limit(12);
-      } else if (
-        this.filter.brand.length > 0 &&
-        this.filter.category.length === 0 &&
-        !firstLoad
-      ) {
-        query = col
-          .where(
-            "Business",
-            "==",
-            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
-          )
-          .where("Brand", "==", this.filter.brand)
-          .orderBy("Name")
-          .startAfter(this.catalogue[this.catalogue.length - 1].Name)
-          .limit(12);
-      } else if (
-        this.filter.brand.length > 0 &&
-        this.filter.category.length > 0 &&
-        firstLoad
-      ) {
-        query = col
-          .where(
-            "Business",
-            "==",
-            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
-          )
-          .where("Category", "==", this.filter.category)
-          .where("Brand", "==", this.filter.brand)
-          .orderBy("Name")
-          .limit(12);
-      } else {
-        query = col
-          .where(
-            "Business",
-            "==",
-            app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
-          )
-          .where("Brand", "==", this.filter.brand)
-          .orderBy("Name")
-          .where("Category", "==", this.filter.category)
-          .where("Brand", "==", this.filter.brand)
-          .startAfter(this.catalogue[this.catalogue.length - 1].Name)
-          .limit(12);
-      }
-      const result = await query.get();
-      let i = 12;
-      result.forEach(async item => {
-        i -= i;
-        const catalogueItem: ICatalogueItem = {
-          Id: item.id,
-          Name: item.data().Name,
-          Description: item.data().Description,
-          Price: parseFloat(item.data().Price),
-          Photo: ""
-        };
+      const result = await axios.get(
+        "https://pw9rw6xc2j.execute-api.us-east-1.amazonaws.com/production/items"
+      );
+      this.catalogue = result.data.Items;
+      // const app = firebase.firestore();
+      // const col = app.collection("Inventory-Items");
+      // let query: firebase.firestore.Query;
+      // if (firstLoad) {
+      //   this.catalogue = new Array<ICatalogueItem>();
+      // }
+      // if (
+      //   this.filter.brand.length === 0 &&
+      //   this.filter.category.length === 0 &&
+      //   firstLoad
+      // ) {
+      //   query = col
+      //     .where(
+      //       "Business",
+      //       "==",
+      //       app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+      //     )
+      //     .orderBy("Name")
+      //     .limit(12);
+      // } else if (
+      //   this.filter.brand.length === 0 &&
+      //   this.filter.category.length === 0 &&
+      //   !firstLoad
+      // ) {
+      //   query = col
+      //     .where(
+      //       "Business",
+      //       "==",
+      //       app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+      //     )
+      //     .orderBy("Name")
+      //     .startAfter(this.catalogue[this.catalogue.length - 1].Name)
+      //     .limit(12);
+      // } else if (
+      //   this.filter.brand.length > 0 &&
+      //   this.filter.category.length === 0 &&
+      //   firstLoad
+      // ) {
+      //   query = col
+      //     .where(
+      //       "Business",
+      //       "==",
+      //       app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+      //     )
+      //     .where("Brand", "==", this.filter.brand)
+      //     .orderBy("Name")
+      //     .limit(12);
+      // } else if (
+      //   this.filter.brand.length > 0 &&
+      //   this.filter.category.length === 0 &&
+      //   !firstLoad
+      // ) {
+      //   query = col
+      //     .where(
+      //       "Business",
+      //       "==",
+      //       app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+      //     )
+      //     .where("Brand", "==", this.filter.brand)
+      //     .orderBy("Name")
+      //     .startAfter(this.catalogue[this.catalogue.length - 1].Name)
+      //     .limit(12);
+      // } else if (
+      //   this.filter.brand.length > 0 &&
+      //   this.filter.category.length > 0 &&
+      //   firstLoad
+      // ) {
+      //   query = col
+      //     .where(
+      //       "Business",
+      //       "==",
+      //       app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+      //     )
+      //     .where("Category", "==", this.filter.category)
+      //     .where("Brand", "==", this.filter.brand)
+      //     .orderBy("Name")
+      //     .limit(12);
+      // } else {
+      //   query = col
+      //     .where(
+      //       "Business",
+      //       "==",
+      //       app.collection("Business").doc("hN4Z7KaHwWxniNgVHjTX")
+      //     )
+      //     .where("Brand", "==", this.filter.brand)
+      //     .orderBy("Name")
+      //     .where("Category", "==", this.filter.category)
+      //     .where("Brand", "==", this.filter.brand)
+      //     .startAfter(this.catalogue[this.catalogue.length - 1].Name)
+      //     .limit(12);
+      // }
+      // const result = await query.get();
+      // let i = 12;
+      // result.forEach(async item => {
+      //   i -= i;
+      //   const catalogueItem: ICatalogueItem = {
+      //     Id: item.id,
+      //     Name: item.data().Name,
+      //     Description: item.data().Description,
+      //     Price: parseFloat(item.data().Price),
+      //     Photo: ""
+      //   };
 
-        const inventoryItemsPhotos = await app
-          .collection("Inventory-Items-Photos")
-          .where("Item", "==", item.ref)
-          .get();
+      //   const inventoryItemsPhotos = await app
+      //     .collection("Inventory-Items-Photos")
+      //     .where("Item", "==", item.ref)
+      //     .get();
 
-        inventoryItemsPhotos.forEach(photo => {
-          if (photo.data().IsCover) {
-            catalogueItem.Photo = photo.data().Url;
-          }
-        });
+      //   inventoryItemsPhotos.forEach(photo => {
+      //     if (photo.data().IsCover) {
+      //       catalogueItem.Photo = photo.data().Url;
+      //     }
+      //   });
 
-        this.catalogue.push(catalogueItem);
-      });
-      this.catalogueExpand = i === 0 ? true : false;
+      //   this.catalogue.push(catalogueItem);
+      // });
+      // this.catalogueExpand = i === 0 ? true : false;
       loading.close();
     },
     disponibilidad(value: any) {

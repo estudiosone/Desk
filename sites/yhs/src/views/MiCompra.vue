@@ -148,13 +148,9 @@ export default Vue.extend({
           identification: this.user.identification
         },
         back_urls: {
-          success: `${location.origin}/mi-cuenta/historial/${
-            ref.id
-          }/confirmada`,
+          success: `${location.origin}/mi-cuenta/historial/${ref.id}/confirmada`,
           pending: `${location.origin}/mi-cuenta/historial/${ref.id}/pendiente`,
-          failure: `${location.origin}/mi-cuenta/historial/${
-            ref.id
-          }/pago-erroneo`
+          failure: `${location.origin}/mi-cuenta/historial/${ref.id}/pago-erroneo`
         },
         notification_url:
           "https://us-central1-one-sig-uy.cloudfunctions.net/mercado_pago_webhooks",

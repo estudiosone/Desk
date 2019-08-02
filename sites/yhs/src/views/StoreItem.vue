@@ -2,18 +2,18 @@
   .item
     .media
       .media-list
-        el-card(v-for='photo in Item.Photos', :key='photo.Url', shadow='never')
-          img(:src='photo.Url', alt='')
+        el-card(v-for='photo in Item.Photos', :key='photo', shadow='never')
+          img(:src='photo', alt='')
       el-card.media-presentation(shadow='never')
-        img(:src='SelectedPhotoUrl', alt='')
+        img(:src='Item.photo', alt='')
     .info
-      h1.name {{ Item.Name }}
+      h1.name {{ Item.name }}
       .brand-category
-        .brand {{ Item.Brand }}
-        .category {{ Item.Category }}
-      p.description {{ Item.Description }}
+        .brand {{ Item.brand }}
+        .category {{ Item.category }}
+      p.description {{ Item.description }}
       h3.presentation {{ presentation }}
-      widget-store-add-bag(:item-id='Item.Id', :item-price='parseInt(Item.Price, 10)', :item-photo-u-r-l='SelectedPhotoUrl', :item-name='Item.Name')
+      widget-store-add-bag(:item-id='Item.id', :item-price='parseInt(Item.price, 10)', :item-photo-u-r-l='SelectedPhotoUrl', :item-name='Item.Name')
 </template>
 
 <style lang="scss" scoped>
@@ -22,9 +22,8 @@
 
 <script lang="ts">
 import Vue from "vue";
-import firebase from "firebase/app";
-import "firebase/firestore";
 import Numeral from "numeral";
+import axios from "axios";
 
 export default Vue.extend({
   filters: {
@@ -54,29 +53,16 @@ export default Vue.extend({
   async mounted() {
     const loading = this.$loading({
       lock: true,
-      text: "Buscando productos"
+      text: "Buscando el producto"
     });
-    const app = firebase.firestore();
-    const col = app.collection("Inventory-Items");
-    const itemReference = col.doc(this.$route.params.id);
-    const result = await itemReference.get();
-    if (result.exists) {
-      this.Item = result.data();
-      this.Item.Id = result.id;
-      this.Item.Photos = [];
-
-      const inventoryItemsPhotos = await app
-        .collection("Inventory-Items-Photos")
-        .where("Item", "==", itemReference)
-        .get();
-
-      inventoryItemsPhotos.forEach(photo => {
-        this.Item.Photos.push(photo.data());
-        if (photo.data().IsCover) {
-          this.SelectedPhotoUrl = photo.data().Url;
-        }
-      });
-    }
+    const result = await axios.post(
+      "https://pw9rw6xc2j.execute-api.us-east-1.amazonaws.com/production/items/id",
+      {
+        id: this.$route.params.id
+      }
+    );
+    this.Item = result.data.Item;
+    this.Item.Photos = [result.data.Item.photo || ""];
     loading.close();
   }
 });
